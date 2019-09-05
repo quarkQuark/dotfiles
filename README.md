@@ -1,27 +1,30 @@
 ## Setup on fresh install
 
-````bash
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
-git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dofiles-git
-````
-Vundle must be installed for the vim configuration to work properly:
-````bash
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
-````
+1.  Clone
+
+    ````bash
+    alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+    git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dofiles-git
+    ````
+    
+2.  Vundle must be installed for the vim configuration to work properly:
+    ````bash
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    vim +PluginInstall +qall
+    ````
 
 ## Usage
 
-Push local changes:
-````bash
-dotfiles add <filepath>
-dotfiles commit -m "<message>"
-dotfiles push
-````
-Pull upstream changes:
-````bash
-dotfiles pull
-````
+*   Push local changes:
+    ````bash
+    dotfiles add <filepath>
+    dotfiles commit -m "<message>"
+    dotfiles push
+    ````
+*   Pull upstream changes:
+    ````bash
+    dotfiles pull
+    ````
 
 ## How this repository was set up
 
