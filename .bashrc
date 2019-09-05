@@ -39,7 +39,3 @@ export TERM="screen-256color"
 source /usr/share/autojump/autojump.bash
 
 neofetch
-
-# For managing dotfiles via a git bare repository
-#   (see https://www.atlassian.com/git/tutorials/dotfiles)
-alias dotfiles='/usr/bin/git --git-dir=/home/jonathan/.dotfiles-git/ --work-tree=/home/jonathan'
