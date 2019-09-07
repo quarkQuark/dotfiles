@@ -46,7 +46,7 @@ URxvt*depth: 32
 
 ! special
 URxvt*foreground:   #bbc5ff
-URxvt*background:   [100]#292d3e
+URxvt*background:   [80]#292d3e
 URxvt*cursorColor:  #bbc5ff
 
 XTerm*foreground: #bbc5ff
