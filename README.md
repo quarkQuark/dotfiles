@@ -4,6 +4,8 @@
     ````bash
     git
     neofetch
+    
+    # If on X
     powerline
     powerline-fonts
     ````
