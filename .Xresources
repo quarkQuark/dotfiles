@@ -1,0 +1,45 @@
+!!!!!!!!!!!!!!!!!!!!
+!! Adapted from https://gitlab.com/dwt1/dotfiles/blob/master/.Xresources
+!!!!!!!!!!!!!!!!!!!!
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: true
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcdfilter
+
+URxvt*imLocale: en_GB.UTF-8
+URxvt*termName: rxvt-unicode-256color
+Urxvt*buffered: false
+URxvt.intensityStyles: false
+URxvt.font: xft:UbuntuMono Nerd Font:size=10, \
+            xft:Inconsolata Nerd Font Mono:size=10, \
+            xft:DejaVuSansMono Nerd Font:size=10, \
+            xft:DroidSansMono Nerd Font:size=10, \
+            xft:FuraMono Nerd Font:size=10, \
+            xft:RobotoMono Nerd Font:size=10, \
+            xft:Noto Sans Mono:size=10, \
+            xft:Monospace:style=Medium:size=10
+URxvt.savelines: 2000
+URxvt.scrollBar: false
+URxvt.cursorColor: white
+
+!! Extensions
+URxvt.perl-ext-common: default,matcher,url-select,clipboard
+URxvt.colorUL: #468284
+!! url-select
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: urxvtd -e lynx -cfg=~/.lynx.cfg -lss=~/.lynx.lss
+URxvt.url-select.underline: true
+!! matcher
+URxvt.url-launcher: urxvtd -e lynx -cfg=~/.lynx.cfg -lss=~/.lynx.lss
+URxvt.matcher.button: 1
+!! clipboard
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+URxvt*depth: 32
+
+
+!! Colours
