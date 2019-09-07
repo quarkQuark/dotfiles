@@ -30,16 +30,13 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# Make ls show correct colours
-DIR_COLORS="$HOME/.dircolors"
-test -r $d && eval "$(dircolors ~/.dircolors)"
+## Make ls show correct colours
+#DIR_COLORS="$HOME/.dircolors"
+#test -r $d && eval "$(dircolors ~/.dircolors)"
 
 neofetch
 
-# Powerline, if GUI
-if xhost >& /dev/null ; then
-    powerline-daemon -q
-    POWERLINE_BASH_CONTINUATION=1
-    POWERLINE_BASH_SELECT=1
-    . /usr/share/powerline/bindings/bash/powerline.sh
-fi
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+. /usr/share/powerline/bindings/bash/powerline.sh
