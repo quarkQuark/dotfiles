@@ -27,15 +27,17 @@ URxvt.scrollBar: false
 URxvt.cursorColor: white
 
 !! Extensions
-URxvt.perl-ext-common: default,matcher,url-select,clipboard
+URxvt.perl-ext-common: default,matcher,url-select,keyboard-select,clipboard
 URxvt.colorUL: #468284
-!! url-select
+!! url-select - enter/copy URLs via keyboard
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.url-select.launcher: urxvtd -e lynx -cfg=~/.lynx.cfg -lss=~/.lynx.lss
 URxvt.url-select.underline: true
-!! matcher
+!! matcher - make URLs clickable
 URxvt.url-launcher: urxvtd -e lynx -cfg=~/.lynx.cfg -lss=~/.lynx.lss
 URxvt.matcher.button: 1
+!! keyboard-select - select previous terminal output with keyboard
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
 !! clipboard
 URxvt.keysym.M-c: perl:clipboard:copy
 URxvt.keysym.M-v: perl:clipboard:paste
