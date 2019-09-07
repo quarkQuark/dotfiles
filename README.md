@@ -4,6 +4,8 @@
     ````bash
     git
     neofetch
+    powerline
+    powerline-fonts
     ````
 
 2.  Clone
