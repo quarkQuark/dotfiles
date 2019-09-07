@@ -36,8 +36,10 @@ test -r $d && eval "$(dircolors ~/.dircolors)"
 
 neofetch
 
-# Powerline
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-. /usr/share/powerline/bindings/bash/powerline.sh
+# Powerline, if GUI
+if xhost >& /dev/null ; then
+    powerline-daemon -q
+    POWERLINE_BASH_CONTINUATION=1
+    POWERLINE_BASH_SELECT=1
+    . /usr/share/powerline/bindings/bash/powerline.sh
+fi
