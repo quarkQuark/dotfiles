@@ -13,7 +13,7 @@
     echo .dotfiles-git >> .gitignore
     git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dotfiles-git
     dotfiles checkout
-    config config --local status.showUntrackedFiles no
+    dotfiles config --local status.showUntrackedFiles no
     ````
     
 3.  Vundle must be installed for the vim configuration to work properly:
