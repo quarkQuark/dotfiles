@@ -8,6 +8,7 @@
     # If on X
     powerline
     powerline-fonts
+    nerd-fonts-complete  # aur, for URxvt
     ````
 
 2.  Clone
