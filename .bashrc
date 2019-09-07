@@ -34,8 +34,4 @@ fi
 DIR_COLORS="$HOME/.dircolors"
 test -r $d && eval "$(dircolors ~/.dircolors)"
 
-export TERM="screen-256color"
-
-source /usr/share/autojump/autojump.bash
-
 neofetch
