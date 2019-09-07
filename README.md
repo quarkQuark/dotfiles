@@ -1,13 +1,19 @@
 ## Setup on fresh install
 
-1.  Clone
+1.  Install:
+    ````bash
+    git
+    neofetch
+    ````
+
+2.  Clone
 
     ````bash
     alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
     git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dofiles-git
     ````
     
-2.  Vundle must be installed for the vim configuration to work properly:
+3.  Vundle must be installed for the vim configuration to work properly:
     ````bash
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
     vim +PluginInstall +qall
