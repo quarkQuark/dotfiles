@@ -21,7 +21,6 @@ Plugin 'severin-lemaignan/vim-minimap'
 
 " Programming
 "Plugin 'universal-ctags/ctags'
-Plugin 'altercation/vim-colors-solarized'
 "Plugin 'konfekt/fastfold'
 
 " Python
