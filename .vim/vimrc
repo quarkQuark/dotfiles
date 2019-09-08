@@ -4,15 +4,21 @@ source ~/.vim/plugins.vim
 source ~/.vim/remaps.vim
 
 filetype plugin indent on
-syntax enable
 
 set cursorline
-set number
 set showmatch
 set wrap
 set textwidth=0 wrapmargin=0
 set showcmd
 set autoread
+set hidden                      " Manage buffers correctly
+
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set title                       " Enable window title
+set scrolloff=3                 " Scroll when cursor near screen edge
 
 set foldmethod=indent
 set foldlevel=10
@@ -22,6 +28,8 @@ set shiftwidth=4
 set textwidth=79
 set expandtab
 set autoindent
+
+set mouse=nicr                  " Enable mouse scrolling
 
 set fileformat=unix
 set encoding=utf-8
@@ -34,9 +42,22 @@ let NERDTreeQuitOnOpen = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
-" Stop running pylint checks when files are saved
-let g:pymode_lint_write = 0
+let g:minimap_highlight='Visual'
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Aesthetics
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:python_highlight_all = 1
+syntax on
+
+set relativenumber
+set t_Co=256
+let g:rehash256 = 1
 
 "" Powerline
 set rtp+=/usr/share/powerline/bindings/vim/
 set laststatus=2  " Always show statusline
+let g:Powerline_symbols='unicode'
+let g:Powerline_theme='long'
