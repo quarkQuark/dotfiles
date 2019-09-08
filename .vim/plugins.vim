@@ -4,13 +4,13 @@ filetype off  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Plugins
-""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Utility
+"" Utility
 Plugin 'scrooloose/nerdtree'
 Plugin 'severin-lemaignan/vim-minimap'
 "Plugin 'scrooloose/nerdcommenter'
@@ -19,21 +19,20 @@ Plugin 'severin-lemaignan/vim-minimap'
 "Plugin 'christoomey/vim-tmux-navigator'
 "Plugin 'jreybert/vimagit'
 
-" Programming
+"" Programming
 "Plugin 'universal-ctags/ctags'
 "Plugin 'konfekt/fastfold'
 
-" Python
-Plugin 'w0rp/ale'
-Plugin 'python-mode/python-mode'
-Plugin 'tmhedberg/simpylfold'
+"" Python
+Plugin 'vim-python/python-syntax'
+"Plugin 'w0rp/ale'
+"Plugin 'python-mode/python-mode'
+"Plugin 'tmhedberg/simpylfold'
 
-" Aesthetics
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+"" Aesthetics
 Plugin 'ryanoasis/vim-devicons'                     " Adds icons to vim
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'    " Adds icons to nerdtree; requires above
 
 
-""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call vundle#end()
