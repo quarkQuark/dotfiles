@@ -26,7 +26,7 @@ set autoindent
 set fileformat=unix
 set encoding=utf-8
 
-" NERDTree
+"" NERDTree
 " Start automatically when vim is started with no arguments
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -36,3 +36,7 @@ let NERDTreeDirArrows = 1
 
 " Stop running pylint checks when files are saved
 let g:pymode_lint_write = 0
+
+"" Powerline
+set rtp+=/usr/share/powerline/bindings/vim/
+set laststatus=2  " Always show statusline
