@@ -5,8 +5,6 @@ source ~/.vim/remaps.vim
 
 filetype plugin indent on
 syntax enable
-set background=dark
-colorscheme solarized
 
 set cursorline
 set number
