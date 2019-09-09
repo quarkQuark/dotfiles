@@ -20,11 +20,11 @@ Plugin 'severin-lemaignan/vim-minimap'
 "Plugin 'jreybert/vimagit'
 
 "" Programming
+Plugin 'neovimhaskell/haskell-vim'
 "Plugin 'universal-ctags/ctags'
 "Plugin 'konfekt/fastfold'
 
 "" Python
-Plugin 'vim-python/python-syntax'
 "Plugin 'w0rp/ale'
 "Plugin 'python-mode/python-mode'
 "Plugin 'tmhedberg/simpylfold'

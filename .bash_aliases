@@ -14,9 +14,9 @@ alias egrep='egrep --color=auto'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
 
 # Use stack GHC for haskell
-alias ghc='stack ghc'
-alias ghci='stack ghci'
-alias runghc='stack runghc'
+alias ghc='stack exec -- ghc'
+alias ghci='stack exec -- ghci'
+alias runghc='stack exec -- runghc'
 
 # Other
 alias tmux='tmux -2'                                    # assumes 256 colour
