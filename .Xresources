@@ -14,7 +14,7 @@ URxvt*imLocale: en_GB.UTF-8
 URxvt*termName: rxvt-unicode-256color
 Urxvt*buffered: false
 URxvt.intensityStyles: false
-URxvt.font: xft:UbuntuMono Nerd Font:size=10, \
+URxvt.font: xft:UbuntuMono Nerd Font:size=12, \
             xft:Inconsolata Nerd Font Mono:size=10, \
             xft:DejaVuSansMono Nerd Font:size=10, \
             xft:DroidSansMono Nerd Font:size=10, \
@@ -22,6 +22,7 @@ URxvt.font: xft:UbuntuMono Nerd Font:size=10, \
             xft:RobotoMono Nerd Font:size=10, \
             xft:Noto Sans Mono:size=10, \
             xft:Monospace:style=Medium:size=10
+Urxvt.letterSpace: 2
 URxvt.savelines: 2000
 URxvt.scrollBar: false
 URxvt.cursorColor: white
@@ -44,11 +45,11 @@ URxvt.keysym.M-v: perl:clipboard:paste
 URxvt*depth: 32
 
 
-!! Colours
+!! Colours  (square brackets give opacity)
 
 ! special
 URxvt*foreground:   #bbc5ff
-URxvt*background:   [80]#292d3e
+URxvt*background:   [90]#292d3e
 URxvt*cursorColor:  #bbc5ff
 
 XTerm*foreground: #bbc5ff
@@ -56,7 +57,7 @@ XTerm*background: #292d3e
 XTerm*cursorColor: #bbc5ff
 
 ! black
-*.color0:       #101010  !! originally #292d3e
+*.color0:       #101010
 *.color8:       #434758
 
 ! red
