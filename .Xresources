@@ -15,20 +15,20 @@ URxvt*termName: rxvt-unicode-256color
 Urxvt*buffered: false
 URxvt.intensityStyles: false
 URxvt.font: xft:UbuntuMono Nerd Font:size=12, \
-            xft:Inconsolata Nerd Font Mono:size=10, \
-            xft:DejaVuSansMono Nerd Font:size=10, \
-            xft:DroidSansMono Nerd Font:size=10, \
-            xft:FuraMono Nerd Font:size=10, \
-            xft:RobotoMono Nerd Font:size=10, \
-            xft:Noto Sans Mono:size=10, \
-            xft:Monospace:style=Medium:size=10
+            xft:Inconsolata Nerd Font Mono:size=12, \
+            xft:DejaVuSansMono Nerd Font:size=12, \
+            xft:DroidSansMono Nerd Font:size=12, \
+            xft:FuraMono Nerd Font:size=12, \
+            xft:RobotoMono Nerd Font:size=12, \
+            xft:Noto Sans Mono:size=12, \
+            xft:Monospace:style=Medium:size=12
 Urxvt.letterSpace: 2
 URxvt.savelines: 2000
 URxvt.scrollBar: false
 URxvt.cursorColor: white
 
 !! Extensions
-URxvt.perl-ext-common: default,matcher,url-select,keyboard-select,clipboard
+URxvt.perl-ext-common: default,matcher,url-select,keyboard-select,clipboard,resize-font
 URxvt.colorUL: #468284
 !! url-select - enter/copy URLs via keyboard
 URxvt.keysym.M-u: perl:url-select:select_next
@@ -43,6 +43,9 @@ URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-c: perl:clipboard:copy
 URxvt.keysym.M-v: perl:clipboard:paste
 URxvt*depth: 32
+!! resize font (using urxvt-resize-font-git aur)
+URxvt.resize-font.smaller: C-j
+URxvt.resize-font.bigger: C-k
 
 
 !! Colours  (square brackets give opacity)
