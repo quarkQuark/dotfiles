@@ -2,3 +2,4 @@ compton &
 tint2 &
 nitrogen --restore &
 urxvtd -q -o -f &
+volumeicon &
