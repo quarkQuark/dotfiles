@@ -15,4 +15,4 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
 
 # Other
 alias tmux='tmux -2'                                    # assumes 256 colour
-alisa vim='nvim'
+alias vim='nvim'
