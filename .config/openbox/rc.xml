@@ -361,6 +361,20 @@
     <keybind key="W-q">
       <action name="Reconfigure"/>
     </keybind>
+    <keybind key="C-Escape">
+      <action name="Execute">
+        <startupnotify>
+          <enabled>true</enabled>
+          <name>Rofi</name>
+        </startupnotify>
+        <command>rofi -show drun</command>
+      </action>
+    </keybind>
+    <keybind key="W-Space">>
+      <action name="ShowMenu">
+        <menu>root-menu</menu>
+      </action>
+    </keybind>
     <keybind key="W-S-Return">
       <action name="Execute">
         <startupnotify>
