@@ -4,8 +4,6 @@
     ````bash
     git
     neofetch
-    
-    # If on X
     powerline
     powerline-fonts
     nerd-fonts-complete  # aur, for URxvt
@@ -21,11 +19,7 @@
     dotfiles config --local status.showUntrackedFiles no
     ````
     
-3.  Vundle must be installed for the vim configuration to work properly:
-    ````bash
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-    vim +PluginInstall +qall
-    ````
+3.  [Vim-plug](https://github.com/junegunn/vim-plug) must be installed for the vim configuration to work properly
 
 ## Usage
 
