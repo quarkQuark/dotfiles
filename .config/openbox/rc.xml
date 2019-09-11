@@ -370,7 +370,7 @@
         <command>rofi -show drun</command>
       </action>
     </keybind>
-    <keybind key="W-Space">>
+    <keybind key="W-space">>
       <action name="ShowMenu">
         <menu>root-menu</menu>
       </action>
