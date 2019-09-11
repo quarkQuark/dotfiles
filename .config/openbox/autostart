@@ -3,4 +3,5 @@ tint2 &
 nitrogen --restore &
 urxvtd -q -o -f &
 volumeicon &
-xcape -e 'Super_L=Control_L|Escape'
+xcape -e 'Super_L=Control_L|Escape' &
+udiskie --tray &
