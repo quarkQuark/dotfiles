@@ -16,3 +16,4 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
 # Other
 alias tmux='tmux -2'                                    # assumes 256 colour
 alias vim='nvim'
+alias lynx='lynx -cfg=$HOME/.config/lynx/lynx.cfg -lss=$HOME/.config/lynx/lynx.lss'
