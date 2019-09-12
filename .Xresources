@@ -32,10 +32,10 @@ URxvt.perl-ext-common: default,matcher,url-select,keyboard-select,clipboard,resi
 URxvt.colorUL: #468284
 !! url-select - enter/copy URLs via keyboard
 URxvt.keysym.M-u: perl:url-select:select_next
-URxvt.url-select.launcher: urxvtd -e lynx
+URxvt.url-select.launcher: urxvtd -e elinks
 URxvt.url-select.underline: true
 !! matcher - make URLs clickable
-URxvt.url-launcher: urxvtd -e lynx
+URxvt.url-launcher: urxvtd -e elinks
 URxvt.matcher.button: 1
 !! keyboard-select - select previous terminal output with keyboard
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
