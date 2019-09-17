@@ -5,3 +5,4 @@ urxvtd -q -o -f &
 volumeicon &
 xcape -e 'Super_L=Control_L|Escape' &
 udiskie --tray &
+xrdb -merge ~/.config/X11/Xresources
