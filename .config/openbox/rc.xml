@@ -357,10 +357,19 @@
         <direction>down</direction>
       </action>
     </keybind>
-    <!-- Keybindings for running applications -->
+    <!-- Keybindings for openbox functions -->
     <keybind key="W-q">
       <action name="Reconfigure"/>
     </keybind>
+    <keybind key="W-space">&gt;
+      <action name="ShowMenu"><menu>root-menu</menu></action>
+    </keybind>
+    <keybind key="W-S-q">
+      <action name="Exit">
+        <prompt>yes</prompt>
+      </action>
+    </keybind>
+    <!-- Keybindings for running applications (Esc mapped to W on its own) -->
     <keybind key="C-Escape">
       <action name="Execute">
         <startupnotify>
@@ -368,11 +377,6 @@
           <name>Rofi</name>
         </startupnotify>
         <command>rofi -show drun</command>
-      </action>
-    </keybind>
-    <keybind key="W-space">>
-      <action name="ShowMenu">
-        <menu>root-menu</menu>
       </action>
     </keybind>
     <keybind key="W-S-Return">
