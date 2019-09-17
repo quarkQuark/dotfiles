@@ -1,14 +1,17 @@
-!!!!!!!!!!!!!!!!!!!!
-!! Adapted from https://gitlab.com/dwt1/dotfiles/blob/master/.Xresources
-!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! => General
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-Xft.dpi: 96
 Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
 Xft.autohint: true
 Xft.hintstyle: hintfull
 Xft.lcdfilter: lcdfilter
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! => URxvt
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 URxvt*imLocale: en_GB.UTF-8
 URxvt*termName: rxvt-unicode-256color
@@ -32,10 +35,10 @@ URxvt.perl-ext-common: default,matcher,url-select,keyboard-select,clipboard,resi
 URxvt.colorUL: #468284
 !! url-select - enter/copy URLs via keyboard
 URxvt.keysym.M-u: perl:url-select:select_next
-URxvt.url-select.launcher: urxvtd -e lynx -cfg=~/.lynx.cfg -lss=~/.lynx.lss
+URxvt.url-select.launcher: urxvtd -e elinks
 URxvt.url-select.underline: true
 !! matcher - make URLs clickable
-URxvt.url-launcher: urxvtd -e lynx -cfg=~/.lynx.cfg -lss=~/.lynx.lss
+URxvt.url-launcher: urxvtd -e elinks
 URxvt.matcher.button: 1
 !! keyboard-select - select previous terminal output with keyboard
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
