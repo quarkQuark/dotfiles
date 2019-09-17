@@ -35,7 +35,6 @@ LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 #test -r $d && eval "$(dircolors ~/.dircolors)"
 
 neofetch
-set -o vi
 
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
