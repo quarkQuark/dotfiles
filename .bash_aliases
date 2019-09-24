@@ -13,6 +13,9 @@ alias egrep='egrep --color=auto'
 # Set up dotfiles syncing
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
 
+# Check battery
+alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"'
+
 # Other
 alias tmux='tmux -2'                                    # assumes 256 colour
 alias vim='nvim'
