@@ -1,8 +1,12 @@
 compton &
+xcape -e 'Super_L=Control_L|Escape' &
 tint2 &
 nitrogen --restore &
-urxvtd -q -o -f &
-volumeicon &
-xcape -e 'Super_L=Control_L|Escape' &
+xrdb -merge ~/.config/X11/Xresources &
+
 udiskie --tray &
-xrdb -merge ~/.config/X11/Xresources
+volumeicon &
+nm-applet &
+
+urxvtd -q -o -f &
+emacs --daemon
