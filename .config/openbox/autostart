@@ -4,9 +4,10 @@ tint2 &
 nitrogen --restore &
 xrdb -merge ~/.config/X11/Xresources &
 
-udiskie --tray &
+udiskie --tray --no-config &
 volumeicon &
 nm-applet &
+xfce4-power-manager &
 
 urxvtd -q -o -f &
 emacs --daemon
