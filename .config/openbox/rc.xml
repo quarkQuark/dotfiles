@@ -854,5 +854,7 @@
 
   # end of the example
 -->
+    <!-- Remove window decorations -->
+      <application class="*"> <decor>no</decor> </application>
   </applications>
 </openbox_config>
