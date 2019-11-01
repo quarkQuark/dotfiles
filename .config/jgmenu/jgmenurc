@@ -62,3 +62,15 @@
 # csv_single_window = 0
 # csv_no_dirs = 0
 # csv_i18n = 
+color_menu_border = #1e1e1e 100
+menu_border = 4
+color_title_bg = #1e1e1e 100
+color_title_fg = #C6CBC9 100
+sep_markup = 
+sep_halign = Center
+color_menu_bg = #1e1e1e 100
+color_norm_fg = #C6CBC9 100
+color_sel_bg = #169f6f 100
+color_sel_border = #169f6f 100
+color_sel_fg = #DDE7E4 100
+color_sep_fg = #169f6f 100
