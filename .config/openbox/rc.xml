@@ -361,8 +361,10 @@
     <keybind key="W-q">
       <action name="Reconfigure"/>
     </keybind>
-    <keybind key="W-space">&gt;
-      <action name="ShowMenu"><menu>root-menu</menu></action>
+    <keybind key="W-space">
+      <action name="Execute">
+        <command>jgmenu_run</command>
+      </action>
     </keybind>
     <keybind key="W-S-q">
       <action name="Exit">
