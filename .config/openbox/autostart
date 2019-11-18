@@ -1,4 +1,4 @@
-compton &
+picom &
 xcape -e 'Super_L=Control_L|Escape' &
 xrdb -merge ~/.config/X11/Xresources &
 
