@@ -26,6 +26,7 @@ from typing import List  # noqa: F401
 from keys import init_keys
 
 mod = "mod4"
+myTerm = "urxvtc"
 
 keys = init_keys()
 

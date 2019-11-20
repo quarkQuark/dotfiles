@@ -13,24 +13,12 @@ def init_keys():
                 lazy.window.kill()                  # Kill active window
                 ),
             Key(
-                [mod, "shift"], "r",
+                [mod], "q",
                 lazy.restart()                      # Restart Qtile
                 ),
             Key(
                 [mod, "shift"], "q",
                 lazy.shutdown()                     # Shutdown Qtile
-                ),
-            Key(
-                [mod], "w",
-                lazy.to_screen(2)                   # Keyboard focus screen(0)
-                ),
-            Key(
-                [mod], "e",
-                lazy.to_screen(0)                   # Keyboard focus screen(1)
-                ),
-            Key(
-                [mod], "r",
-                lazy.to_screen(1)                   # Keyboard focus screen(2)
                 ),
             Key(
                 [mod, "control"], "k",
@@ -60,11 +48,13 @@ def init_keys():
             Key(
                 [mod, "shift"], "l",
                 lazy.layout.grow(),                 # Grow size of current window (XmonadTall)
-                lazy.layout.increase_nmaster(),     # Increase number in master pane (Tile)                 ),
+                lazy.layout.increase_nmaster(),     # Increase number in master pane (Tile)
+                ),
             Key(
                 [mod, "shift"], "h",
                 lazy.layout.shrink(),               # Shrink size of current window (XmonadTall)
-                lazy.layout.decrease_nmaster(),     # Decrease number in master pane (Tile)                     ),
+                lazy.layout.decrease_nmaster(),     # Decrease number in master pane (Tile)
+                ),
             Key(
                 [mod, "shift"], "Left",             # Move window to workspace to the left
                 window_to_prev_group
@@ -82,7 +72,7 @@ def init_keys():
                 lazy.layout.maximize()              # Toggle a window between minimum and maximum sizes
                 ),
             Key(
-                [mod, "shift"], "KP_Enter",
+                [mod], "f",
                 lazy.window.toggle_floating()       # Toggle floating
                 ),
             Key(
@@ -99,9 +89,9 @@ def init_keys():
                 [mod, "control"], "Return",
                 lazy.layout.toggle_split()          # Toggle between split and unsplit sides of stack
                 ),
-            ### Dmenu Run Launcher
+            ### Dmenu Run Launcher  (C-esc is mapped to Windows key on its own)
             Key(
-                ["mod1", "control"], "Return",
+                mod,
                 lazy.spawn("dmenu_run -fn \
                                 'UbuntuMono Nerd Font:size=10' \
                                 -nb '#292d3e' \
@@ -111,79 +101,54 @@ def init_keys():
                                 -p 'dmenu:'\
                             ")
                 ),
-            ### Dmenu scripts launched with ALT + CTRL + KEY
+            ### Dmenu scripts launched with MOD + ALT + KEY
             Key(
-                ["mod1", "control"], "e",
+                [mod, "mod1"], "e",
                 lazy.spawn("./.dmenu/dmenu-edit-configs.sh")
                 ),
             Key(
-                ["mod1", "control"], "m",
+                [mod, "mod1"], "m",
                 lazy.spawn("./.dmenu/dmenu-sysmon.sh")
                 ),
             Key(
-                ["mod1", "control"], "p",
+                [mod, "mod1"], "p",
                 lazy.spawn("passmenu")
                 ),
             Key(
-                ["mod1", "control"], "r",
+                [mod, "mod1"], "r",
                 lazy.spawn("./.dmenu/dmenu-reddio.sh")
                 ),
             Key(
-                ["mod1", "control"], "s",
+                [mod, "mod1"], "s",
                 lazy.spawn("./.dmenu/dmenu-surfraw.sh")
                 ),
             Key(
-                ["mod1", "control"], "t",
+                [mod, "mod1"], "t",
                 lazy.spawn("./.dmenu/dmenu-trading.sh")
                 ),
-            ### Applications launched with SUPER + ALT + KEY
+            ### Applications
+            #Key(
+                #[mod], "w",
+                #lazy.spawn(myTerm+" -e surf")
+                #),
             Key(
-                [mod, "mod1"], "l",
-                lazy.spawn(myTerm+" -e lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss)
-                ),
+                [mod, "shift"], "w",
+                lazy.spawn(myTerm+" -e firefox)
             Key(
-                [mod, "mod1"], "n",
-                lazy.spawn(myTerm+" -e newsboat")
+                [mod], "f",
+                lazy.spawn(myTerm+" -e vifm")
                 ),
-            Key(
-                [mod, "mod1"], "r",
-                lazy.spawn(myTerm+" -e rtv")
-                ),
-            Key(
-                [mod, "mod1"], "e",
-                lazy.spawn(myTerm+" -e neomutt")
-                ),
-            Key(
-                [mod, "mod1"], "m",
-                lazy.spawn(myTerm+" -e sh ./scripts/toot.sh")
-                ),
-            Key(
-                [mod, "mod1"], "t",
-                lazy.spawn(myTerm+" -e sh ./scripts/tig-script.sh")
-                ),
-            Key(
-                [mod, "mod1"], "f",
-                lazy.spawn(myTerm+" -e sh ./.config/vifm/scripts/vifmrun")
-                ),
-            Key(
-                [mod, "mod1"], "j",
-                lazy.spawn(myTerm+" -e joplin")
-                ),
-            Key(
-                [mod, "mod1"], "c",
-                lazy.spawn(myTerm+" -e cmus")
-                ),
-            Key(
-                [mod, "mod1"], "i",
-                lazy.spawn(myTerm+" -e irssi")
-                ),
-            Key(
-                [mod, "mod1"], "y",
-                lazy.spawn(myTerm+" -e youtube-viewer")
-                ),
-            Key(
-                [mod, "mod1"], "a",
-                lazy.spawn(myTerm+" -e ncpamixer")
-                ),
+            #Key(
+                #[mod, "mod1"], "j",
+                #lazy.spawn(myTerm+" -e joplin")
+                #),
+            #Key(
+                #[mod, "mod1"], "y",
+                #lazy.spawn(myTerm+" -e youtube-viewer")
+                #),
+            #Key(
+                #[mod, "mod1"], "a",
+                #lazy.spawn(myTerm+" -e ncpamixer")
+                #),
     ]
     return keys
