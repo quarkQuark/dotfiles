@@ -32,7 +32,7 @@ myTerm = "urxvtc"
 
 keys = init_keys()
 
-groups = [Group(i) for i in "asdfuiop"]
+groups = [Group(i) for i in "12345678"]
 
 for i in groups:
     keys.extend([
