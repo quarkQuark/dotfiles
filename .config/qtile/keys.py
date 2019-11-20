@@ -1,15 +1,19 @@
+from libqtile.config import Key
+from libqtile.command import lazy
+
 @lazy.function
 def window_to_prev_group(qtile):
     if qtile.currentWindow is not None:
         i = qtile.groups.index(qtile.currentGroup)
         qtile.currentWindow.togroup(qtile.groups[i - 1].name)
 
-@lazy.function def window_to_next_group(qtile):
+@lazy.function
+def window_to_next_group(qtile):
     if qtile.currentWindow is not None:
         i = qtile.groups.index(qtile.currentGroup)
         qtile.currentWindow.togroup(qtile.groups[i + 1].name)
 
-def init_keys():
+def init_keys(mod,myTerm):
     keys = [
             Key(
                 [mod], "Return",
@@ -102,7 +106,7 @@ def init_keys():
                 ),
             ### Dmenu Run Launcher  (C-esc is mapped to Windows key on its own)
             Key(
-                mod,
+                ["control"], "Escape",
                 lazy.spawn("dmenu_run -fn \
                                 'UbuntuMono Nerd Font:size=10' \
                                 -nb '#292d3e' \
@@ -144,7 +148,8 @@ def init_keys():
                 #),
             Key(
                 [mod, "shift"], "w",
-                lazy.spawn(myTerm+" -e firefox)
+                lazy.spawn(myTerm+" -e firefox")
+                ),
             Key(
                 [mod], "f",
                 lazy.spawn(myTerm+" -e vifm")

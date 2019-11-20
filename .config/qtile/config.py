@@ -1,3 +1,5 @@
+# DEBUGGING: $ qtile -l ERROR (lowercase L)
+#
 # The following comments are the copyright and licensing information from the default
 # qtile config. Copyright (c) 2010 Aldo Cortesi, 2010, 2014 dequis, 2012 Randall Ma,
 # 2012-2014 Tycho Andersen, 2012 Craig Barnes, 2013 horsik, 2013 Tao Sauvage
@@ -30,7 +32,7 @@ from keys import init_keys
 mod = "mod4"
 myTerm = "urxvtc"
 
-keys = init_keys()
+keys = init_keys(mod,myTerm)
 
 groups = [Group(i) for i in "12345678"]
 
