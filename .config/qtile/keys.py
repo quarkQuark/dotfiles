@@ -148,7 +148,7 @@ def init_keys(mod,myTerm):
                 #),
             Key(
                 [mod, "shift"], "w",
-                lazy.spawn(myTerm+" -e firefox")
+                lazy.spawn("firefox")
                 ),
             Key(
                 [mod], "f",
