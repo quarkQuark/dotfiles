@@ -32,5 +32,5 @@ source $HOME/.config/nvim/plug.vim
 " Keybindings
 source $HOME/.config/nvim/keys.vim
 
-" Statusline (Powerline)
-source $HOME/.config/nvim/line.vim
+" Aesthetics and Statusline (Powerline)
+source $HOME/.config/nvim/ui.vim
