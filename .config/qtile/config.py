@@ -53,9 +53,9 @@ for i in groups:
 ########################################
 
 layout_theme = {
-                "border_width": 2,
-                "margin": 10,
-                "border_focus": "AD69AF",
+                "border_width": 3,
+                "margin": 3,
+                "border_focus": "5E0000",
                 "border_normal": "1D2330"
                 }
 layouts = [
