@@ -36,20 +36,20 @@ def init_keys(mod,myTerm):
                 lazy.shutdown()                     # Shutdown Qtile
                 ),
             Key(
-                [mod, "control"], "k",
+                [mod, "control"], "j",
                 lazy.layout.section_up()            # Move up a section in treetab
                 ),
             Key(
-                [mod, "control"], "j",
+                [mod, "control"], "k",
                 lazy.layout.section_down()          # Move down a section in treetab
                 ),
             ### Window controls
             Key(
-                [mod], "k",
+                [mod], "j",
                 lazy.layout.down()                  # Switch between windows in current stack pane
                 ),
             Key(
-                [mod], "j",
+                [mod], "k",
                 lazy.layout.up()                    # Switch between windows in current stack pane
                 ),
             Key(
