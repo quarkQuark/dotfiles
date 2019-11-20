@@ -16,8 +16,6 @@
 # The above copyright notice and this permission notice shall be included in all copies
 # or substantial portions of the Software.
 
-mod = "mod4"
-
 ##### IMPORTS #####
 
 import os
@@ -522,8 +520,8 @@ def init_mouse():
 
 if __name__ in ["config", "__main__"]:
     mod = "mod4"                                     # Sets mod key to SUPER/WINDOWS
-    myTerm = "st"                                    # My terminal of choice
-    myConfig = "/home/dt/.config/qtile/config.py"    # Qtile config file location 
+    myTerm = "urxvtc"                                    # My terminal of choice
+    myConfig = "~/.config/qtile/config.py"    # Qtile config file location 
 
     colors = init_colors()
     keys = init_keys()
