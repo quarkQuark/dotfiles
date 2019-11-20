@@ -59,17 +59,9 @@ layout_theme = {
                 "border_normal": "1D2330"
                 }
 layouts = [
-           layout.Max(**layout_theme),
            layout.MonadTall(**layout_theme),
            layout.MonadWide(**layout_theme),
-           layout.Bsp(**layout_theme),
-           layout.Columns(**layout_theme),
-           layout.RatioTile(**layout_theme),
-           layout.VerticalTile(**layout_theme),
-           layout.Tile(shift_windows=True, **layout_theme),
-           layout.Matrix(**layout_theme),
-           layout.Zoomy(**layout_theme),
-           layout.Floating(**layout_theme)
+           layout.Max(**layout_theme)
            ]
 
 ########################################
