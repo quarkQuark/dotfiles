@@ -108,7 +108,7 @@ def init_keys(mod,myTerm):
             Key(
                 ["control"], "Escape",
                 lazy.spawn("dmenu_run -fn \
-                                'UbuntuMono Nerd Font:size=10' \
+                                'UbuntuMono Nerd Font:size=12' \
                                 -nb '#292d3e' \
                                 -nf '#bbc5ff' \
                                 -sb '#82AAFF' \
