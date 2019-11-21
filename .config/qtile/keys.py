@@ -151,6 +151,10 @@ def init_keys(mod,myTerm):
                 lazy.spawn("firefox")
                 ),
             Key(
+                [mod, "shift"], "e",
+                lazy.spawn("emacsclient")
+                ),
+            Key(
                 [mod], "f",
                 lazy.spawn(myTerm+" -e vifm")
                 ),
