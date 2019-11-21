@@ -152,7 +152,7 @@ def init_keys(mod,myTerm):
                 ),
             Key(
                 [mod, "shift"], "e",
-                lazy.spawn("emacsclient")
+                lazy.spawn("emacsclient -a '' -nc")
                 ),
             Key(
                 [mod], "f",
