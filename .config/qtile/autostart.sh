@@ -12,4 +12,4 @@ xfce4-power-manager &
 nitrogen --restore &
 
 urxvtd -q -o -f &
-emacs --daemon
+emacs --daemon &
