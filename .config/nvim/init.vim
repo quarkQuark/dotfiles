@@ -7,6 +7,13 @@ call plug#begin('~/.local/share/nvim/plugged')
 "" Utility
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
+"" General Coding
+Plug 'vim-syntastic/syntastic'
+
+"" Python
+Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
+Plug 'nvie/vim-flake8', { 'for': 'python' }
+
 "" Aesthetics
 Plug 'ryanoasis/vim-devicons'			" Adds icons
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'	" Adds icons to NERDTree; requires vim-devicons
