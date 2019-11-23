@@ -123,8 +123,8 @@ focus_on_window_activation = "smart"
 ## Startup applications
 @hook.subscribe.startup_once
 def start_once():
-    home = os.path.expanduser('~')
-    subprocess.call([home + '/.config/qtile/autostart.sh'])
+    autostart = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.call([autostart])
 
 ## Needed for some java apps
 #wmname = "LG3D"
