@@ -158,6 +158,10 @@ def init_keys(mod,myTerm):
                 [mod], "f",
                 lazy.spawn(myTerm+" -e vifm")
                 ),
+            Key(
+                [mod, "shift"], "f",
+                lazy.spawn("pcmanfm")
+                ),
             #Key(
                 #[mod, "mod1"], "j",
                 #lazy.spawn(myTerm+" -e joplin")
