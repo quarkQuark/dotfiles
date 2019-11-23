@@ -75,14 +75,14 @@ layouts = [
 ## => BAR
 ########################################
 
-widget_defaults = init_widget_defaults()
-extension_defaults = widget_defaults.copy()
-
-widget_list = init_widget_list()
-
-screens = [
-           Screen(top=bar.Bar(widgets=widget_list, opacity=0.95, size=25))
-           ]
+#widget_defaults = init_widget_defaults()
+#extension_defaults = widget_defaults.copy()
+#
+#widget_list = init_widget_list()
+#
+#screens = [
+#           Screen(top=bar.Bar(widgets=widget_list, opacity=0.95, size=25))
+#           ]
 
 ########################################
 
@@ -119,6 +119,12 @@ floating_layout = layout.Floating(float_rules=[
 ])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
+
+## Polybar
+@hook.subscribe.startup
+def init_polybar():
+    polybar_launch = os.path.expanduser('~/.config/polybar/launch.sh')
+    subprocess.call([polybar_launch])
 
 ## Startup applications
 @hook.subscribe.startup_once
