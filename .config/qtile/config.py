@@ -121,13 +121,13 @@ auto_fullscreen = True
 focus_on_window_activation = "smart"
 
 ## Polybar
-@hook.subscribe.startup
+@hook.subscribe.startup  # When qtile starts or restarts
 def init_polybar():
     polybar_launch = os.path.expanduser('~/.config/polybar/launch.sh')
     subprocess.call([polybar_launch])
 
 ## Startup applications
-@hook.subscribe.startup_once
+@hook.subscribe.startup_once  # Only when qtile starts
 def start_once():
     autostart = os.path.expanduser('~/.config/qtile/autostart.sh')
     subprocess.call([autostart])
