@@ -83,6 +83,7 @@ layouts = [
 #screens = [
 #           Screen(top=bar.Bar(widgets=widget_list, opacity=0.95, size=25))
 #           ]
+screens = [Screen()]
 
 ########################################
 
