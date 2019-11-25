@@ -121,12 +121,6 @@ floating_layout = layout.Floating(float_rules=[
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
-## Polybar
-@hook.subscribe.startup  # When qtile starts or restarts
-def init_polybar():
-    polybar_launch = os.path.expanduser('~/.config/polybar/launch.sh')
-    subprocess.call([polybar_launch])
-
 ## Startup applications
 @hook.subscribe.startup_once  # Only when qtile starts
 def start_once():
