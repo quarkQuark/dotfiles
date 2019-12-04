@@ -28,14 +28,11 @@ from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from libqtile.widget import Spacer
 
-from powerline.bindings.qtile.widget import PowerlineTextBox
-
 from typing import List  # noqa: F401
 
 ## My modules
 from keys import init_keys
 from widgets import init_widget_defaults, init_widget_list
-import powerline_widgets
 
 ########################################
 
@@ -75,15 +72,19 @@ layouts = [
 ## => BAR
 ########################################
 
-#widget_defaults = init_widget_defaults()
-#extension_defaults = widget_defaults.copy()
-#
-#widget_list = init_widget_list()
-#
-#screens = [
-#           Screen(top=bar.Bar(widgets=widget_list, opacity=0.95, size=25))
-#           ]
-screens = [Screen()]
+## Qtile bar
+
+widget_defaults = init_widget_defaults()
+extension_defaults = widget_defaults.copy()
+
+widget_list = init_widget_list()
+
+screens = [
+           Screen(top=bar.Bar(widgets=widget_list, opacity=0.95, size=25))
+           ]
+
+## Polybar
+#screens = [Screen()]
 
 ########################################
 

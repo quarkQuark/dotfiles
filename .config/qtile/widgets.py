@@ -4,10 +4,6 @@ import socket
 from libqtile import widget
 from libqtile.widget import Spacer
 
-from powerline.bindings.qtile.widget import PowerlineTextBox
-
-import powerline_widgets
-
 bar_colours = [["#292D3E", "#292D3E"], # panel background
                ["#434758", "#434758"], # background for current screen tab
                ["#D0D0D0", "#D0D0D0"], # font color for group names
@@ -86,26 +82,11 @@ def init_widget_list():
                        background = bar_colours[3],
                        padding = 10,
                        ),
-                   powerline_widgets.PowerlineRight(
-                       #text='',
-                       font='Ubuntu Nerd Font',
-                       foreground = bar_colours[3],
-                       background = bar_colours[9],
-                       ),
                    widget.Systray(
                        background = bar_colours[9],
                        padding = 10,
                        icon_size = 25,
                        ),
-                   PowerlineTextBox(
-                       update_interval = 2,
-                       side = 'left',
-                       text = 'left',
-                       font = 'Ubuntu Nerd Font',
-                       foreground = bar_colours[2],
-                       background = bar_colours[9],
-                       ),
-                   PowerlineTextBox(update_interval=2, side='right', text='right'),
                    widget.Sep(
                        linewidth = 0,
                        padding = 5,

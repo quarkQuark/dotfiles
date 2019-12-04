@@ -10,7 +10,6 @@ nm-applet &
 xfce4-power-manager &
 
 nitrogen --restore &
-~/.config/polybar/launch.sh
 
 urxvtd -q -o -f &
 emacs --daemon &
