@@ -21,7 +21,8 @@ def init_widget_defaults():
                            font='Ubuntu Mono',
                            fontsize=16,
                            padding=5,
-                           background=bar_colours[2]
+                           background=bar_colours[2],
+                           fontshadow = "#000000"
                            )
     return widget_defaults
 
@@ -31,7 +32,7 @@ def init_widget_list():
                        linewidth = 0,
                        padding = 6,
                        foreground = bar_colours[2],
-                       background = bar_colours[0]
+                       background = "#000000"
                        ),
                    widget.GroupBox(
                        fontsize = 16,
@@ -49,7 +50,7 @@ def init_widget_list():
                        other_current_screen_border = bar_colours[0],
                        other_screen_border = bar_colours[0],
                        foreground = bar_colours[2],
-                       background = bar_colours[0],
+                       background = "#000000",
                        hide_unused = True
                        ),
                    widget.Sep(
