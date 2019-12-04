@@ -77,10 +77,11 @@ layouts = [
 widget_defaults = init_widget_defaults()
 extension_defaults = widget_defaults.copy()
 
-widget_list = init_widget_list()
+#widget_list = init_widget_list()
+widget_list = []
 
 screens = [
-           Screen(top=bar.Bar(widgets=widget_list, opacity=0.95, size=25))
+           Screen(left=bar.Bar(widgets=widget_list, opacity=0.95, size=25))
            ]
 
 ## Polybar
