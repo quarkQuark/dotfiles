@@ -33,6 +33,7 @@ myLayoutHook = avoidStruts $ spacing mySpacing $ gaps myGaps $ layoutHook xfceCo
 
 myManageHook = composeAll
             [ className =? "Gimp"         --> doFloat
+            , className =? "conky"        --> doIgnore
             , title     =? "Whisker Menu" --> doIgnore
             ]
 
