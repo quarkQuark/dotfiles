@@ -1,7 +1,9 @@
 import XMonad
 import XMonad.Config.Xfce
+import System.Exit (exitSuccess)
 
 import XMonad.Util.SpawnOnce
+import XMonad.util.EZConfig (additionalKeysP)
 
 import XMonad.Hooks.ManageDocks
 
@@ -43,7 +45,18 @@ myManageHook = composeAll
 
 myStartupHook = do
             spawnOnce "~/.xmonad/autostart.sh"
-            spawn "xfce4-panel --restart"  -- Otherwise it's drawn over
+            spawn "xfce4-panel --restart --disable-wm-check"  -- Otherwise it's drawn over
+
+--------------------------------------------------------------------------------
+-- KEYBINDINGS
+--------------------------------------------------------------------------------
+
+--myKeys =
+        --[ ("M-q", spawn "xmonad --restart")     -- Restart xmonad
+        --, ("M-S-q", io exitSuccess)             -- Quit xmonad
+        --, ("C-<Escape>", spawn "dmenu_run")     -- Launch dmenu for programs
+        --, ("M", spawn "dmenu_run")     -- Launch dmenu for programs
+        --]
 
 --------------------------------------------------------------------------------
 -- MAIN
@@ -57,4 +70,4 @@ main = xmonad xfceConfig
             , workspaces  = myWorkspaces
             , layoutHook  = myLayoutHook
             , manageHook  = myManageHook <+> manageHook xfceConfig <+> manageDocks
-            }
+            } `additionalKeysP`     myKeys
