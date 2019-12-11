@@ -12,8 +12,10 @@ xrdb -merge ~/.config/X11/Xresources &
 # Daemons
 urxvtd -q -o -f &
 emacs --daemon &
+xfsettingsd &
 
 # Tray Icons
 udiskie --tray --no-config &
 volumeicon &
 nm-applet &
+xfce4-power-manager &
