@@ -1,15 +1,21 @@
+#! /bin/sh
+
+# System
 picom &
+nitrogen --restore &
+tint2 -c ~/.config/tint2/openbox.tint2rc &
+plank &
+
+# Settings
 xcape -e 'Super_L=Control_L|Escape' &
 xrdb -merge ~/.config/X11/Xresources &
 
+# Daemons
+urxvtd -q -o -f &
+emacs --daemon
+
+# Tray Icons
 udiskie --tray --no-config &
 volumeicon &
 nm-applet &
 xfce4-power-manager &
-
-tint2 &
-plank &
-nitrogen --restore &
-
-urxvtd -q -o -f &
-emacs --daemon
