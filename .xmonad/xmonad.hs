@@ -32,6 +32,8 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
          -- Application shortcuts
          , ("M-e",         spawn "emacsclient -c")
          , ("M-w",         spawn "qutebrowser")
+         -- Dmenu scripts
+         , ("M-C-e",       spawn ". ~/.config/dmenu/edit-configs.sh")
          ]
 
 --------------------------------------------------------------------------------
