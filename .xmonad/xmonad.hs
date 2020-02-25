@@ -1,73 +1,57 @@
 import XMonad
-import XMonad.Config.Xfce
-import System.Exit (exitSuccess)
+import XMonad.Config.Kde
 
+import XMonad.Util.EZConfig
 import XMonad.Util.SpawnOnce
-import XMonad.util.EZConfig (additionalKeysP)
 
-import XMonad.Hooks.ManageDocks
+import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.Spacing (smartSpacing)
 
-import XMonad.Layout.Spacing (spacing)  -- gaps
-import XMonad.Layout.Gaps (gaps)
+-- For KDE workspace widget to work
+import XMonad.Hooks.EwmhDesktops (ewmh)
 
-myModMask     = mod4Mask
-myTerminal    = "urxvtc"
+-- For shifting and floating windows
+import qualified XMonad.StackSet as W
 
-myBorderWidth = 1
-mySpacing     = 4
-myGaps        = [(U,4), (D,4), (L,4), (R,4)]
+-- For moving workspaces
+import XMonad.Actions.CycleWS
 
---------------------------------------------------------------------------------
--- WORKSPACES
---------------------------------------------------------------------------------
-
-myWorkspaces = [ "⌂" , "2" , "3" , "4" ]
-
---------------------------------------------------------------------------------
--- LAYOUTS
---------------------------------------------------------------------------------
-
-myLayoutHook = avoidStruts $ spacing mySpacing $ gaps myGaps $ layoutHook xfceConfig
-
---------------------------------------------------------------------------------
--- MANAGE HOOK
---------------------------------------------------------------------------------
-
-myManageHook = composeAll
-            [ className =? "Gimp"         --> doFloat
-            , className =? "conky"        --> doIgnore
-            , title     =? "Whisker Menu" --> doIgnore
-            ]
-
---------------------------------------------------------------------------------
--- STARTUP HOOK
---------------------------------------------------------------------------------
-
-myStartupHook = do
-            spawnOnce "~/.xmonad/autostart.sh"
-            spawn "xfce4-panel --restart --disable-wm-check"  -- Otherwise it's drawn over
+myModMask  = mod4Mask -- use the Super / Windows key as mod
+myTerminal = "urxvtc" -- the default terminal emulator
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
 --------------------------------------------------------------------------------
 
---myKeys =
-        --[ ("M-q", spawn "xmonad --restart")     -- Restart xmonad
-        --, ("M-S-q", io exitSuccess)             -- Quit xmonad
-        --, ("C-<Escape>", spawn "dmenu_run")     -- Launch dmenu for programs
-        --, ("M", spawn "dmenu_run")     -- Launch dmenu for programs
-        --]
+myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
+         -- Moving workspaces
+         , ("M-<Left>",    prevWS)
+         , ("M-S-<Right>", nextWS)
+         , ("M-<Left>",    shiftToPrev)
+         , ("M-S-<Right>", shiftToNext)
+         ]
+
+--------------------------------------------------------------------------------
+-- MANAGEHOOK
+--------------------------------------------------------------------------------
+
+myManageHook = composeAll . concat $
+    [ [ className =? c --> doFloat           | c <- myFloats ]
+    , [ title     =? t --> doFloat           | t <- myOtherFloats ]
+    , [ className =? c --> doF (W.shift "2") | c <- webApps ]
+    ]
+  where myFloats      = ["Gimp","conky","plasmashell"]
+        myOtherFloats = ["Whisker Menu"]
+        webApps       = []
 
 --------------------------------------------------------------------------------
 -- MAIN
 --------------------------------------------------------------------------------
 
-main = xmonad xfceConfig
-            { modMask     = myModMask
-            , startupHook = myStartupHook
-            , terminal    = myTerminal
-            , borderWidth = myBorderWidth
-            , workspaces  = myWorkspaces
-            , layoutHook  = myLayoutHook
-            , manageHook  = myManageHook <+> manageHook xfceConfig <+> manageDocks
-            } `additionalKeysP`     myKeys
+main = xmonad $ ewmh $ kde4Config
+    { modMask     = myModMask
+    , terminal    = myTerminal
+    , manageHook  = manageHook kde4Config <+> myManageHook
+    , layoutHook  = smartSpacing 2 $ smartBorders (layoutHook kde4Config)
+    }
+    `additionalKeysP` myKeys
