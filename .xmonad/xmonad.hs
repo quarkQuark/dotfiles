@@ -29,6 +29,9 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
          , ("M-S-<Right>", nextWS)
          , ("M-<Left>",    shiftToPrev)
          , ("M-S-<Right>", shiftToNext)
+         -- Application shortcuts
+         , ("M-e",         spawn "emacsclient -c")
+         , ("M-w",         spawn "qutebrowser")
          ]
 
 --------------------------------------------------------------------------------
