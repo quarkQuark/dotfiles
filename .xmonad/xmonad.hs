@@ -43,11 +43,11 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
 myManageHook = composeAll . concat $
     [ [ className =? c --> doFloat           | c <- myFloats ]
     , [ title     =? t --> doFloat           | t <- myOtherFloats ]
-    , [ className =? c --> doF (W.shift "2") | c <- webApps ]
+    , [ className =? c --> doShift "🌐" | c <- browsers ]
     ]
   where myFloats      = ["Gimp","conky","plasmashell"]
         myOtherFloats = ["Whisker Menu"]
-        webApps       = []
+        browsers      = ["Firefox-bin","firefox"]
 
 --------------------------------------------------------------------------------
 -- WORKSPACES
