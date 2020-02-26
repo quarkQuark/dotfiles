@@ -2,7 +2,6 @@ import XMonad
 import XMonad.Config.Kde
 
 import XMonad.Util.EZConfig
-import XMonad.Util.SpawnOnce
 
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.Spacing (smartSpacing)
@@ -33,7 +32,7 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
          , ("M-e",         spawn "emacsclient -c")
          , ("M-w",         spawn "qutebrowser")
          -- Dmenu scripts
-         , ("M-C-e",       spawn ". ~/.config/dmenu/edit-configs.sh")
+         , ("M-S-e",       spawn ". ~/.config/dmenu/edit-configs.sh")
          ]
 
 --------------------------------------------------------------------------------
