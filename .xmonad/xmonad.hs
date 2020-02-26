@@ -17,6 +17,7 @@ import XMonad.Actions.CycleWS
 
 myModMask  = mod4Mask -- use the Super / Windows key as mod
 myTerminal = "urxvtc" -- the default terminal emulator
+myEditor   = "emacsclient -c" -- needs to be changed in dmenu script files as well
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
@@ -29,7 +30,7 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
          , ("M-<Left>",    shiftToPrev)
          , ("M-S-<Right>", shiftToNext)
          -- Application shortcuts
-         , ("M-e",         spawn "emacsclient -c")
+         , ("M-e",         spawn myEditor)
          , ("M-w",         spawn "qutebrowser")
          -- Dmenu scripts
          , ("M-S-e",       spawn ". ~/.config/dmenu/edit-configs.sh")
@@ -49,6 +50,13 @@ myManageHook = composeAll . concat $
         webApps       = []
 
 --------------------------------------------------------------------------------
+-- WORKSPACES
+--------------------------------------------------------------------------------
+
+myWorkspaces :: [String]
+myWorkspaces = ["~","2","🌐","🎵","5","6","7","8","9"]
+
+--------------------------------------------------------------------------------
 -- MAIN
 --------------------------------------------------------------------------------
 
@@ -57,5 +65,6 @@ main = xmonad $ ewmh $ kde4Config
     , terminal    = myTerminal
     , manageHook  = manageHook kde4Config <+> myManageHook
     , layoutHook  = smartSpacing 2 $ smartBorders (layoutHook kde4Config)
+    , workspaces  = myWorkspaces
     }
     `additionalKeysP` myKeys
