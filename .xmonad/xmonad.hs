@@ -1,16 +1,16 @@
 import XMonad
-import XMonad.Config.Kde
+import XMonad.Config.Kde (kde4Config)
 
 import XMonad.Util.EZConfig
+import XMonad.Util.Run (hPutStrLn,spawnPipe)
 
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.Spacing (smartSpacing)
 
--- For KDE workspace widget to work
-import XMonad.Hooks.EwmhDesktops (ewmh)
+-- For xmobar
+import XMonad.Hooks.DynamicLog
 
--- For shifting and floating windows
-import qualified XMonad.StackSet as W
+import XMonad.Hooks.ManageDocks
 
 -- For moving workspaces
 import XMonad.Actions.CycleWS
@@ -32,6 +32,7 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
          -- Application shortcuts
          , ("M-e",         spawn myEditor)
          , ("M-w",         spawn "qutebrowser")
+         , ("<Print>",     spawn "spectacle")  -- print screen
          -- Dmenu scripts
          , ("M-S-e",       spawn ". ~/.config/dmenu/edit-configs.sh")
          ]
@@ -41,30 +42,40 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
 --------------------------------------------------------------------------------
 
 myManageHook = composeAll . concat $
-    [ [ className =? c --> doFloat           | c <- myFloats ]
-    , [ title     =? t --> doFloat           | t <- myOtherFloats ]
-    , [ className =? c --> doShift "🌐" | c <- browsers ]
+    [ [ className =? c --> doFloat           | c <- myFloatClasses ]
+    , [ title     =? t --> doFloat           | t <- myFloatTitles ]
+    , [ className =? c --> doShift "3:WWW"   | c <- browsers ]
     ]
-  where myFloats      = ["Gimp","conky","plasmashell"]
-        myOtherFloats = ["Whisker Menu"]
-        browsers      = ["Firefox-bin","firefox"]
+  where myFloatClasses = ["Gimp","conky","plasmashell","vlc","Caprine"]
+        myFloatTitles  = ["Whisker Menu"]
+        browsers       = ["Firefox-bin","firefox"]
 
 --------------------------------------------------------------------------------
 -- WORKSPACES
 --------------------------------------------------------------------------------
 
 myWorkspaces :: [String]
-myWorkspaces = ["~","2","🌐","🎵","5","6","7","8","9"]
+myWorkspaces = ["1:HOME","2:WORK","3:WWW","4","5","6","7","8:CHORDS","9:CHAT"]
 
 --------------------------------------------------------------------------------
 -- MAIN
 --------------------------------------------------------------------------------
 
-main = xmonad $ ewmh $ kde4Config
-    { modMask     = myModMask
-    , terminal    = myTerminal
-    , manageHook  = manageHook kde4Config <+> myManageHook
-    , layoutHook  = smartSpacing 2 $ smartBorders (layoutHook kde4Config)
-    , workspaces  = myWorkspaces
-    }
-    `additionalKeysP` myKeys
+main = do
+    xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
+
+    xmonad $ kde4Config
+        { modMask     = myModMask
+        , terminal    = myTerminal
+        , manageHook  = manageDocks <+> manageHook kde4Config <+> myManageHook
+        , layoutHook  = avoidStruts $ smartSpacing 2 $ smartBorders (layoutHook kde4Config)
+        , workspaces  = myWorkspaces
+        , logHook     = dynamicLogWithPP xmobarPP
+                            { ppOutput  = hPutStrLn xmproc
+                            , ppCurrent = xmobarColor "#c3e88d" "" . wrap "[" "]" -- Current workspace
+                            , ppHidden          = xmobarColor "#82AAFF" "" -- Other workspaces with windows
+                            , ppHiddenNoWindows = xmobarColor "#F07178" "" -- Empty workspaces
+                            , ppUrgent  = xmobarColor "#C45500" "" . wrap "!" "!" -- Urgent workspaces
+                            }
+        }
+        `additionalKeysP` myKeys
