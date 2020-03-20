@@ -2,7 +2,8 @@
 # Adapted from https://www.gitlab.com/dwt1/dotfiles/-/blob/master/.dmenu/dmenu-edit-configs.sh
 
 declare options=(
-"bashrc
+"awesome
+bashrc
 bash_aliases
 dmenu/edit-configs
 nvim/conf
@@ -27,6 +28,9 @@ choice=$(echo -e "${options[@]}" | dmenu -i -p 'Edit config file: ')
 case "$choice" in
     quit)
         exit 1
+    ;;
+    awesome)
+        choice="$HOME/.config/awesome/rc.lua"
     ;;
     bashrc)
         choice="$HOME/.bashrc"
