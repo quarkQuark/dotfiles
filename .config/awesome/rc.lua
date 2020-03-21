@@ -10,14 +10,18 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
+
 -- Widget and layout library
 local wibox = require("wibox")
+
 -- Theme handling library
 local beautiful = require("beautiful")
+
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -33,34 +37,6 @@ modkey = "Mod4"
 terminal = "urxvtc"
 editor = os.getenv("EDITOR") or "emacsclient -c"
 editor_cmd = terminal .. " -e " .. editor
-
-
---------------------------------------------------------------------------------
--- ERROR HANDLING
---------------------------------------------------------------------------------
-
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
-if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "There were errors during startup",
-                     text = awesome.startup_errors })
-end
-
--- Handle runtime errors after startup
-do
-    local in_error = false
-    awesome.connect_signal("debug::error", function (err)
-        -- Make sure we don't go into an endless error loop
-        if in_error then return end
-        in_error = true
-
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "An error occurred",
-                         text = tostring(err) })
-        in_error = false
-    end)
-end
 
 --------------------------------------------------------------------------------
 -- LAYOUTS
@@ -204,12 +180,14 @@ end)
 -- Bindings
 --------------------------------------------------------------------------------
 
+-- Mouse
 root.buttons(gears.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
 
+-- Keyboard
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
@@ -232,8 +210,8 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    --awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+              --{description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -255,10 +233,16 @@ globalkeys = gears.table.join(
         end,
         {description = "go back", group = "client"}),
 
-    -- Standard program
+    -- Applications
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
-              {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
+              {description = "open a urxvtc", group = "applications"}),
+    awful.key({ modkey,           }, "e", function () awful.spawn("emacsclieny -c") end,
+      {description = "qutebrowser", group = "applications"}),
+    awful.key({ modkey,           }, "w", function () awful.spawn("qutebrowser") end,
+              {description = "qutebrowser", group = "applications"}),
+
+    -- Standard program
+    awful.key({ modkey }, "q", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
@@ -549,7 +533,30 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 --------------------------------------------------------------------------------
--- AUTOSTART
+-- STARTUP AND ERROR HANDLING
 --------------------------------------------------------------------------------
+
+-- Check if awesome encountered an error during startup and fell back to
+-- another config (This code will only ever execute for the fallback config)
+if awesome.startup_errors then
+    naughty.notify({ preset = naughty.config.presets.critical,
+                     title = "There were errors during startup",
+                     text = awesome.startup_errors })
+end
+
+-- Handle runtime errors after startup
+do
+    local in_error = false
+    awesome.connect_signal("debug::error", function (err)
+        -- Make sure we don't go into an endless error loop
+        if in_error then return end
+        in_error = true
+
+        naughty.notify({ preset = naughty.config.presets.critical,
+                         title = "An error occurred",
+                         text = tostring(err) })
+        in_error = false
+    end)
+end
 
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
