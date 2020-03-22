@@ -9,7 +9,7 @@ pcall(require, "luarocks.loader")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
-require("awful.autofocus")
+              require("awful.autofocus")
 
 -- Widget and layout library
 local wibox = require("wibox")
@@ -193,7 +193,7 @@ globalkeys = gears.table.join(
     -- Application
     awful.key({ modkey }, "Return", function () awful.spawn(apps.terminal) end,
               {description = "terminal", group = "Application"}),
-    awful.key({ modkey }, "e", function () awful.spawn(apps.editor) end,
+    awful.key({ modkey }, "e", function () awful.spawn(apps.text_editor) end,
               {description = "text editor", group = "Application"}),
     awful.key({ modkey }, "w", function () awful.spawn(apps.web_browser_light) end,
               {description = "web browser", group = "Application"}),
