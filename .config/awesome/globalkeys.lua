@@ -9,8 +9,11 @@ modkey = "Mod4"
 local globalkeys = gears.table.join(
 
     -- Application
-    awful.key({ modkey }, "Return", function () awful.spawn(apps.terminal) end,
+
+    awful.key({modkey}, "Return",
+               function () awful.spawn(apps.terminal) end,
               {description = "terminal", group = "Application"}),
+
     awful.key({ modkey }, "e", function () awful.spawn(apps.text_editor) end,
               {description = "text editor", group = "Application"}),
     awful.key({ modkey }, "w", function () awful.spawn(apps.web_browser_light) end,
@@ -115,7 +118,9 @@ local globalkeys = gears.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "Launcher"}),
     awful.key({ "Control" }, "Escape", function() awful.spawn("dmenu_run") end,
-      {description = "dmenu_run", group = "Launcher"})
+              {description = "dmenu_run", group = "Launcher"}),
+    awful.key({ modkey, "Shift" }, "e", function() awful.spawn.with_shell(". ~/.config/dmenu/edit-configs.sh") end,
+      {description = "edit configs", group = "Launcher"})
 )
 
 return globalkeys
