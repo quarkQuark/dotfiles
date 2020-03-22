@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- IMPORTS
+-- => IMPORTS
 --------------------------------------------------------------------------------
 
 -- If LuaRocks is installed, make sure that packages installed through it are
@@ -31,7 +31,7 @@ local apps = require("apps")
 local globalkeys = require("globalkeys")
 
 --------------------------------------------------------------------------------
--- VARIABLES
+-- => VARIABLES
 --------------------------------------------------------------------------------
 
 -- Themes define colours, icons, font and wallpapers.
@@ -40,7 +40,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 modkey = "Mod4"
 
 --------------------------------------------------------------------------------
--- LAYOUTS
+-- => LAYOUTS
 --------------------------------------------------------------------------------
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -53,7 +53,7 @@ awful.layout.layouts = {
 }
 
 --------------------------------------------------------------------------------
--- MENU
+-- => MENU
 --------------------------------------------------------------------------------
 
 -- Create a launcher widget and a main menu
@@ -77,7 +77,7 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = apps.terminal -- Set the terminal for applications that require it
 
 --------------------------------------------------------------------------------
--- WIDGETS
+-- => WIDGETS
 --------------------------------------------------------------------------------
 
 -- Keyboard map indicator and switcher
@@ -178,7 +178,7 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 
 --------------------------------------------------------------------------------
--- Bindings
+-- => Bindings
 --------------------------------------------------------------------------------
 
 -- Mouse
@@ -302,7 +302,7 @@ clientbuttons = gears.table.join(
 root.keys(globalkeys)
 
 --------------------------------------------------------------------------------
--- RULES
+-- => RULES
 -- Rules to apply to new clients (through the "manage" signal).
 --------------------------------------------------------------------------------
 
@@ -362,7 +362,7 @@ awful.rules.rules = {
 }
 
 --------------------------------------------------------------------------------
--- Signals
+-- => Signals
 --------------------------------------------------------------------------------
 
 -- Signal function to execute when a new client appears.
@@ -428,7 +428,7 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 --------------------------------------------------------------------------------
--- STARTUP AND ERROR HANDLING
+-- => STARTUP AND ERROR HANDLING
 --------------------------------------------------------------------------------
 
 -- Check if awesome encountered an error during startup and fell back to
