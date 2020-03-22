@@ -43,6 +43,7 @@ modkey = "Mod4"
 -- => LAYOUTS
 --------------------------------------------------------------------------------
 
+awful.layout.suit.tile.left.mirror = true
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile, -- master and stack
@@ -196,42 +197,42 @@ clientkeys = gears.table.join(
             c.fullscreen = not c.fullscreen
             c:raise()
         end,
-        {description = "toggle fullscreen", group = "Client"}),
+        {description = "toggle fullscreen", group = "Clientkeys"}),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
-              {description = "close", group = "Client"}),
+              {description = "close", group = "Clientkeys"}),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
-              {description = "toggle floating", group = "Client"}),
+              {description = "toggle floating", group = "Clientkeys"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-              {description = "move to master", group = "Client"}),
+              {description = "move to master", group = "Clientkeys"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-              {description = "move to screen", group = "Client"}),
+              {description = "move to screen", group = "Clientkeys"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-              {description = "toggle keep on top", group = "Client"}),
+              {description = "toggle keep on top", group = "Clientkeys"}),
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimised, since minimised clients can't have the focus.
             c.minimized = true
         end ,
-        {description = "minimise", group = "Client"}),
+        {description = "minimise", group = "Clientkeys"}),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()
         end ,
-        {description = "(un)maximise", group = "Client"}),
+        {description = "(un)maximise", group = "Clientkeys"}),
     awful.key({ modkey, "Control" }, "m",
         function (c)
             c.maximized_vertical = not c.maximized_vertical
             c:raise()
         end ,
-        {description = "(un)maximise vertically", group = "Client"}),
+        {description = "(un)maximise vertically", group = "Clientkeys"}),
     awful.key({ modkey, "Shift"   }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
         end ,
-        {description = "(un)maximise horizontally", group = "Client"})
+        {description = "(un)maximise horizontally", group = "Clientkeys"})
 )
 
 -- Bind all key numbers to tags.
@@ -293,6 +294,10 @@ clientbuttons = gears.table.join(
         awful.mouse.client.move(c)
     end),
     awful.button({ modkey }, 3, function (c)
+        c:emit_signal("request::activate", "mouse_click", {raise = true})
+        awful.mouse.client.resize(c)
+    end),
+    awful.button({ modkey, "Shift" }, 1, function (c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})
         awful.mouse.client.resize(c)
     end)
