@@ -7,8 +7,8 @@
 pcall(require, "luarocks.loader")
 
 -- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
+local gears = require("gears") -- utilities such as colour parsing and objects
+local awful = require("awful") -- window management
               require("awful.autofocus")
 
 -- Widget and layout library
@@ -35,7 +35,8 @@ local globalkeys = require("globalkeys")
 --------------------------------------------------------------------------------
 
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+--beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "/themes/my_theme/theme.lua")
 
 modkey = "Mod4"
 
@@ -43,7 +44,6 @@ modkey = "Mod4"
 -- => LAYOUTS
 --------------------------------------------------------------------------------
 
-awful.layout.suit.tile.left.mirror = true
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile, -- master and stack
@@ -81,9 +81,6 @@ menubar.utils.terminal = apps.terminal -- Set the terminal for applications that
 -- => WIDGETS
 --------------------------------------------------------------------------------
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
@@ -94,15 +91,7 @@ local taglist_buttons = gears.table.join(
                                               if client.focus then
                                                   client.focus:move_to_tag(t)
                                               end
-                                          end),
-                    awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, function(t)
-                                              if client.focus then
-                                                  client.focus:toggle_tag(t)
-                                              end
-                                          end),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
+                    end)
                 )
 
 local tasklist_buttons = gears.table.join(
@@ -116,16 +105,7 @@ local tasklist_buttons = gears.table.join(
                                                       {raise = true}
                                                   )
                                               end
-                                          end),
-                     awful.button({ }, 3, function()
-                                              awful.menu.client_list({ theme = { width = 250 } })
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                          end))
+                     end))
 
 awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
@@ -137,10 +117,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
+                            awful.button({ }, 1, function () awful.layout.inc( 1) end)))
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
@@ -170,7 +147,6 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
@@ -191,6 +167,7 @@ root.buttons(gears.table.join(
 
 -- Keyboard
 
+-- A global keybinding works all the time, whereas a client keybinding onlu works wher a client is focused
 clientkeys = gears.table.join(
     awful.key({ modkey,           }, "f",
         function (c)
@@ -357,9 +334,9 @@ awful.rules.rules = {
       }, properties = { floating = true }},
 
     -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = true }
-    },
+    --{ rule_any = {type = { "normal", "dialog" }
+      --}, properties = { titlebars_enabled = true }
+    --},
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
@@ -381,6 +358,15 @@ client.connect_signal("manage", function (c)
       and not c.size_hints.program_position then
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
+    end
+end)
+
+-- Only use titlebars in floating layout
+client.connect_signal("property::floating", function(c)
+    if c.floating then
+        awful.titlebar.show(c)
+    else
+        awful.titlebar.hide(c)
     end
 end)
 
