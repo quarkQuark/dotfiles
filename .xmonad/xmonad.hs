@@ -12,6 +12,7 @@ import XMonad.Layout.Spacing
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import System.IO (hPutStrLn)
+import qualified Data.Map as M
 
 -- For moving workspaces
 import XMonad.Actions.CycleWS
@@ -73,6 +74,13 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 -- MAIN
 --------------------------------------------------------------------------------
 
+myCurrentWorkspacePrinter :: String -> String
+myHiddenWorkspacePrinter :: String -> String
+myHiddenNoWindowsWorkspacePrinter :: String -> String
+myCurrentWorkspacePrinter workspaceName = "[●]"
+myHiddenWorkspacePrinter workspaceName = "●"
+myHiddenNoWindowsWorkspacePrinter workspaceName = "○"
+-- ◦◯◦○
 main = do
     xmproc <- spawnPipe "xmobar ~/.xmonad/config/xmobarrc.hs"
     xmonad $ desktopConfig
@@ -82,9 +90,10 @@ main = do
         , layoutHook  = mySpacing $ avoidStruts $ smartBorders (layoutHook desktopConfig)
         , logHook     = dynamicLogWithPP xmobarPP
                             { ppOutput = hPutStrLn xmproc
-                            , ppCurrent = xmobarColor "#ffffff" "" . wrap "[" "]"
-                            , ppVisible = xmobarColor "#eeeeee" ""
-                            , ppTitle = xmobarColor "#ffffff" ""
+                            , ppOrder  = \(ws:l:t:ex) -> [ws]  -- Only send workspace information
+                            , ppCurrent = xmobarColor "white" "" . myCurrentWorkspacePrinter
+                            , ppHidden  = xmobarColor "white" "" . myHiddenWorkspacePrinter
+                            , ppHiddenNoWindows = xmobarColor "white" "" . myHiddenNoWindowsWorkspacePrinter
                             }
         , workspaces  = myWorkspaces
         , startupHook = spawnOnce "~/.xmonad/config/autostart.sh"
