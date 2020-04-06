@@ -9,6 +9,11 @@ nnoremap k gk
 nnoremap <Leader>/ :nohlsearch<CR>
 
 " Split navigation
+set splitbelow
+set splitright
+nnoremap <Leader>w- :vsp
+nnoremap <Leader>w/ :sp
+nnoremap <Leader>w= <C-W>=
 nnoremap <Leader>wh <C-W><C-H>
 nnoremap <Leader>wj <C-W><C-J>
 nnoremap <Leader>wk <C-W><C-K>
