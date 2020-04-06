@@ -3,6 +3,7 @@ import XMonad.Config.Desktop
 import XMonad.Util.SpawnOnce
 
 import XMonad.Util.EZConfig
+import XMonad.Actions.Submap
 import XMonad.Util.Run (hPutStrLn,spawnPipe)
 
 import XMonad.Layout.NoBorders (smartBorders)
@@ -19,7 +20,13 @@ import XMonad.Actions.CycleWS
 
 myModMask  = mod4Mask -- use the Super / Windows key as mod
 myTerminal = "urxvtc" -- the default terminal emulator
-myEditor   = "emacsclient -c" -- needs to be changed in dmenu script files as well
+--myEditor   = "emacsclient -c"
+myEditor   = myTerminal ++ " -e nvim"
+myMenuScriptPath = "~/.config/dmenu/"
+
+-- Function to execute shell scripts from myMenuScriptPath
+myMenuScript :: [Char] -> [Char]
+myMenuScript scriptName = ". " ++ myMenuScriptPath ++ scriptName ++ ".sh "
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
@@ -37,7 +44,8 @@ myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
          , ("M-w",         spawn "qutebrowser")
          , ("<Print>",     spawn "spectacle")  -- print screen
          -- Dmenu scripts
-         , ("M-S-e",       spawn ". ~/.config/dmenu/edit-configs.sh")
+         , ("M-S-p M-S-c", spawn ((myMenuScript "edit-configs") ++ myEditor))
+         , ("M-S-p M-S-p", spawn ((myMenuScript "edit-scripts") ++ myEditor))
          ]
 
 --------------------------------------------------------------------------------
