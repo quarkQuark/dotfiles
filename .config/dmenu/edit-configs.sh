@@ -90,4 +90,6 @@ case "$choice" in
         exit 1
     ;;
 esac
-emacsclient -c "$choice"
+
+# Using the command line argument(s) as the editor command
+$1 $2 $3 $4 "$choice"
