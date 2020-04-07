@@ -5,14 +5,18 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 "" Utility
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree', {'on':'NERDTreeToggle'}
 
 "" General Coding
 Plug 'w0rp/ale'  " linting
 
 "" Python
-Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
-Plug 'nvie/vim-flake8', { 'for': 'python' }
+Plug 'vim-scripts/indentpython.vim', {'for':'python'}
+Plug 'nvie/vim-flake8', {'for':'python'}
+
+"" Haskell
+Plug 'Shougo/vimproc.vim', {'do':'make'}  " dependency for ghcmod-vim
+Plug 'eagletmt/ghcmod-vim', {'for':'haskell'}  " more haskell-specific linting
 
 "" Aesthetics
 Plug 'ryanoasis/vim-devicons'			" Adds icons
@@ -21,6 +25,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
+
+""""""""""""""""""""""""""""""""""""""""
+
+let g:airline#extensions#ale#enabled = 1  " Integrate airline with ale for linting
 
 """"""""""""""""""""""""""""""""""""""""
 "" => NERDTree
