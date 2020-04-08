@@ -1,2 +1,0 @@
-https://brianbuccola.com/how-to-install-xmonad-and-xmobar-via-stack
-https://wiki.haskell.org/Xmonad/Using_xmonad_in_XFCE
