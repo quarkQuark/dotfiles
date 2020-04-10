@@ -17,7 +17,9 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-14.16
+#resolver: lts-14.16
+# lts-14.27 uses ghc-8.6.5, the latest supported by stack as of 10/04/2020
+resolver: lts-14.27
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
