@@ -19,3 +19,4 @@ export PYLINTHOME="$XDG_CACHE_HOME"/pylint
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
