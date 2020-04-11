@@ -1,7 +1,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# For xmonad and stack:
 export PATH=$PATH:~/.local/bin
 
 PROMPT_COMMAND=  # Avoid duplicate prompt
@@ -28,15 +27,16 @@ shopt -s checkwinsize
 #[ -x /usr/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe)"
 LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 
-. ~/.bash_aliases
+command -v neofetch >/dev/null && neofetch || echo "neofetch not found"
 
-## Make ls show correct colours
-#DIR_COLORS="$HOME/.dircolors"
-#test -r $d && eval "$(dircolors ~/.dircolors)"
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
-neofetch
-
+# Powerline
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
-. /usr/share/powerline/bindings/bash/powerline.sh
+source /usr/share/powerline/bindings/bash/powerline.sh
+
+# Exa configuration and colours (ls alternative)
+EXA_CONFIG_FILE=$XDG_CONFIG_HOME/exa/exa-config.sh
+command -v exa >/dev/null && [ -f $EXA_CONFIG_FILE ] && source $EXA_CONFIG_FILE
