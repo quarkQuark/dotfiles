@@ -3,22 +3,37 @@
 
 export PATH=$PATH:~/.local/bin
 
-PROMPT_COMMAND=  # Avoid duplicate prompt
-# 'user@host:path$ '
+# Avoid duplicate prompt
+PROMPT_COMMAND=
 
-#PS1="\033[36m\u\
-#\033[m@\
-#\033[36m\h\
-#\033[m:\
-#\033[34m\w\
-#\033[37m\$\
-#\033[m "
+# Prompt colour escape sequences
+PROMPT_BLACK="\[\033[30m\]"
+PROMPT_RED="\[\033[31m\]"
+PROMPT_GREEN="\[\033[32m\]"
+PROMPT_YELLOW="\[\033[33m\]"
+PROMPT_BLUE="\[\033[34m\]"
+PROMPT_PURPLE="\[\033[35m\]"
+PROMPT_CYAN="\[\033[36m\]"
+PROMPT_WHITE="\[\033[37m\]"
 
-# 'path$ '
+# Print colour-coded battery percentage
+battery_prompt () {
+    BATTERY_POWER=`cat /sys/class/power_supply/BAT0/capacity`
+    [ $BATTERY_POWER -ge 60 ] \
+        && echo "$PROMPT_GREEN$BATTERY_POWER"
+    [ $BATTERY_POWER -lt 60 ] && [ $BATTERY_POWER -ge 20 ] \
+        && echo "$PROMPT_YELLOW$BATTERY_POWER"
+    [ $BATTERY_POWER -lt 20 ] \
+        && echo "$PROMPT_RED$BATTERY_POWER"
+}
+
+# Prompt template: <battery[time]pwd$ >
 PS1="\
-\033[34m\w\
-\033[37m\$\
-\033[m "
+`battery_prompt`\
+$PROMPT_CYAN[\T]\
+$PROMPT_BLUE\w\
+$PROMPT_WHITE\$\
+ "
 
 # Set up bash history
 HISTCONTROL=ignoredups:ignorespace # Don't put duplicate lines in history
@@ -46,12 +61,6 @@ command -v neofetch >/dev/null \
     || echo "neofetch not found"
 
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
-
-# Powerline
-#powerline-daemon -q
-#POWERLINE_BASH_CONTINUATION=1
-#POWERLINE_BASH_SELECT=1
-#source /usr/share/powerline/bindings/bash/powerline.sh
 
 # Exa configuration and colours (ls alternative)
 EXA_CONFIG_FILE=$XDG_CONFIG_HOME/exa/exa-config.sh
