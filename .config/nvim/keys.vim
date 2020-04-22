@@ -11,8 +11,8 @@ nnoremap <Leader>/ :nohlsearch<CR>
 " Split navigation
 set splitbelow
 set splitright
-nnoremap <Leader>w- :vsp
-nnoremap <Leader>w/ :sp
+nnoremap <Leader>w- :sp<CR>
+nnoremap <Leader>w/ :vsp<CR>
 nnoremap <Leader>w= <C-W>=
 nnoremap <Leader>wh <C-W><C-H>
 nnoremap <Leader>wj <C-W><C-J>
