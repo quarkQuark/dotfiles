@@ -15,6 +15,7 @@ PROMPT_BLUE="\[\033[34m\]"
 PROMPT_PURPLE="\[\033[35m\]"
 PROMPT_CYAN="\[\033[36m\]"
 PROMPT_WHITE="\[\033[37m\]"
+PROMPT_UNCOLOUR="\[\033[m\]"
 
 # Print colour-coded battery percentage
 battery_prompt () {
@@ -33,7 +34,7 @@ PS1="\
 $PROMPT_CYAN[\T]\
 $PROMPT_BLUE\w\
 $PROMPT_WHITE\$\
- "
+$PROMPT_UNCOLOUR "
 
 # Set up bash history
 HISTCONTROL=ignoredups:ignorespace # Don't put duplicate lines in history
