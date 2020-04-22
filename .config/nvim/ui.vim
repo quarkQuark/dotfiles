@@ -1,6 +1,8 @@
 set cursorline
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 
+colorscheme nord
+
 """""""""""""""""
 "" => Statusline
 """""""""""""""""

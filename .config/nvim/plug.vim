@@ -22,6 +22,9 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'	" Adds icons to NERDTree; require
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+"" Colourschemes
+Plug 'arcticecestudio/nord-vim'
+
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
