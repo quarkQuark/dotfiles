@@ -15,8 +15,6 @@ Plug 'vim-scripts/indentpython.vim', {'for':'python'}
 Plug 'nvie/vim-flake8', {'for':'python'}
 
 "" Haskell
-Plug 'Shougo/vimproc.vim', {'do':'make'}  " dependency for ghcmod-vim
-Plug 'eagletmt/ghcmod-vim', {'for':'haskell'}  " more haskell-specific linting
 
 "" Aesthetics
 Plug 'ryanoasis/vim-devicons'			" Adds icons
@@ -28,7 +26,7 @@ call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
 
-let g:airline#extensions#ale#enabled = 1  " Integrate airline with ale for linting
+"let g:airline#extensions#ale#enabled = 1  " Integrate airline with ale for linting
 
 """"""""""""""""""""""""""""""""""""""""
 "" => NERDTree

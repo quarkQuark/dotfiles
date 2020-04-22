@@ -13,7 +13,3 @@ source $HOME/.config/nvim/keys.vim
 
 " Aesthetics and statusline (airline)
 source $HOME/.config/nvim/ui.vim
-
-" Filetype-specific configuration (<leader>m):w
-" 
-au FileType haskell (source $HOME/.config/nvim/filetype/haskell.vim)
