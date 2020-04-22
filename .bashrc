@@ -5,10 +5,17 @@ export PATH=$PATH:~/.local/bin
 
 PROMPT_COMMAND=  # Avoid duplicate prompt
 # 'user@host:path$ '
-PS1="\033[36m\u\
-\033[m@\
-\033[36m\h\
-\033[m:\
+
+#PS1="\033[36m\u\
+#\033[m@\
+#\033[36m\h\
+#\033[m:\
+#\033[34m\w\
+#\033[37m\$\
+#\033[m "
+
+# 'path$ '
+PS1="\
 \033[34m\w\
 \033[37m\$\
 \033[m "
@@ -27,15 +34,24 @@ shopt -s checkwinsize
 #[ -x /usr/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe)"
 LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 
-command -v neofetch >/dev/null && neofetch || echo "neofetch not found"
+# Check and update neofetch cache
+NEOFETCH_CACHE=$XDG_CACHE_HOME/neofetch.txt
+command -v neofetch >/dev/null \
+    && ! find $NEOFETCH_CACHE -mtime -1 >/dev/null \
+    && neofetch > $NEOFETCH_CACHE
+
+# Print out neofetch cache
+[ -f $NEOFETCH_CACHE ] \
+    && cat $NEOFETCH_CACHE \
+    || echo "neofetch not found"
 
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
 # Powerline
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-source /usr/share/powerline/bindings/bash/powerline.sh
+#powerline-daemon -q
+#POWERLINE_BASH_CONTINUATION=1
+#POWERLINE_BASH_SELECT=1
+#source /usr/share/powerline/bindings/bash/powerline.sh
 
 # Exa configuration and colours (ls alternative)
 EXA_CONFIG_FILE=$XDG_CONFIG_HOME/exa/exa-config.sh
