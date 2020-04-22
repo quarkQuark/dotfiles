@@ -1,0 +1,20 @@
+name: myXmonad
+
+dependencies:
+    - base
+    - xmonad
+    - xmonad-contrib
+    - containers
+    - text
+    - X11
+    - ghc
+
+executables:
+    xmonad:
+        source-dirs: src
+        main:        xmonad.hs
+        ghc-options:
+            - -threaded
+            - -rtsopts
+            - -with-rtsopts=N
+            - -Wall
