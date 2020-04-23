@@ -90,7 +90,7 @@ myHiddenWorkspacePrinter workspaceName = "●"
 myHiddenNoWindowsWorkspacePrinter workspaceName = "○"
 -- ◦◯◦○
 main = do
-    xmproc <- spawnPipe "xmobar ~/.xmonad/config/xmobarrc.hs"
+    xmproc <- spawnPipe "xmobar ~/.config/xmonad/src/xmobarrc.hs"
     xmonad $ desktopConfig
         { modMask     = myModMask
         , terminal    = myTerminal
@@ -104,6 +104,6 @@ main = do
                             , ppHiddenNoWindows = xmobarColor "white" "" . myHiddenNoWindowsWorkspacePrinter
                             }
         , workspaces  = myWorkspaces
-        , startupHook = spawnOnce "~/.xmonad/config/autostart.sh"
+        , startupHook = spawnOnce "~/.config/xmonad/src/autostart.sh"
         }
         `additionalKeysP` myKeys
