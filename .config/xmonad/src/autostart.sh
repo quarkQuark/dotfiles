@@ -1,6 +1,6 @@
 # Desktop
-picom &
 nitrogen --restore &
+picom &
 
 # Settings
 xcape -e 'Super_L=Control_L|Escape' &
