@@ -67,7 +67,7 @@ myManageHook = composeAll . concat $
     , [ title     =? t --> doFloat           | t <- myFloatTitles ]
     --, [ className =? c --> doShift "3:WWW"   | c <- browsers ]
     ]
-  where myFloatClasses = ["Gimp","conky","plasmashell","vlc","Caprine"]
+  where myFloatClasses = ["Gimp","conky","plasmashell","vlc","Caprine", "Nitrogen"]
         myFloatTitles  = ["Whisker Menu"]
         --browsers       = ["Firefox-bin","firefox"]
 
