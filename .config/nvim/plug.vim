@@ -23,7 +23,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 "" Colourschemes
-Plug 'arcticecestudio/nord-vim'
+Plug 'arcticicestudio/nord-vim', {'branch':'develop'}
 
 call plug#end()
 
