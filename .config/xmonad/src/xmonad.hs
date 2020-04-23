@@ -3,7 +3,6 @@ import XMonad.Config.Desktop
 import XMonad.Util.SpawnOnce
 
 import XMonad.Util.EZConfig
-import XMonad.Actions.Submap
 import XMonad.Util.Run (hPutStrLn,spawnPipe)
 
 import XMonad.Layout.NoBorders (smartBorders)
@@ -32,7 +31,8 @@ myMenuScript scriptName = ". " ++ myMenuScriptPath ++ scriptName ++ ".sh "
 -- KEYBINDINGS
 --------------------------------------------------------------------------------
 
-myKeys = [ ("C-<Escape>", spawn "dmenu_run")  -- launch dmenu with Super
+myKeys = [ ("M-q",         spawn "~/.config/xmonad/build")
+         , ("C-<Escape>",  spawn "dmenu_run")  -- launch dmenu with Super
          -- Moving workspaces
          , ("M-<Left>",    prevWS)
          , ("M-S-<Right>", nextWS)
