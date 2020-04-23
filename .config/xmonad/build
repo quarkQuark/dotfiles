@@ -2,6 +2,7 @@
 
 EXEC_PATH="$1"
 
+cd .config/xmonad
 stack install
 ln -sf ~/.local/bin/xmonad $EXEC_PATH
 xmonad --restart
