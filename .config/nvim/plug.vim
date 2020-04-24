@@ -7,6 +7,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 "" Utility
 Plug 'scrooloose/nerdtree', {'on':'NERDTreeToggle'}
 Plug 'mcchrish/nnn.vim'
+Plug 'srstevenson/vim-picker'  " fzy integration
 
 "" General Coding
 Plug 'w0rp/ale'  " linting
@@ -45,7 +46,7 @@ let NERDTreeDirArrows = 1
 let NERDTreeShowHidden = 1      " Toggle with I (Shift-i)
 
 " Keybinding
-nnoremap <Leader>f :NERDTreeToggle<CR>
+nnoremap <Leader>t :NERDTreeToggle<CR>
 
 """"""""""""""""""""""""""""""""""""""""
 "" => nnn.vim
@@ -60,3 +61,16 @@ let g:nnn#command = 'nnn -n'
 
 " Start nnn in the current file's directory
 nnoremap <leader>n :NnnPicker '%:p:h'<CR>
+
+""""""""""""""""""""""""""""""""""""""""
+"" => vim-picker for fzy
+""""""""""""""""""""""""""""""""""""""""
+
+" Use ripgrep to find files instead of fd or find
+let g:picker_custom_find_executable = 'rg'
+let g:picker_custom_find_flags = '--color never --files'
+
+" Open file from current directory
+nnoremap <leader>ff :PickerEdit %:p:h<CR>
+nnoremap <leader>fh :PickerSplit %:p:h<CR>
+nnoremap <leader>fv :PickerVsplit %:p:h<CR>
