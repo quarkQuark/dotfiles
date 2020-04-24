@@ -19,7 +19,7 @@ qutebrowser
 spacemacs
 xmobar
 xmonad.hs
-xmonad/kde-autostart
+xmonad/autostart
 xresources
 quit")
 
@@ -75,13 +75,13 @@ case "$choice" in
         choice="$HOME/.spacemacs.d/init.el"
     ;;
     xmobar)
-        choice="$HOME/.xmonad/xmobarrc.hs"
+        choice="$HOME/.config/xmonad/src/xmobarrc.hs"
     ;;
     xmonad.hs)
-        choice="$HOME/.xmonad/xmonad.hs"
+        choice="$HOME/.config/xmonad/src/xmonad.hs"
     ;;
-    xmonad/kde-autostart)
-        choice="$HOME/.xmonad/kde-autostart.sh"
+    xmonad/autostart)
+        choice="$HOME/.config/xmonad/src/autostart.sh"
     ;;
     xresources)
         choice="$HOME/.config/X11/Xresources"
