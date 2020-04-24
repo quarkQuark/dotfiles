@@ -68,7 +68,7 @@ nnoremap <leader>n :NnnPicker '%:p:h'<CR>
 
 " Use ripgrep to find files instead of fd or find
 let g:picker_custom_find_executable = 'rg'
-let g:picker_custom_find_flags = '--color never --files'
+let g:picker_custom_find_flags = '--color never --files --hidden'
 
 " Open file from current directory
 nnoremap <leader>ff :PickerEdit %:p:h<CR>
