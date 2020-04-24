@@ -20,7 +20,7 @@ import XMonad.Actions.CycleWS
 myModMask  = mod4Mask -- use the Super / Windows key as mod
 myTerminal = "urxvtc" -- the default terminal emulator
 --myEditor   = "emacsclient -c"
-myEditor   = myTerminal ++ " -e nvim"
+myEditor   = myTerminal ++ " -e nvim "
 myMenuScriptPath = "~/.config/dmenu/"
 
 -- Function to execute shell scripts from myMenuScriptPath
@@ -41,6 +41,7 @@ myKeys = [ ("M-q",         spawn "~/.config/xmonad/build")
          -- Application shortcuts
          , ("M-<Return>",  spawn myTerminal)
          , ("M-e",         spawn myEditor)
+         , ("M-S-e",       spawn (myEditor ++ "~/Documents/chords/index.txt"))
          , ("M-w",         spawn "qutebrowser")
          , ("<Print>",     spawn "spectacle")  -- print screen
          -- Dmenu scripts
