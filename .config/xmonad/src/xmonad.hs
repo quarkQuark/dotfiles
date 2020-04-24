@@ -23,6 +23,20 @@ myTerminal = "urxvtc" -- the default terminal emulator
 myEditor   = myTerminal ++ " -e nvim "
 myMenuScriptPath = "~/.config/dmenu/"
 
+myConfigDir = "~/.config/xmonad/src/"
+myAutostart = myConfigDir ++ "autostart.sh"
+myXmobarrc  = myConfigDir ++ "xmobarrc.hs"
+
+--------------------------------------------------------------------------------
+-- MY FUNCTIONS
+--------------------------------------------------------------------------------
+
+-- Edit a file if it exists, otherwise show an error
+editIfExists :: [Char] -> [Char]
+editIfExists fileName = "[ -f " ++ fileName ++ " ] \
+                          \&& " ++ myEditor ++ fileName ++ " \
+                          \||  notify-send \"" ++ fileName ++ " not found\""
+
 -- Function to execute shell scripts from myMenuScriptPath
 myMenuScript :: [Char] -> [Char]
 myMenuScript scriptName = ". " ++ myMenuScriptPath ++ scriptName ++ ".sh "
@@ -41,7 +55,7 @@ myKeys = [ ("M-q",         spawn "~/.config/xmonad/build")
          -- Application shortcuts
          , ("M-<Return>",  spawn myTerminal)
          , ("M-e",         spawn myEditor)
-         , ("M-S-e",       spawn (myEditor ++ "~/Documents/chords/index.txt"))
+         , ("M-S-e",       spawn (editIfExists "~/Documents/chords/index.txt"))
          , ("M-w",         spawn "qutebrowser")
          , ("<Print>",     spawn "spectacle")  -- print screen
          -- Dmenu scripts
@@ -89,9 +103,9 @@ myHiddenNoWindowsWorkspacePrinter :: String -> String
 myCurrentWorkspacePrinter workspaceName = "[●]"
 myHiddenWorkspacePrinter workspaceName = "●"
 myHiddenNoWindowsWorkspacePrinter workspaceName = "○"
--- ◦◯◦○
+
 main = do
-    xmproc <- spawnPipe "xmobar ~/.config/xmonad/src/xmobarrc.hs"
+    xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
     xmonad $ desktopConfig
         { modMask     = myModMask
         , terminal    = myTerminal
@@ -105,6 +119,6 @@ main = do
                             , ppHiddenNoWindows = xmobarColor "white" "" . myHiddenNoWindowsWorkspacePrinter
                             }
         , workspaces  = myWorkspaces
-        , startupHook = spawnOnce "~/.config/xmonad/src/autostart.sh"
+        , startupHook = spawnOnce myAutostart
         }
         `additionalKeysP` myKeys
