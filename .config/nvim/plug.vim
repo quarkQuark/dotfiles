@@ -6,6 +6,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 "" Utility
 Plug 'scrooloose/nerdtree', {'on':'NERDTreeToggle'}
+Plug 'mcchrish/nnn.vim'
 
 "" General Coding
 Plug 'w0rp/ale'  " linting
@@ -45,3 +46,17 @@ let NERDTreeShowHidden = 1      " Toggle with I (Shift-i)
 
 " Keybinding
 nnoremap <Leader>f :NERDTreeToggle<CR>
+
+""""""""""""""""""""""""""""""""""""""""
+"" => nnn.vim
+""""""""""""""""""""""""""""""""""""""""
+
+" Disable default mappings
+let g:nnn#set_default_mappings = 0
+" Show as a floating window
+let g:nnn#layout = { 'window':{ 'width':0.9, 'height':0.6, 'highlight':'Debug' } }
+" Start in nav-to-type mode
+let g:nnn#command = 'nnn -n'
+
+" Start nnn in the current file's directory
+nnoremap <leader>n :NnnPicker '%:p:h'<CR>
