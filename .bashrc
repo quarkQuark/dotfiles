@@ -65,4 +65,4 @@ command -v neofetch >/dev/null \
 
 # Exa configuration and colours (ls alternative)
 EXA_CONFIG_FILE=$XDG_CONFIG_HOME/exa/exa-config.sh
-command -v exa >/dev/null && [ -f $EXA_CONFIG_FILE ] && source $EXA_CONFIG_FILE
+[ -f $EXA_CONFIG_FILE ] && source $EXA_CONFIG_FILE
