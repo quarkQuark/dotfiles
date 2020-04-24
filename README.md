@@ -1,62 +1,94 @@
 ## Setup on fresh install
 
-1.  Install:
-    ````bash
+1.  Dependencies:
+
+    Required:
+    ```bash
     git
-    neofetch
-    powerline
-    powerline-fonts
     nerd-fonts-complete  # aur, for URxvt
-    ````
+    ```
+
+    Optional:
+    ```bash
+    nvim
+    neofetch
+    exa
+    ```
+
+    Xmonad:
+    ```bash
+    nitrogen
+    picom
+    xcape
+    urxvt
+    nvim
+    networkmanager
+    network-manager-applet
+    udiskie
+    volumeicon
+    xfce4-power-manager
+    dmenu
+    rofi
+    stalonetray
+    qutebrowser
+    spectacle
+    adobe-source-code-pro-fonts
+    ```
 
 2.  Clone
 
-    ````bash
+    ```bash
     alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
     echo .dotfiles-git >> .gitignore
     git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dotfiles-git
     dotfiles checkout
     dotfiles config --local status.showUntrackedFiles no
-    ````
+    ```
     
 3.  [Vim-plug](https://github.com/junegunn/vim-plug) must be installed for the vim configuration to work properly
+    Vim also needs:
+    ```bash
+    nnn
+    fzy
+    ripgrep
+    ```
 
 ## Usage
 
 *   Push local changes:
-    ````bash
+    ```bash
     dotfiles add <filepath>
     dotfiles commit -m "<message>"
     dotfiles push
-    ````
+    ```
 *   Pull upstream changes:
-    ````bash
+    ```bash
     dotfiles pull
-    ````
+    ```
 
 ## How this repository was set up
 
 1.  Initialise local bare git repository `.dotfiles-git`
 
-    ````bash
+    ```bash
     mkdir $HOME/.dotfiles-git
     git init --bare $HOME/.dotfiles-git
     alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
     dotfiles config --local status.showUntrackedFiles no
-    ````
+    ```
 
 2.  Add some config files to back up (`.bashrc` used as example)
 
-    ````bash
+    ```bash
     git add .bashrc
     git commit -m "Add .bashrc"
-    ````
+    ```
 
 3.  Create new GitHub repository `dotfiles`
 
 4.  Link the two
 
-    ````bash
+    ```bash
     dotfiles remote add origin https://github.com/quarkQuark/dotfiles.git
     dotfiles push -u origin master
-    ````
+    ```
