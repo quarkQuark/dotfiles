@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Verbosity and interactivity (prompts) for common commands
 alias \
     cp='cp -iv' \
