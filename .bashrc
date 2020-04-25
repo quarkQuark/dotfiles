@@ -1,8 +1,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-export PATH=$PATH:~/.local/bin
-
 # Avoid duplicate prompt
 PROMPT_COMMAND=
 
@@ -37,6 +35,8 @@ $PROMPT_WHITE\$\
 $PROMPT_UNCOLOUR "
 
 # Set up bash history
+BASH_DATA_DIR = $XDG_DATA_HOME/bash
+[ -f $BASH_DATA_HOME/history ] || mkdir -p $BASH_DATA_HOME && touch $BASH_DATA_HOME/history
 HISTCONTROL=ignoredups:ignorespace # Don't put duplicate lines in history
 shopt -s histappend # Append rather than overwriting
 HISTSIZE=1000
