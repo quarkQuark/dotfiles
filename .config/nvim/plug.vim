@@ -80,4 +80,4 @@ nnoremap <leader>fv :PickerVsplit %:p:h<CR>
 "" => fzf
 """"""""""""""""""""""""""""""""""""""""
 
-nnoremap <leader>ff :Files
+nnoremap <leader>ff :Files<CR>
