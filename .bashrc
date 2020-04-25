@@ -35,8 +35,8 @@ $PROMPT_WHITE\$\
 $PROMPT_UNCOLOUR "
 
 # Set up bash history
-BASH_DATA_DIR = $XDG_DATA_HOME/bash
-[ ! -f $BASH_DATA_HOME/history ] && mkdir -p $BASH_DATA_HOME && touch $BASH_DATA_HOME/history
+BASH_DATA_DIR=$XDG_DATA_HOME/bash
+[ ! -f $BASH_DATA_DIR/history ] && mkdir -p $BASH_DATA_DIR && touch $BASH_DATA_DIR/history
 HISTCONTROL=ignoredups:ignorespace # Don't put duplicate lines in history
 shopt -s histappend # Append rather than overwriting
 HISTSIZE=1000
@@ -61,7 +61,7 @@ command -v neofetch >/dev/null \
     && cat $NEOFETCH_CACHE \
     || echo "neofetch not found"
 
-ALIAS_FILE = $XDG_CONFIG_HOME/sh/aliasrc
+ALIAS_FILE=$XDG_CONFIG_HOME/sh/aliasrc
 [ -f $ALIAS_FILE ] && source $ALIAS_FILE
 
 # Exa configuration and colours (ls alternative)
