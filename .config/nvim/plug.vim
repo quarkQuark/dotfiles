@@ -8,6 +8,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'scrooloose/nerdtree', {'on':'NERDTreeToggle'}
 Plug 'mcchrish/nnn.vim'
 Plug 'srstevenson/vim-picker'  " fzy integration
+Plug 'junegunn/fzf.vim'
 
 "" General Coding
 Plug 'w0rp/ale'  " linting
@@ -71,6 +72,12 @@ let g:picker_custom_find_executable = 'rg'
 let g:picker_custom_find_flags = '--color never --files --hidden'
 
 " Open file from current directory
-nnoremap <leader>ff :PickerEdit %:p:h<CR>
+nnoremap <leader>fy :PickerEdit %:p:h<CR>
 nnoremap <leader>fh :PickerSplit %:p:h<CR>
 nnoremap <leader>fv :PickerVsplit %:p:h<CR>
+
+""""""""""""""""""""""""""""""""""""""""
+"" => fzf
+""""""""""""""""""""""""""""""""""""""""
+
+nnoremap <leader>ff :Files

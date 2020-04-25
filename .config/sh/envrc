@@ -32,3 +32,6 @@ export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 
 # Runtime locations (in /run/user/1000)
 export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
+
+# Program settings
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
