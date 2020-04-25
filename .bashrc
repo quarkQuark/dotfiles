@@ -61,7 +61,8 @@ command -v neofetch >/dev/null \
     && cat $NEOFETCH_CACHE \
     || echo "neofetch not found"
 
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+ALIAS_FILE = $XDG_CONFIG_HOME/aliasrc
+[ -f $ALIAS_FILE ] && source $ALIAS_FILE
 
 # Exa configuration and colours (ls alternative)
 EXA_CONFIG_FILE=$XDG_CONFIG_HOME/exa/exa-config.sh
