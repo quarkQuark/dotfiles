@@ -15,7 +15,32 @@
     exa
     ```
 
-    Xmonad:
+2.  Clone
+
+    ```bash
+    alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+    echo .dotfiles-git >> .gitignore
+    git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dotfiles-git
+    dotfiles checkout
+    dotfiles config --local status.showUntrackedFiles no
+    ```
+    
+3.  [Vim-plug](https://github.com/junegunn/vim-plug) must be installed for the vim configuration to work properly
+    Vim also needs:
+    ```bash
+    nnn
+    fzy
+    ripgrep
+    ```
+
+4.  Xmonad is installed via `stack-static` from the aur
+    ```bash
+    cd ~/.config/xmonad
+    stack install
+    ```
+    This also installs xmonad-contrib and xmobar
+    
+    My xmonad configuration also depends on the following packages:
     ```bash
     nitrogen
     picom
@@ -33,24 +58,6 @@
     qutebrowser
     spectacle
     adobe-source-code-pro-fonts
-    ```
-
-2.  Clone
-
-    ```bash
-    alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
-    echo .dotfiles-git >> .gitignore
-    git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dotfiles-git
-    dotfiles checkout
-    dotfiles config --local status.showUntrackedFiles no
-    ```
-    
-3.  [Vim-plug](https://github.com/junegunn/vim-plug) must be installed for the vim configuration to work properly
-    Vim also needs:
-    ```bash
-    nnn
-    fzy
-    ripgrep
     ```
 
 ## Usage
