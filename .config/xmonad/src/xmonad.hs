@@ -18,17 +18,28 @@ import qualified Data.Map as M
 import XMonad.Actions.CycleWS
 
 myModMask  = mod4Mask -- use the Super / Windows key as mod
-myTerminal = "urxvtc" -- the default terminal emulator
---myEditor   = "emacsclient -c"
-myEditor   = myTerminal ++ " -e nvim "
+
+-- Default applications
+myTerminal     = "urxvtc" -- the default terminal emulator
+myTerminalApp  = myTerminal ++ " -e "
+--myEditor       = "emacsclient -c"
+myEditor       = myTerminalApp ++ "nvim "
+myEditorArg    = " \"" ++ myEditor ++ "\" "  -- Counts as one argument for use in shell scripts
+myBrowser      = "qutebrowser"
+myHeavyBrowser = "firefox"
+myScreenshot   = "spectacle"
+myLauncher     = "dmenu_run"
+myMenu         = "dmenu -i -p"
+
+-- Config locations
+myConfigDir   = "~/.config/xmonad/src/"
+myBuildScript = "~/.config/xmonad/build"
+myAutostart   = myConfigDir ++ "autostart.sh"
+myXmobarrc    = myConfigDir ++ "xmobarrc.hs"
 myMenuScriptPath = "~/.config/dmenu/"
 
-myConfigDir = "~/.config/xmonad/src/"
-myAutostart = myConfigDir ++ "autostart.sh"
-myXmobarrc  = myConfigDir ++ "xmobarrc.hs"
-
 --------------------------------------------------------------------------------
--- MY FUNCTIONS
+-- MY FUNCTIONS AND SCRIPTS
 --------------------------------------------------------------------------------
 
 -- Edit a file if it exists, otherwise show an error
@@ -37,16 +48,24 @@ editIfExists fileName = "[ -f " ++ fileName ++ " ] \
                           \&& " ++ myEditor ++ fileName ++ " \
                           \||  notify-send \"" ++ fileName ++ " not found\""
 
+-- Convert strings to bash arguments (multiple words treated as one)
+arg2 :: [[Char]] -> [Char]
+arg2 [a,b] = " \"" ++ a ++ "\" \"" ++ b ++ "\" "
+
 -- Function to execute shell scripts from myMenuScriptPath
-myMenuScript :: [Char] -> [Char]
-myMenuScript scriptName = ". " ++ myMenuScriptPath ++ scriptName ++ ".sh "
+myMenuScript :: [Char] -> [Char] -> [Char] -> [Char]
+myMenuScript shell scriptName arguments = shell++" "++myMenuScriptPath++scriptName++".sh "++arguments
+
+-- My scripts
+editConfigs = myMenuScript "bash" "edit-configs" (arg2 [myMenu,myEditor])
+editScripts = myMenuScript "bash" "edit-scripts" (arg2 [myMenu,myEditor])
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
 --------------------------------------------------------------------------------
 
-myKeys = [ ("M-q",         spawn "~/.config/xmonad/build")
-         , ("C-<Escape>",  spawn "dmenu_run")  -- launch dmenu with Super
+myKeys = [ ("M-q",         spawn myBuildScript)
+         , ("C-<Escape>",  spawn myLauncher)  -- launch dmenu with Super
          -- Moving workspaces
          , ("M-<Left>",    prevWS)
          , ("M-S-<Right>", nextWS)
@@ -56,11 +75,12 @@ myKeys = [ ("M-q",         spawn "~/.config/xmonad/build")
          , ("M-<Return>",  spawn myTerminal)
          , ("M-e",         spawn myEditor)
          , ("M-S-e",       spawn (editIfExists "~/Documents/chords/index.txt"))
-         , ("M-w",         spawn "qutebrowser")
-         , ("<Print>",     spawn "spectacle")  -- print screen
+         , ("M-w",         spawn myBrowser)
+         , ("M-S-w",       spawn myHeavyBrowser)
+         , ("<Print>",     spawn myScreenshot)  -- print screen
          -- Dmenu scripts
-         , ("M-S-p M-S-c", spawn ((myMenuScript "edit-configs") ++ myEditor))
-         , ("M-S-p M-S-p", spawn ((myMenuScript "edit-scripts") ++ myEditor))
+         , ("M-S-p M-S-c", spawn editConfigs)
+         , ("M-S-p M-S-p", spawn editScripts)
          ]
 
 --------------------------------------------------------------------------------

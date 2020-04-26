@@ -1,5 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Adapted from https://www.gitlab.com/dwt1/dotfiles/-/blob/master/.dmenu/dmenu-edit-configs.sh
+
+MENU_CMD=$1
+EDITOR_CMD=$2
 
 declare options=(
 "awesome
@@ -23,7 +26,7 @@ xmonad/autostart
 xresources
 quit")
 
-choice=$(echo -e "${options[@]}" | dmenu -i -p 'Edit config file: ')
+choice=$(echo -e "${options[@]}" | $MENU_CMD 'Edit config file: ')
 
 case "$choice" in
     quit)
@@ -92,4 +95,4 @@ case "$choice" in
 esac
 
 # Using the command line argument(s) as the editor command
-$1 $2 $3 $4 "$choice"
+$EDITOR_CMD "$choice"

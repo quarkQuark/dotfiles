@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-choice=$(ls $HOME/.config/dmenu/ | dmenu -i -p 'Edit script: ')
-$1 $2 $3 $4 "$HOME/.config/dmenu/$choice"
+MENU_CMD=$1
+EDITOR_CMD=$2
+
+choice=$(ls $HOME/.config/dmenu/ | $MENU_CMD 'Edit script: ')
+$EDITOR_CMD "$HOME/.config/dmenu/$choice"
