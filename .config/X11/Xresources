@@ -15,18 +15,20 @@ Xft.lcdfilter: lcdfilter
 !! => URxvt
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+#define myFontSize 12
+
 URxvt*imLocale: en_GB.UTF-8
 URxvt*termName: rxvt-unicode-256color
 Urxvt*buffered: false
 URxvt.intensityStyles: false
-URxvt.font: xft:UbuntuMono Nerd Font:size=12, \
-            xft:Inconsolata Nerd Font Mono:size=12, \
-            xft:DejaVuSansMono Nerd Font:size=12, \
-            xft:DroidSansMono Nerd Font:size=12, \
-            xft:FuraMono Nerd Font:size=12, \
-            xft:RobotoMono Nerd Font:size=12, \
-            xft:Noto Sans Mono:size=12, \
-            xft:Monospace:style=Medium:size=12
+URxvt.font: xft:UbuntuMono Nerd Font:size=myFontSize, \
+            xft:Inconsolata Nerd Font Mono:size=myFontSize, \
+            xft:DejaVuSansMono Nerd Font:size=myFontSize, \
+            xft:DroidSansMono Nerd Font:size=myFontSize, \
+            xft:FuraMono Nerd Font:size=myFontSize, \
+            xft:RobotoMono Nerd Font:size=myFontSize, \
+            xft:Noto Sans Mono:size=myFontSize, \
+            xft:Monospace:style=Medium:size=myFontSize, \
 Urxvt.letterSpace: 2
 URxvt.savelines: 2000
 URxvt.scrollBar: false
