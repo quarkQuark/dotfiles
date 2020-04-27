@@ -30,6 +30,7 @@ myHeavyBrowser = "firefox"
 myScreenshot   = "spectacle"
 myLauncher     = "dmenu_run"
 myMenu         = "dmenu -i -p"
+myGuiFileManager = "pcmanfm"
 
 -- Config locations
 myConfigDir   = "~/.config/xmonad/src/"
@@ -76,6 +77,7 @@ myKeys = [ ("M-q",         spawn myBuildScript)
          , ("M-S-e",       spawn (editIfExists "~/Documents/chords/index.txt"))
          , ("M-w",         spawn myBrowser)
          , ("M-S-w",       spawn myHeavyBrowser)
+         , ("M-f",         spawn myGuiFileManager)
          , ("<Print>",     spawn myScreenshot)  -- print screen
          -- Dmenu scripts
          , ("M-S-p M-S-c", spawn editConfigs)
