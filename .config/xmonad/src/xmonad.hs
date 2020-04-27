@@ -13,6 +13,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import System.IO (hPutStrLn)
 import qualified Data.Map as M
+import Data.List (intercalate)
 
 -- For moving workspaces
 import XMonad.Actions.CycleWS
@@ -48,17 +49,16 @@ editIfExists fileName = "[ -f " ++ fileName ++ " ] \
                           \&& " ++ myEditor ++ fileName ++ " \
                           \||  notify-send \"" ++ fileName ++ " not found\""
 
+-- Function to replace a menu script name with a shell command
+runMenuScript :: [Char] -> [Char] -> [Char]
+runMenuScript shell scriptName = shell++" "++myMenuScriptPath++scriptName++".sh "
 -- Convert strings to bash arguments (multiple words treated as one)
-arg2 :: [[Char]] -> [Char]
-arg2 [a,b] = " \"" ++ a ++ "\" \"" ++ b ++ "\" "
-
--- Function to execute shell scripts from myMenuScriptPath
-myMenuScript :: [Char] -> [Char] -> [Char] -> [Char]
-myMenuScript shell scriptName arguments = shell++" "++myMenuScriptPath++scriptName++".sh "++arguments
+args :: [[Char]] -> [Char]
+args arguments = unwords (map show arguments)
 
 -- My scripts
-editConfigs = myMenuScript "bash" "edit-configs" (arg2 [myMenu,myEditor])
-editScripts = myMenuScript "bash" "edit-scripts" (arg2 [myMenu,myEditor])
+editConfigs = runMenuScript "bash" "edit-configs" ++ (args [myMenu,myEditor])
+editScripts = runMenuScript "bash" "edit-scripts" ++ (args [myMenu,myEditor])
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
