@@ -24,6 +24,7 @@ Plug 'ryanoasis/vim-devicons'			" Adds icons
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'	" Adds icons to NERDTree; requires vim-devicons
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'rrethy/vim-hexokinase', {'do':'make hexokinase'}  " Preview colours in vim
 
 "" Colourschemes
 Plug 'arcticicestudio/nord-vim', {'branch':'develop'}
@@ -64,7 +65,7 @@ let g:nnn#command = 'nnn -n'
 nnoremap <leader>n :NnnPicker '%:p:h'<CR>
 
 """"""""""""""""""""""""""""""""""""""""
-"" => vim-picker for fzy
+"" => Fuzzy finding
 """"""""""""""""""""""""""""""""""""""""
 
 " Use ripgrep to find files instead of fd or find
@@ -76,8 +77,12 @@ nnoremap <leader>fy :PickerEdit %:p:h<CR>
 nnoremap <leader>fh :PickerSplit %:p:h<CR>
 nnoremap <leader>fv :PickerVsplit %:p:h<CR>
 
+"" fzf
+nnoremap <leader>ff :Files %:p:h<CR>
+
 """"""""""""""""""""""""""""""""""""""""
-"" => fzf
+"" => vim-hexokinase
 """"""""""""""""""""""""""""""""""""""""
 
-nnoremap <leader>ff :Files %:p:h<CR>
+let g:Hexokinase_highlighters = ['backgroundfull']
+let g:Hexokinase_refreshEvents = ['BufRead', 'BufWrite', 'TextChangedI', 'InsertLeave']

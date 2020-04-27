@@ -1,4 +1,5 @@
 set cursorline
+set termguicolors  " Necessary for vim-hexokinase colour previewing
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 
 colorscheme nord
