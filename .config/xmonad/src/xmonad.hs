@@ -21,11 +21,10 @@ import XMonad.Actions.CycleWS
 myModMask  = mod4Mask -- use the Super / Windows key as mod
 
 -- Default applications
-myTerminal     = "urxvtc" -- the default terminal emulator
+myTerminal     = "urxvt" -- the default terminal emulator
 myTerminalApp  = myTerminal ++ " -e "
 --myEditor       = "emacsclient -c"
 myEditor       = myTerminalApp ++ "nvim "
-myEditorArg    = " \"" ++ myEditor ++ "\" "  -- Counts as one argument for use in shell scripts
 myBrowser      = "qutebrowser"
 myHeavyBrowser = "firefox"
 myScreenshot   = "spectacle"
@@ -52,7 +51,7 @@ editIfExists fileName = "[ -f " ++ fileName ++ " ] \
 -- Function to replace a menu script name with a shell command
 runMenuScript :: [Char] -> [Char] -> [Char]
 runMenuScript shell scriptName = shell++" "++myMenuScriptPath++scriptName++".sh "
--- Convert strings to bash arguments (multiple words treated as one)
+-- Convert strings to arguments (multiple words treated as one)
 args :: [[Char]] -> [Char]
 args arguments = unwords (map show arguments)
 
