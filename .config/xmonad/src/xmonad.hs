@@ -21,7 +21,7 @@ import XMonad.Actions.CycleWS
 myModMask  = mod4Mask -- use the Super / Windows key as mod
 
 -- Default applications
-myTerminal     = "urxvt" -- the default terminal emulator
+myTerminal     = "alacritty" -- the default terminal emulator
 myTerminalApp  = myTerminal ++ " -e "
 --myEditor       = "emacsclient -c"
 myEditor       = myTerminalApp ++ "nvim "

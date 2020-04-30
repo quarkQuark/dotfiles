@@ -1,11 +1,16 @@
 set cursorline
-hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 
 colorscheme nord
+set background=dark
 
-"if has('termguicolors')
-    "set termguicolors  " Necessary for vim-hexokinase colour previewing
-"endif
+" Fixes transparency in alacritty
+hi! Normal  ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+
+" Needed for vim-hexokinase colour previews, but messes up urxvt
+if has('termguicolors')
+    set termguicolors
+endif
 
 """""""""""""""""
 "" => Statusline

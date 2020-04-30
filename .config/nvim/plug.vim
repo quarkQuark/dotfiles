@@ -86,3 +86,5 @@ nnoremap <leader>ff :Files %:p:h<CR>
 
 let g:Hexokinase_highlighters = ['backgroundfull']
 let g:Hexokinase_refreshEvents = ['BufRead', 'BufWrite', 'TextChangedI', 'InsertLeave']
+" Don't highlight english names of colours ('color_names')
+let g:Hexokinase_optInPatterns = ['full_hex', 'triple_hex', 'rgb', 'rgba', 'hsl', 'hsla']
