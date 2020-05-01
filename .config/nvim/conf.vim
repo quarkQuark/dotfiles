@@ -14,6 +14,12 @@ set title
 " Scroll when the cursor is within 3 lines of bottom
 set scrolloff=3
 
+" Mouse compatibility for all modes
+set mouse=a
+
+" Use system clipboard
+set clipboard+=unnamedplus
+
 " Other
 set showmatch       " Show matching brackets
 set number          " Show line numbers
