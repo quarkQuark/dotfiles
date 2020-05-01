@@ -28,6 +28,8 @@ Plug 'rrethy/vim-hexokinase', {'do':'make hexokinase'}  " Preview colours in vim
 
 "" Colourschemes
 Plug 'arcticicestudio/nord-vim', {'branch':'develop'}
+Plug 'icymind/neosolarized'
+Plug 'dracula/vim', {'as':'dracula'}
 
 call plug#end()
 
