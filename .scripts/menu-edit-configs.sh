@@ -5,6 +5,7 @@
 MENU_CMD=$1
 EDITOR_CMD=$2
 
+# Options to pass to the menu program (list of config file names)
 options="alacritty
 awesome
 bashrc
@@ -27,12 +28,11 @@ xmonad/autostart
 xresources
 quit"
 
+# Choose one of the files, using $MENU_CMD
 choice=`echo "$options" | $MENU_CMD "Edit config file: "`
 
+# Find the path to the chosen file
 case "$choice" in
-    quit)
-        exit 1
-    ;;
     alacritty)
         file="$HOME/.config/alacritty/base.yml"
     ;;
@@ -98,5 +98,5 @@ case "$choice" in
     ;;
 esac
 
-# Using the command line argument(s) as the editor command
+# Edit the chosen file, with the user-specified program
 $EDITOR_CMD "$file"
