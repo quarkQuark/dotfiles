@@ -15,13 +15,13 @@ alias \
     ll='ls -lA --color=auto --group-directories-first --human-readable'
 command -v exa >/dev/null \
     && alias \
-        ls='exa     --group-directories-first --icons' \
-        la='exa -a  --group-directories-first --icons' \
-        ll='exa -la --group-directories-first --icons --grid --git' \
-        lt='exa -Ta --group-directories-first --icons --level 2' \
-        ltt='exa -Ta --group-directories-first --icons --level 3' \
-        lttt='exa -Ta --group-directories-first --icons --level 4' \
-        lT='exa -Ta --group-directories-first --icons' \
+        ls='exa     --group-directories-first' \
+        la='exa -a  --group-directories-first' \
+        ll='exa -la --group-directories-first --grid --git' \
+        lt='exa -Ta --group-directories-first --level 2' \
+        ltt='exa -Ta --group-directories-first --level 3' \
+        lttt='exa -Ta --group-directories-first --level 4' \
+        lT='exa -Ta --group-directories-first' \
     || echo "exa not found"
         
 # Grep
