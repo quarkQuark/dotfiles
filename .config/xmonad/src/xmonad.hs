@@ -37,7 +37,7 @@ myConfigDir   = "~/.config/xmonad/src/"
 myBuildScript = "~/.config/xmonad/build"
 myAutostart   = myConfigDir ++ "autostart.sh"
 myXmobarrc    = myConfigDir ++ "xmobarrc.hs"
-myMenuScriptPath = "~/.config/dmenu/"
+myScripts = "~/.scripts/"
 
 --------------------------------------------------------------------------------
 -- MY FUNCTIONS AND SCRIPTS
@@ -51,7 +51,7 @@ editIfExists fileName = "[ -f " ++ fileName ++ " ] \
 
 -- Function to replace a menu script name with a shell command
 runMenuScript :: [Char] -> [Char] -> [Char]
-runMenuScript shell scriptName = shell++" "++myMenuScriptPath++scriptName++".sh "
+runMenuScript shell scriptName = shell++" "++myScripts++scriptName++".sh "
 -- Convert strings to arguments (multiple words treated as one)
 args :: [[Char]] -> [Char]
 args arguments = unwords (map show arguments)
