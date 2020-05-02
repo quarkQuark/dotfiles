@@ -49,16 +49,16 @@ editIfExists fileName = "[ -f " ++ fileName ++ " ] \
                           \&& " ++ myEditor ++ fileName ++ " \
                           \||  notify-send \"" ++ fileName ++ " not found\""
 
--- Function to replace a menu script name with a shell command
-runMenuScript :: [Char] -> [Char] -> [Char]
-runMenuScript shell scriptName = shell++" "++myScripts++scriptName++".sh "
+-- Function to replace a script name with a shell command
+runScript :: [Char] -> [Char] -> [Char]
+runScript shell scriptName = shell++" "++myScripts++scriptName++".sh "
 -- Convert strings to arguments (multiple words treated as one)
 args :: [[Char]] -> [Char]
 args arguments = unwords (map show arguments)
 
 -- My scripts
-editConfigs = runMenuScript "bash" "edit-configs" ++ (args [myMenu,myEditor])
-editScripts = runMenuScript "bash" "edit-scripts" ++ (args [myMenu,myEditor])
+editConfigs = runScript "sh" "edit-configs" ++ (args [myMenu,myEditor])
+editScripts = runScript "sh" "edit-scripts" ++ (args [myMenu,myEditor])
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
