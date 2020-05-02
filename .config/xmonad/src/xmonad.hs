@@ -57,8 +57,8 @@ args :: [[Char]] -> [Char]
 args arguments = unwords (map show arguments)
 
 -- My scripts
-editConfigs = runScript "sh" "edit-configs" ++ (args [myMenu,myEditor])
-editScripts = runScript "sh" "edit-scripts" ++ (args [myMenu,myEditor])
+editConfigs = runScript "sh" "menu-edit-configs" ++ (args [myMenu,myEditor])
+editScripts = runScript "sh" "menu-edit-scripts" ++ (args [myMenu,myEditor])
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
