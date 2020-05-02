@@ -57,8 +57,10 @@ args :: [[Char]] -> [Char]
 args arguments = unwords (map show arguments)
 
 -- My scripts
+-- NB: Cannot use "." as that is for sourcing scripts into a current shell
 editConfigs = runScript "sh" "menu-edit-configs" ++ (args [myMenu,myEditor])
 editScripts = runScript "sh" "menu-edit-scripts" ++ (args [myMenu,myEditor])
+changeColours = runScript "sh" "menu-change-colourscheme" ++ (args [myMenu])
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
@@ -79,9 +81,10 @@ myKeys = [ ("M-q",         spawn myBuildScript)
          , ("M-S-w",       spawn myHeavyBrowser)
          , ("M-f",         spawn myGuiFileManager)
          , ("<Print>",     spawn myScreenshot)  -- print screen
-         -- Dmenu scripts
-         , ("M-S-p M-S-c", spawn editConfigs)
+         -- Menu scripts
          , ("M-S-p M-S-p", spawn editScripts)
+         , ("M-S-p M-S-e", spawn editConfigs)
+         , ("M-S-p M-S-c", spawn changeColours)
          ]
 
 --------------------------------------------------------------------------------

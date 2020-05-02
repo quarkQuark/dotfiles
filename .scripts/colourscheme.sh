@@ -6,6 +6,11 @@ alacritty_base=~/.config/alacritty/base.yml
 alacritty_colours=~/.config/alacritty/${colourscheme}.yml
 alacritty_config=~/.config/alacritty/alacritty.yml
 
+colour_list="dracula
+nord
+solarized-dark
+solarized-light"
+
 # Alacritty
 change_alacritty() {
     echo "#" > $alacritty_config
@@ -22,6 +27,9 @@ change_nvim() {
 }
 
 case $colourscheme in
+    list)
+        echo "$colour_list"
+        ;;
     dracula)
         change_alacritty
         change_nvim 'colorscheme dracula'
@@ -39,7 +47,6 @@ case $colourscheme in
         change_nvim 'colorscheme NeoSolarized\nset background=light'
         ;;
     *)
-        echo "Supported colourschemes: dracula, nord, solarized-dark, solarized-light"
-        exit 1
+        echo -e "Supported colourschemes:\n${colour_list}"
         ;;
 esac
