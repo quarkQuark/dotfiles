@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Config.Desktop
 import XMonad.Util.SpawnOnce
+import System.Process
 
 import XMonad.Util.EZConfig
 import XMonad.Util.Run (hPutStrLn,spawnPipe)
@@ -37,7 +38,6 @@ myConfigDir   = "~/.config/xmonad/src/"
 myBuildScript = "~/.config/xmonad/build"
 myAutostart   = myConfigDir ++ "autostart.sh"
 myXmobarrc    = myConfigDir ++ "xmobarrc.hs"
-myScripts = "~/.scripts/"
 
 --------------------------------------------------------------------------------
 -- MY FUNCTIONS AND SCRIPTS
@@ -49,18 +49,9 @@ editIfExists fileName = "[ -f " ++ fileName ++ " ] \
                           \&& " ++ myEditor ++ fileName ++ " \
                           \||  notify-send \"" ++ fileName ++ " not found\""
 
--- Function to replace a script name with a shell command
-runScript :: [Char] -> [Char] -> [Char]
-runScript shell scriptName = shell++" "++myScripts++scriptName++".sh "
 -- Convert strings to arguments (multiple words treated as one)
 args :: [[Char]] -> [Char]
-args arguments = unwords (map show arguments)
-
--- My scripts
--- NB: Cannot use "." as that is for sourcing scripts into a current shell
-editConfigs = runScript "sh" "menu-edit-configs" ++ (args [myMenu,myEditor])
-editScripts = runScript "sh" "menu-edit-scripts" ++ (args [myMenu,myEditor])
-changeColours = runScript "sh" "menu-change-colourscheme" ++ (args [myMenu])
+args arguments = " " ++ unwords (map show arguments)
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
@@ -82,9 +73,9 @@ myKeys = [ ("M-q",         spawn myBuildScript)
          , ("M-f",         spawn myGuiFileManager)
          , ("<Print>",     spawn myScreenshot)  -- print screen
          -- Menu scripts
-         , ("M-S-p M-S-p", spawn editScripts)
-         , ("M-S-p M-S-e", spawn editConfigs)
-         , ("M-S-p M-S-c", spawn changeColours)
+         , ("M-S-p M-S-p", spawn (".scripts/menu-edit-scripts" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-e", spawn (".scripts/menu-edit-configs" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-c", spawn (".scripts/menu-change-colourscheme" ++ (args[myMenu])))
          ]
 
 --------------------------------------------------------------------------------
