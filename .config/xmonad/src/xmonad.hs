@@ -1,7 +1,6 @@
 import XMonad
 import XMonad.Config.Desktop
 import XMonad.Util.SpawnOnce
-import System.Process
 
 import XMonad.Util.EZConfig
 import XMonad.Util.Run (hPutStrLn,spawnPipe)
@@ -67,15 +66,15 @@ myKeys = [ ("M-q",         spawn myBuildScript)
          -- Application shortcuts
          , ("M-<Return>",  spawn myTerminal)
          , ("M-e",         spawn myEditor)
-         , ("M-S-e",       spawn (editIfExists "~/Documents/chords/index.txt"))
+         , ("M-S-e",       spawn (editIfExists "Chords/index.txt"))
          , ("M-w",         spawn myBrowser)
          , ("M-S-w",       spawn myHeavyBrowser)
          , ("M-f",         spawn myGuiFileManager)
          , ("<Print>",     spawn myScreenshot)  -- print screen
          -- Menu scripts
-         , ("M-S-p M-S-p", spawn (".scripts/menu-edit-scripts" ++ (args[myMenu,myEditor])))
-         , ("M-S-p M-S-e", spawn (".scripts/menu-edit-configs" ++ (args[myMenu,myEditor])))
-         , ("M-S-p M-S-c", spawn (".scripts/menu-change-colourscheme" ++ (args[myMenu])))
+         , ("M-S-p M-S-p", spawn ("menu-edit-scripts" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-e", spawn ("menu-edit-configs" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-c", spawn ("menu-change-colourscheme" ++ (args[myMenu])))
          ]
 
 --------------------------------------------------------------------------------
