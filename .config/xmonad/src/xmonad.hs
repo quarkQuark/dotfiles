@@ -70,6 +70,7 @@ myKeys = [ ("M-q",         spawn myBuildScript)
          , ("M-w",         spawn myBrowser)
          , ("M-S-w",       spawn myHeavyBrowser)
          , ("M-f",         spawn myGuiFileManager)
+         , ("M-z",         spawn "zoom")
          , ("<Print>",     spawn myScreenshot)  -- print screen
          -- Menu scripts
          , ("M-S-p M-S-p", spawn ("menu-edit-scripts" ++ (args[myMenu,myEditor])))
