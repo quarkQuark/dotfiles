@@ -4,8 +4,8 @@ live_config_reload: true
 
 window:
   padding:
-    x: 0
-    y: 0
+    x: 3
+    y: 3
 
 scrolling:
   history: 10000
