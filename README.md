@@ -43,21 +43,19 @@
     My xmonad configuration also depends on the following packages:
     ```bash
     nitrogen
-    picom
+    aur/picom-ibhagwan-git
     xcape
-    urxvt
+    alacritty
     nvim
     networkmanager
     network-manager-applet
     udiskie
     volumeicon
     xfce4-power-manager
-    dmenu
     rofi
     stalonetray
     qutebrowser
     spectacle
-    adobe-source-code-pro-fonts
     ```
 
 ## Usage
