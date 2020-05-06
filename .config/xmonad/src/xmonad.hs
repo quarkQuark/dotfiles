@@ -28,8 +28,10 @@ myEditor       = myTerminalApp ++ "nvim "
 myBrowser      = "qutebrowser"
 myHeavyBrowser = "firefox"
 myScreenshot   = "spectacle"
-myLauncher     = "dmenu_run"
-myMenu         = "dmenu -i -p"
+--myLauncher     = "dmenu_run"
+--myMenu         = "dmenu -i -p"
+myLauncher     = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
+myMenu         = "rofi -dmenu -i -p"
 myGuiFileManager = "pcmanfm"
 
 -- Config locations
@@ -37,6 +39,7 @@ myConfigDir   = "~/.config/xmonad/src/"
 myBuildScript = "~/.config/xmonad/build"
 myAutostart   = myConfigDir ++ "autostart.sh"
 myXmobarrc    = myConfigDir ++ "xmobarrc.hs"
+rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 
 --------------------------------------------------------------------------------
 -- MY FUNCTIONS AND SCRIPTS

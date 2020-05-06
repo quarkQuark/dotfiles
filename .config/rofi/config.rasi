@@ -1,0 +1,6 @@
+configuration {
+    /*theme: "~/.config/rofi/themes/theme.rasi";*/
+    show-icons: true;
+    icon-theme: "Papirus";
+    matching: "fuzzy";
+}
