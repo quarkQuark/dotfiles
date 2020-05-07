@@ -1,6 +1,7 @@
 decorations none
 transparent true
+window_layer bottom
 tint_level 0
-icon_size 14
+icon_size 20
 geometry 1x1-0
 grow_gravity NE
