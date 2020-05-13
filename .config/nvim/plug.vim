@@ -17,6 +17,9 @@ Plug 'w0rp/ale'  " linting
 Plug 'vim-scripts/indentpython.vim', {'for':'python'}
 Plug 'nvie/vim-flake8', {'for':'python'}
 
+"" Markdown
+Plug 'plasticboy/vim-markdown'
+
 "" Haskell
 
 "" Aesthetics
