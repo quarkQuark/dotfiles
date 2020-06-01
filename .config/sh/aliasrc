@@ -8,6 +8,9 @@ alias \
     mkdir='mkdir -v' \
     rmdir='rmdir -v'
 
+# Common commands
+alias za='zathura'
+
 # ls and exa
 alias \
     ls='ls     --color=auto --group-directories-first' \
