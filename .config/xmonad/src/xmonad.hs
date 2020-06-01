@@ -33,6 +33,7 @@ myScreenshot   = "spectacle"
 myLauncher     = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
 myMenu         = "rofi -dmenu -i -p"
 myGuiFileManager = "pcmanfm"
+myPdfReader    = "zathura"
 
 -- Config locations
 myConfigDir   = "~/.config/xmonad/src/"
@@ -76,9 +77,10 @@ myKeys = [ ("M-q",         spawn myBuildScript)
          , ("M-z",         spawn "zoom")
          , ("<Print>",     spawn myScreenshot)  -- print screen
          -- Menu scripts
-         , ("M-S-p M-S-p", spawn ("menu-edit-scripts" ++ (args[myMenu,myEditor])))
-         , ("M-S-p M-S-e", spawn ("menu-edit-configs" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-p", spawn ("menu-edit-script" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-e", spawn ("menu-edit-config" ++ (args[myMenu,myEditor])))
          , ("M-S-p M-S-c", spawn ("menu-change-colourscheme" ++ (args[myMenu])))
+         , ("M-S-p M-S-z", spawn ("menu-read-pdf" ++ (args[myMenu,myPdfReader])))
          ]
 
 --------------------------------------------------------------------------------
