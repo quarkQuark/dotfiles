@@ -16,6 +16,8 @@ import XMonad.Util.EZConfig
 import XMonad.Layout.NoBorders (smartBorders)
 -- Allow gaps to be displayed around windows, for aesthetic purposes
 import XMonad.Layout.Spacing
+-- Fixes automatic fullscreening of applications
+import XMonad.Hooks.EwmhDesktops
 
 --------------------------------------------------------------------------------
 
@@ -34,6 +36,7 @@ import XMonad.Hooks.ManageDocks
 
 -- The modifier key to be used for most keybindings
 -- I have it set to super (the Windows key)
+myModMask :: KeyMask
 myModMask  = mod4Mask
 
 -- Default applications
@@ -93,6 +96,8 @@ args arguments = " " ++ unwords (map show arguments)
 -- spawn runs a string on my system shell
 myKeys = [ ("M-q",         spawn myBuildScript) -- recompile xmonad
          , ("C-<Escape>",  spawn myLauncher)  -- launch dmenu with Super
+         -- Toggle fullscreen
+         , ("M-S-f",       sendMessage ToggleStruts)
          -- Application shortcuts
          , ("M-<Return>",  spawn myTerminal)
          , ("M-e",         spawn myEditor)
@@ -114,11 +119,19 @@ myKeys = [ ("M-q",         spawn myBuildScript) -- recompile xmonad
 --------------------------------------------------------------------------------
 
 -- Gaps around and between windows
+-- Changes only seem to apply if I log out then in again
+-- Dimensions are given as (Border top bottom right left)
 mySpacing = spacingRaw True             -- Only for >1 window (doesn't seem to work?)
-                       (Border 5 5 5 5) -- Size of screen edge gaps
+                       -- The bottom edge seems to look narrower than it is
+                       (Border 0 15 10 10) -- Size of screen edge gaps
                        True             -- Enable screen edge gaps
                        (Border 5 5 5 5) -- Size of window gaps
                        True             -- Enable window gaps
+
+-- Symbols for displaying workspaces in xmobar
+myCurrentSymbol = "[●]" -- The workspace currently active
+myHiddenSymbol  =  "●"  -- Workspaces with open windows
+myEmptySymbol   =  "○"  -- Workspaces with no windows
 
 --------------------------------------------------------------------------------
 -- MANAGEHOOK
@@ -148,28 +161,28 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 --------------------------------------------------------------------------------
 
 -- Symbols to be used for displaying workspaces
--- Unfortunately, xmobar expects functions!
-myCurrentLogo workspaceName = "[●]" -- The workspace currently active
-myHiddenLogo  workspaceName =  "●"  -- Workspaces with open windows
-myEmptyLogo   workspaceName =  "○"  -- Workspaces with no windows
+-- Unfortunately, xmobar expects functions, as it expects a different symbol for each
+myCurrentSymbolFunc workspaceName = myCurrentSymbol
+myHiddenSymbolFunc  workspaceName = myHiddenSymbol
+myEmptySymbolFunc   workspaceName = myEmptySymbol
 
 main = do
     -- spawnPipe starts xmobar and returns a handle - named xmproc - for input
     xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
     -- Applies this config file over the default config for desktop use
-    xmonad $ desktopConfig
+    xmonad $ ewmh $ desktopConfig
         { modMask     = myModMask
         , terminal    = myTerminal
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
-        , layoutHook  = mySpacing $ avoidStruts $ smartBorders (layoutHook desktopConfig)
+        , layoutHook  = avoidStruts $ mySpacing $ smartBorders (layoutHook desktopConfig)
         -- The information to send to xmobar, through the handle we defined earlier
         , logHook     = dynamicLogWithPP xmobarPP
                             { ppOutput = hPutStrLn xmproc
                             -- Only send workspace information
                             , ppOrder  = \(ws:l:t:ex) -> [ws]
-                            , ppCurrent = xmobarColor "white" "" . myCurrentLogo
-                            , ppHidden  = xmobarColor "white" "" . myHiddenLogo
-                            , ppHiddenNoWindows = xmobarColor "white" "" . myEmptyLogo
+                            , ppCurrent = xmobarColor "white" "" . myCurrentSymbolFunc
+                            , ppHidden  = xmobarColor "white" "" . myHiddenSymbolFunc
+                            , ppHiddenNoWindows = xmobarColor "white" "" . myEmptySymbolFunc
                             }
         , workspaces  = myWorkspaces
         , startupHook = spawnOnce myAutostart
