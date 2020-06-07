@@ -26,9 +26,6 @@ import XMonad.Hooks.DynamicLog
 -- Provides tools to manipulate docks and panels, and to avoid overlapping them
 import XMonad.Hooks.ManageDocks
 
--- For moving workspaces -- to be removed in next commit
-import XMonad.Actions.CycleWS
-
 --------------------------------------------------------------------------------
 -- VARIABLES AND DEFAULT PROGRAMS
 --------------------------------------------------------------------------------
@@ -91,11 +88,6 @@ args arguments = " " ++ unwords (map show arguments)
 
 myKeys = [ ("M-q",         spawn myBuildScript)
          , ("C-<Escape>",  spawn myLauncher)  -- launch dmenu with Super
-         -- Moving workspaces
-         , ("M-<Left>",    prevWS)
-         , ("M-S-<Right>", nextWS)
-         , ("M-<Left>",    shiftToPrev)
-         , ("M-S-<Right>", shiftToNext)
          -- Application shortcuts
          , ("M-<Return>",  spawn myTerminal)
          , ("M-e",         spawn myEditor)
