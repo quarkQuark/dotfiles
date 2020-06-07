@@ -1,45 +1,74 @@
-import XMonad
-import XMonad.Config.Desktop
+--------------------------------------------------------------------------------
+-- IMPORTS
+--------------------------------------------------------------------------------
+
+import XMonad -- standard xmonad library
+import XMonad.Config.Desktop -- default desktopConfig
+
+-- Used to make sure my autostart script is run only on login
 import XMonad.Util.SpawnOnce
 
+-- Simplifies the syntax for defining keybindings
 import XMonad.Util.EZConfig
-import XMonad.Util.Run (hPutStrLn,spawnPipe)
-
+-- For starting and sending information to the xmobar status bar
+import XMonad.Util.Run (spawnPipe,hPutStrLn)
+-- Removes window borders if they aren't needed
 import XMonad.Layout.NoBorders (smartBorders)
+-- Allow gaps to be displayed around windows, for aesthetic purposes
 import XMonad.Layout.Spacing
 
--- For xmobar
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import System.IO (hPutStrLn)
-import qualified Data.Map as M
-import Data.List (intercalate)
+--------------------------------------------------------------------------------
 
--- For moving workspaces
+-- For xmobar
+
+-- Allows us to customise the logHook that sends information to xmobar
+import XMonad.Hooks.DynamicLog
+-- Provides tools to manipulate docks and panels, and to avoid overlapping them
+import XMonad.Hooks.ManageDocks
+
+-- For moving workspaces -- to be removed in next commit
 import XMonad.Actions.CycleWS
 
-myModMask  = mod4Mask -- use the Super / Windows key as mod
+--------------------------------------------------------------------------------
+-- VARIABLES AND DEFAULT PROGRAMS
+--------------------------------------------------------------------------------
+
+-- The modifier key to be used for most keybindings
+-- I have it set to super (the Windows key)
+myModMask  = mod4Mask
 
 -- Default applications
-myTerminal     = "alacritty" -- the default terminal emulator
-myTerminalApp  = myTerminal ++ " -e "
---myEditor       = "emacsclient -c"
-myEditor       = myTerminalApp ++ "nvim "
+myTerminal     = "alacritty"
+myEditor       = myTerminal ++ " -e nvim "
 myBrowser      = "qutebrowser"
 myHeavyBrowser = "firefox"
-myScreenshot   = "spectacle"
---myLauncher     = "dmenu_run"
---myMenu         = "dmenu -i -p"
-myLauncher     = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
-myMenu         = "rofi -dmenu -i -p"
 myGuiFileManager = "pcmanfm"
 myPdfReader    = "zathura"
+myScreenshot   = "spectacle"
+
+-- Command to use for the various menus
+--  myLauncher is the menu for opening applications
+--  myMenu is used for displaying user-generated menus (my shell menu scripts)
+-- dmenu is a much simpler option, but with less eye-candy
+--myLauncher     = "dmenu_run"
+--myMenu         = "dmenu -i -p"
+-- rofi looks much nicer, but is less minimal and the default theme is ugly
+myLauncher     = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
+myMenu         = "rofi -dmenu -i -p"
+
+--------------------------------------------------------------------------------
 
 -- Config locations
+
+-- Directory for storing xmonad-related config files
 myConfigDir   = "~/.config/xmonad/src/"
+-- The script run to recompile xmonad after config changes
 myBuildScript = "~/.config/xmonad/build"
+-- Programs to start automatically on login
 myAutostart   = myConfigDir ++ "autostart.sh"
+-- Config for the xmobar status bar
 myXmobarrc    = myConfigDir ++ "xmobarrc.hs"
+-- Directory that contains all my rofi themes, for the rofi menu program
 rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 
 --------------------------------------------------------------------------------
@@ -125,12 +154,15 @@ myHiddenWorkspacePrinter workspaceName = "●"
 myHiddenNoWindowsWorkspacePrinter workspaceName = "○"
 
 main = do
+    -- spawnPipe starts xmobar and returns a handle - named xmproc - for input
     xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
+    -- Applies this config file over the default config for desktop use
     xmonad $ desktopConfig
         { modMask     = myModMask
         , terminal    = myTerminal
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
         , layoutHook  = mySpacing $ avoidStruts $ smartBorders (layoutHook desktopConfig)
+        -- The information to send to xmobar, through the handle we defined earlier
         , logHook     = dynamicLogWithPP xmobarPP
                             { ppOutput = hPutStrLn xmproc
                             , ppOrder  = \(ws:l:t:ex) -> [ws]  -- Only send workspace information
