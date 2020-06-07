@@ -2,6 +2,7 @@
 -- IMPORTS
 --------------------------------------------------------------------------------
 
+-- Foundations
 import XMonad -- standard xmonad library
 import XMonad.Config.Desktop -- default desktopConfig
 
@@ -10,8 +11,7 @@ import XMonad.Util.SpawnOnce
 
 -- Simplifies the syntax for defining keybindings
 import XMonad.Util.EZConfig
--- For starting and sending information to the xmobar status bar
-import XMonad.Util.Run (spawnPipe,hPutStrLn)
+
 -- Removes window borders if they aren't needed
 import XMonad.Layout.NoBorders (smartBorders)
 -- Allow gaps to be displayed around windows, for aesthetic purposes
@@ -21,6 +21,8 @@ import XMonad.Layout.Spacing
 
 -- For xmobar
 
+-- For starting and sending information to the xmobar status bar
+import XMonad.Util.Run (spawnPipe,hPutStrLn)
 -- Allows us to customise the logHook that sends information to xmobar
 import XMonad.Hooks.DynamicLog
 -- Provides tools to manipulate docks and panels, and to avoid overlapping them
@@ -35,23 +37,23 @@ import XMonad.Hooks.ManageDocks
 myModMask  = mod4Mask
 
 -- Default applications
-myTerminal     = "alacritty"
-myEditor       = myTerminal ++ " -e nvim "
-myBrowser      = "qutebrowser"
-myHeavyBrowser = "firefox"
+myTerminal       = "alacritty"
+myEditor         = myTerminal ++ " -e nvim "
+myBrowser        = "qutebrowser"
+myHeavyBrowser   = "firefox"
 myGuiFileManager = "pcmanfm"
-myPdfReader    = "zathura"
-myScreenshot   = "spectacle"
+myPdfReader      = "zathura"
+myScreenshot     = "spectacle"
 
 -- Command to use for the various menus
 --  myLauncher is the menu for opening applications
 --  myMenu is used for displaying user-generated menus (my shell menu scripts)
 -- dmenu is a much simpler option, but with less eye-candy
---myLauncher     = "dmenu_run"
---myMenu         = "dmenu -i -p"
+--myLauncher = "dmenu_run"
+--myMenu     = "dmenu -i -p"
 -- rofi looks much nicer, but is less minimal and the default theme is ugly
-myLauncher     = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
-myMenu         = "rofi -dmenu -i -p"
+myLauncher = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
+myMenu     = "rofi -dmenu -i -p"
 
 --------------------------------------------------------------------------------
 
@@ -73,12 +75,14 @@ rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 --------------------------------------------------------------------------------
 
 -- Edit a file if it exists, otherwise show an error
+-- This basically just concatenates togather a simple shell script
 editIfExists :: [Char] -> [Char]
 editIfExists fileName = "[ -f " ++ fileName ++ " ] \
                           \&& " ++ myEditor ++ fileName ++ " \
                           \||  notify-send \"" ++ fileName ++ " not found\""
 
--- Convert strings to arguments (multiple words treated as one)
+-- Convert multiword strings to arguments (concatenate with delimiters)
+-- This makes sure my shell scripts correctly interpret their arguments
 args :: [[Char]] -> [Char]
 args arguments = " " ++ unwords (map show arguments)
 
@@ -86,7 +90,8 @@ args arguments = " " ++ unwords (map show arguments)
 -- KEYBINDINGS
 --------------------------------------------------------------------------------
 
-myKeys = [ ("M-q",         spawn myBuildScript)
+-- spawn runs a string on my system shell
+myKeys = [ ("M-q",         spawn myBuildScript) -- recompile xmonad
          , ("C-<Escape>",  spawn myLauncher)  -- launch dmenu with Super
          -- Application shortcuts
          , ("M-<Return>",  spawn myTerminal)
@@ -108,42 +113,45 @@ myKeys = [ ("M-q",         spawn myBuildScript)
 -- AESTHETICS
 --------------------------------------------------------------------------------
 
-mySpacing = spacingRaw False                -- smartBorder (border only for >1 window)
-                       (Border 5 5 5 5)     -- screenBorder
-                       True                 -- screenBorderEnabled
-                       (Border 5 5 5 5)     -- windowBorder
-                       True                 -- windowBorderEnabled
+-- Gaps around and between windows
+mySpacing = spacingRaw True             -- Only for >1 window (doesn't seem to work?)
+                       (Border 5 5 5 5) -- Size of screen edge gaps
+                       True             -- Enable screen edge gaps
+                       (Border 5 5 5 5) -- Size of window gaps
+                       True             -- Enable window gaps
 
 --------------------------------------------------------------------------------
 -- MANAGEHOOK
+-- special rules based on window types
 --------------------------------------------------------------------------------
 
 myManageHook = composeAll . concat $
+    -- Windows to automatically float
     [ [ className =? c --> doFloat           | c <- myFloatClasses ]
     , [ title     =? t --> doFloat           | t <- myFloatTitles ]
-    --, [ className =? c --> doShift "3:WWW"   | c <- browsers ]
     ]
+  -- To find a window class or title, run xprop in a terminal, then click on it
   where myFloatClasses = ["Gimp","conky","plasmashell","vlc","Caprine", "Nitrogen"]
         myFloatTitles  = ["Whisker Menu"]
-        --browsers       = ["Firefox-bin","firefox"]
 
 --------------------------------------------------------------------------------
 -- WORKSPACES
 --------------------------------------------------------------------------------
 
+-- My workspaces are currently just numbers
 myWorkspaces :: [String]
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 --------------------------------------------------------------------------------
 -- MAIN
+-- putting it all together
 --------------------------------------------------------------------------------
 
-myCurrentWorkspacePrinter :: String -> String
-myHiddenWorkspacePrinter :: String -> String
-myHiddenNoWindowsWorkspacePrinter :: String -> String
-myCurrentWorkspacePrinter workspaceName = "[●]"
-myHiddenWorkspacePrinter workspaceName = "●"
-myHiddenNoWindowsWorkspacePrinter workspaceName = "○"
+-- Symbols to be used for displaying workspaces
+-- Unfortunately, xmobar expects functions!
+myCurrentLogo workspaceName = "[●]" -- The workspace currently active
+myHiddenLogo  workspaceName =  "●"  -- Workspaces with open windows
+myEmptyLogo   workspaceName =  "○"  -- Workspaces with no windows
 
 main = do
     -- spawnPipe starts xmobar and returns a handle - named xmproc - for input
@@ -157,10 +165,11 @@ main = do
         -- The information to send to xmobar, through the handle we defined earlier
         , logHook     = dynamicLogWithPP xmobarPP
                             { ppOutput = hPutStrLn xmproc
-                            , ppOrder  = \(ws:l:t:ex) -> [ws]  -- Only send workspace information
-                            , ppCurrent = xmobarColor "white" "" . myCurrentWorkspacePrinter
-                            , ppHidden  = xmobarColor "white" "" . myHiddenWorkspacePrinter
-                            , ppHiddenNoWindows = xmobarColor "white" "" . myHiddenNoWindowsWorkspacePrinter
+                            -- Only send workspace information
+                            , ppOrder  = \(ws:l:t:ex) -> [ws]
+                            , ppCurrent = xmobarColor "white" "" . myCurrentLogo
+                            , ppHidden  = xmobarColor "white" "" . myHiddenLogo
+                            , ppHiddenNoWindows = xmobarColor "white" "" . myEmptyLogo
                             }
         , workspaces  = myWorkspaces
         , startupHook = spawnOnce myAutostart
