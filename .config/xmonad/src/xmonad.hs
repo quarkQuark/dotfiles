@@ -5,12 +5,15 @@
 -- Foundations
 import XMonad -- standard xmonad library
 import XMonad.Config.Desktop -- default desktopConfig
+import System.IO
 
 -- Used to make sure my autostart script is run only on login
 import XMonad.Util.SpawnOnce
 
 -- Simplifies the syntax for defining keybindings
 import XMonad.Util.EZConfig
+-- Simpler keybinding syntax, with help popup
+import XMonad.Util.NamedActions
 
 -- Removes window borders if they aren't needed
 import XMonad.Layout.NoBorders (smartBorders)
@@ -23,8 +26,8 @@ import XMonad.Hooks.EwmhDesktops
 
 -- For xmobar
 
--- For starting and sending information to the xmobar status bar
-import XMonad.Util.Run (spawnPipe,hPutStrLn)
+-- For starting and sending information to processes
+import XMonad.Util.Run
 -- Allows us to customise the logHook that sends information to xmobar
 import XMonad.Hooks.DynamicLog
 -- Provides tools to manipulate docks and panels, and to avoid overlapping them
@@ -93,26 +96,39 @@ args arguments = " " ++ unwords (map show arguments)
 -- KEYBINDINGS
 --------------------------------------------------------------------------------
 
--- spawn runs a string on my system shell
-myKeys :: [( [Char], X () )]
-myKeys = [ ("M-q",          spawn myBuildScript) -- recompile xmonad
-         , ("C-<Escape>",   spawn myLauncher)  -- launch dmenu with Super
-         -- Toggle fullscreen
-         , ("M-S-f",        sendMessage ToggleStruts)
-         -- Application shortcuts
-         , ("M-e",          spawn myEditor)
-         , ("M-S-e",        spawn (editIfExists "Chords/index.txt"))
-         , ("M-w",          spawn myBrowser)
-         , ("M-S-w",        spawn myHeavyBrowser)
-         , ("M-f",          spawn myGuiFileManager)
-         , ("M-z",          spawn "zoom")
-         , ("<Print>",      spawn myPrintScreen)
-         -- Menu scripts
-         , ("M-S-p M-S-p",  spawn ("menu-edit-script" ++ (args[myMenu,myEditor])))
-         , ("M-S-p M-S-e",  spawn ("menu-edit-config" ++ (args[myMenu,myEditor])))
-         , ("M-S-p M-S-c",  spawn ("menu-change-colourscheme" ++ (args[myMenu])))
-         , ("M-S-p M-S-z",  spawn ("menu-read-pdf" ++ (args[myMenu,myPdfReader])))
-         ]
+myKeys c = (subtitle "Custom keys":) $ mkNamedKeymap c $
+    [("M-/", addName "test" $ spawn "notify-send test")]
+    ^++^
+    [ ("M-q",          spawn myBuildScript) -- recompile xmonad
+    , ("C-<Escape>",   spawn myLauncher)  -- launch dmenu with Super
+    -- Toggle fullscreen
+    , ("M-S-f",        sendMessage ToggleStruts)
+    -- Application shortcuts
+    , ("M-e",          spawn myEditor)
+    , ("M-S-e",        spawn (editIfExists "Chords/index.txt"))
+    , ("M-w",          spawn myBrowser)
+    , ("M-S-w",        spawn myHeavyBrowser)
+    , ("M-f",          spawn myGuiFileManager)
+    , ("M-z",          spawn "zoom")
+    , ("<Print>",      spawn myPrintScreen)
+    -- Menu scripts
+    , ("M-S-p M-S-p",  spawn ("menu-edit-script" ++ (args[myMenu,myEditor])))
+    , ("M-S-p M-S-e",  spawn ("menu-edit-config" ++ (args[myMenu,myEditor])))
+    , ("M-S-p M-S-c",  spawn ("menu-change-colourscheme" ++ (args[myMenu])))
+    , ("M-S-p M-S-z",  spawn ("menu-read-pdf" ++ (args[myMenu,myPdfReader])))
+    ]
+
+-- Keybinding to display the keybinding cheatsheet
+myCheatsheetKey :: (KeyMask, KeySym)
+myCheatsheetKey = (myModMask .|. shiftMask, xK_slash)
+
+-- How to display the cheatsheet (from Ethan Schoonover's config)
+showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
+showKeybindings keyMap = addName "Show Keybindings" $ io $ do
+    cheatsheet <- spawnPipe "zenity --text-info --font=ubuntumono"
+    hPutStr cheatsheet (unlines $ showKm keyMap)
+    hClose cheatsheet
+    return ()
 
 --------------------------------------------------------------------------------
 -- AESTHETICS
@@ -203,6 +219,9 @@ main = do
         -- Increased compliance with the Extended Window Manager Hints standard
         $ ewmh
         -- Use my config, with the process handle for xmobar
+        -- Add keybindings in such a way as to allow viewing a cheatsheet with M-?
+        -- showKeybindings is the script used to display them
+        $ addDescrKeys (myCheatsheetKey, showKeybindings) myKeys
         $ myConfig xmproc
 
 -- Adding all of my stuff to the default desktop config
@@ -221,4 +240,4 @@ myConfig bar = desktopConfig
         , workspaces  = myWorkspaces
         , startupHook = spawnOnce myAutostart
         }
-        `additionalKeysP` myKeys
+        --`additionalKeysP` myKeys
