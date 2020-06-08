@@ -6,6 +6,10 @@
 import XMonad -- standard xmonad library
 import XMonad.Config.Desktop -- default desktopConfig
 
+-- More fine-grained control over window placement
+-- Must be qualified, as otherwise it clashes with XMonad.workspaces
+import qualified XMonad.StackSet as W
+
 -- Used to make sure my autostart script is run only on login
 import XMonad.Util.SpawnOnce
 
@@ -46,7 +50,7 @@ myBrowser        = "qutebrowser"
 myHeavyBrowser   = "firefox"
 myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
-myScreenshot     = "spectacle"
+myPrintScreen    = "spectacle"
 
 -- Command to use for the various menus
 --  myLauncher is the menu for opening applications
@@ -94,24 +98,23 @@ args arguments = " " ++ unwords (map show arguments)
 --------------------------------------------------------------------------------
 
 -- spawn runs a string on my system shell
-myKeys = [ ("M-q",         spawn myBuildScript) -- recompile xmonad
-         , ("C-<Escape>",  spawn myLauncher)  -- launch dmenu with Super
+myKeys = [ ("M-q",          spawn myBuildScript) -- recompile xmonad
+         , ("C-<Escape>",   spawn myLauncher)  -- launch dmenu with Super
          -- Toggle fullscreen
-         , ("M-S-f",       sendMessage ToggleStruts)
+         , ("M-S-f",        sendMessage ToggleStruts)
          -- Application shortcuts
-         , ("M-<Return>",  spawn myTerminal)
-         , ("M-e",         spawn myEditor)
-         , ("M-S-e",       spawn (editIfExists "Chords/index.txt"))
-         , ("M-w",         spawn myBrowser)
-         , ("M-S-w",       spawn myHeavyBrowser)
-         , ("M-f",         spawn myGuiFileManager)
-         , ("M-z",         spawn "zoom")
-         , ("<Print>",     spawn myScreenshot)  -- print screen
+         , ("M-e",          spawn myEditor)
+         , ("M-S-e",        spawn (editIfExists "Chords/index.txt"))
+         , ("M-w",          spawn myBrowser)
+         , ("M-S-w",        spawn myHeavyBrowser)
+         , ("M-f",          spawn myGuiFileManager)
+         , ("M-z",          spawn "zoom")
+         , ("<Print>",      spawn myPrintScreen)
          -- Menu scripts
-         , ("M-S-p M-S-p", spawn ("menu-edit-script" ++ (args[myMenu,myEditor])))
-         , ("M-S-p M-S-e", spawn ("menu-edit-config" ++ (args[myMenu,myEditor])))
-         , ("M-S-p M-S-c", spawn ("menu-change-colourscheme" ++ (args[myMenu])))
-         , ("M-S-p M-S-z", spawn ("menu-read-pdf" ++ (args[myMenu,myPdfReader])))
+         , ("M-S-p M-S-p",  spawn ("menu-edit-script" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-e",  spawn ("menu-edit-config" ++ (args[myMenu,myEditor])))
+         , ("M-S-p M-S-c",  spawn ("menu-change-colourscheme" ++ (args[myMenu])))
+         , ("M-S-p M-S-z",  spawn ("menu-read-pdf" ++ (args[myMenu,myPdfReader])))
          ]
 
 --------------------------------------------------------------------------------
@@ -121,17 +124,40 @@ myKeys = [ ("M-q",         spawn myBuildScript) -- recompile xmonad
 -- Gaps around and between windows
 -- Changes only seem to apply if I log out then in again
 -- Dimensions are given as (Border top bottom right left)
-mySpacing = spacingRaw True             -- Only for >1 window (doesn't seem to work?)
+mySpacing = spacingRaw True             -- Only for >1 window
                        -- The bottom edge seems to look narrower than it is
                        (Border 0 15 10 10) -- Size of screen edge gaps
                        True             -- Enable screen edge gaps
                        (Border 5 5 5 5) -- Size of window gaps
                        True             -- Enable window gaps
 
+--------------------------------------------------------------------------------
+-- LOGHOOK
+-- The information to send to xmobar, through the handle we defined earlier
+--------------------------------------------------------------------------------
+
 -- Symbols for displaying workspaces in xmobar
-myCurrentSymbol = "[●]" -- The workspace currently active
-myHiddenSymbol  =  "●"  -- Workspaces with open windows
-myEmptySymbol   =  "○"  -- Workspaces with no windows
+
+-- Must be functions, as it expects a different symbol for each
+myCurrentWsSymbol workspaceName = "[●]" -- The workspace currently active
+myHiddenWsSymbol  workspaceName =  "●"  -- Workspaces with open windows
+myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
+
+-- bar points to the status bar's process handle
+-- XMonad.Hooks.DynamicLog (dynamicLogWithPP) allows us to format the output
+-- XMonad.Hooks.DynamicLog (xmobarPP) gives us some defaults
+myLogHook bar = dynamicLogWithPP xmobarPP
+        -- Formatting to apply to the entire log, after all the other formatting
+        { ppOutput          = hPutStrLn bar
+        -- How to order the different sections of the log
+        -- I only want to display the various workspaces
+        , ppOrder           = \(workspace:layout:title:extras)
+                            -> [workspace] -- Only send workspace information
+        -- Format the workspace information
+        , ppCurrent         = xmobarColor "white" "" . myCurrentWsSymbol
+        , ppHidden          = xmobarColor "white" "" . myHiddenWsSymbol
+        , ppHiddenNoWindows = xmobarColor "white" "" . myEmptyWsSymbol
+        }
 
 --------------------------------------------------------------------------------
 -- MANAGEHOOK
@@ -160,30 +186,25 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 -- putting it all together
 --------------------------------------------------------------------------------
 
--- Symbols to be used for displaying workspaces
--- Unfortunately, xmobar expects functions, as it expects a different symbol for each
-myCurrentSymbolFunc workspaceName = myCurrentSymbol
-myHiddenSymbolFunc  workspaceName = myHiddenSymbol
-myEmptySymbolFunc   workspaceName = myEmptySymbol
-
+-- This is the part that is actually run as a window manager
 main = do
     -- spawnPipe starts xmobar and returns a handle - named xmproc - for input
     xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
+
     -- Applies this config file over the default config for desktop use
-    xmonad $ ewmh $ desktopConfig
+    xmonad
+        -- Increased compliance with the Extended Window Manager Hints standard
+        $ ewmh
+        -- Use my config, with the process handle for xmobar
+        $ myConfig xmproc
+
+-- Adding all of my stuff to the default desktop config
+myConfig bar = desktopConfig
         { modMask     = myModMask
         , terminal    = myTerminal
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
         , layoutHook  = avoidStruts $ mySpacing $ smartBorders (layoutHook desktopConfig)
-        -- The information to send to xmobar, through the handle we defined earlier
-        , logHook     = dynamicLogWithPP xmobarPP
-                            { ppOutput = hPutStrLn xmproc
-                            -- Only send workspace information
-                            , ppOrder  = \(ws:l:t:ex) -> [ws]
-                            , ppCurrent = xmobarColor "white" "" . myCurrentSymbolFunc
-                            , ppHidden  = xmobarColor "white" "" . myHiddenSymbolFunc
-                            , ppHiddenNoWindows = xmobarColor "white" "" . myEmptySymbolFunc
-                            }
+        , logHook     = myLogHook bar
         , workspaces  = myWorkspaces
         , startupHook = spawnOnce myAutostart
         }
