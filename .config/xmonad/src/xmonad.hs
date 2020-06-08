@@ -51,6 +51,7 @@ myHeavyBrowser   = "firefox"
 myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
 myPrintScreen    = "spectacle"
+myStatusBar      = "xmobar " ++ myXmobarRC
 
 -- Command to use for the various menus
 --  myLauncher is the menu for opening applications
@@ -73,7 +74,7 @@ myBuildScript = "~/.config/xmonad/build"
 -- Programs to start automatically on login
 myAutostart   = myConfigDir ++ "autostart.sh"
 -- Config for the xmobar status bar
-myXmobarrc    = myConfigDir ++ "xmobarrc.hs"
+myXmobarRC    = myConfigDir ++ "xmobarrc.hs"
 -- Directory that contains all my rofi themes, for the rofi menu program
 rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 
@@ -130,6 +131,10 @@ mySpacing = spacingRaw True             -- Only for >1 window
                        True             -- Enable screen edge gaps
                        (Border 5 5 5 5) -- Size of window gaps
                        True             -- Enable window gaps
+
+myBorderWidth = 2
+myNormalBorderColour = "#111111"
+myFocusedBorderColour = "#268bd2"
 
 --------------------------------------------------------------------------------
 -- LOGHOOK
@@ -189,7 +194,7 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 -- This is the part that is actually run as a window manager
 main = do
     -- spawnPipe starts xmobar and returns a handle - named xmproc - for input
-    xmproc <- spawnPipe ("xmobar " ++ myXmobarrc)
+    xmproc <- spawnPipe myStatusBar
 
     -- Applies this config file over the default config for desktop use
     xmonad
@@ -200,8 +205,14 @@ main = do
 
 -- Adding all of my stuff to the default desktop config
 myConfig bar = desktopConfig
-        { modMask     = myModMask
-        , terminal    = myTerminal
+        -- Variables
+        { modMask  = myModMask
+        , terminal = myTerminal
+        -- Borders
+        , borderWidth        = myBorderWidth
+        , normalBorderColor  = myNormalBorderColour
+        , focusedBorderColor = myFocusedBorderColour
+        -- Hooks
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
         , layoutHook  = avoidStruts $ mySpacing $ smartBorders (layoutHook desktopConfig)
         , logHook     = myLogHook bar
