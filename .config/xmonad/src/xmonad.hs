@@ -46,7 +46,6 @@ myModMask  = mod4Mask
 myTerminal       = "alacritty"
 myEditor         = myTerminal ++ " -e nvim "
 myBrowser        = "qutebrowser"
-myHeavyBrowser   = "firefox"
 myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
 myPrintScreen    = "spectacle"
@@ -82,40 +81,53 @@ rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 
 -- Edit a file if it exists, otherwise show an error
 -- This basically just concatenates togather a simple shell script
-editIfExists :: [Char] -> [Char]
-editIfExists fileName = "[ -f " ++ fileName ++ " ] \
-                          \&& " ++ myEditor ++ fileName ++ " \
-                          \||  notify-send \"" ++ fileName ++ " not found\""
+editIfExists :: MonadIO m => [Char] -> m ()
+editIfExists fileName =  spawn
+    $ "[ -f " ++ fileName ++ " ] \
+      \&& " ++ myEditor ++ fileName ++ " \
+      \||  notify-send \"" ++ fileName ++ " not found\""
 
 -- Convert multiword strings to arguments (concatenate with delimiters)
 -- This makes sure my shell scripts correctly interpret their arguments
-args :: [[Char]] -> [Char]
-args arguments = " " ++ unwords (map show arguments)
+args command arguments = command ++ " " ++ unwords (map show arguments)
 
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
 --------------------------------------------------------------------------------
 
-myKeys c = (subtitle "Custom keys":) $ mkNamedKeymap c $
-    [("M-/", addName "test" $ spawn "notify-send test")]
-    ^++^
-    [ ("M-q",          spawn myBuildScript) -- recompile xmonad
-    , ("C-<Escape>",   spawn myLauncher)  -- launch dmenu with Super
-    -- Toggle fullscreen
-    , ("M-S-f",        sendMessage ToggleStruts)
-    -- Application shortcuts
-    , ("M-e",          spawn myEditor)
-    , ("M-S-e",        spawn (editIfExists "Chords/index.txt"))
-    , ("M-w",          spawn myBrowser)
-    , ("M-S-w",        spawn myHeavyBrowser)
-    , ("M-f",          spawn myGuiFileManager)
-    , ("M-z",          spawn "zoom")
-    , ("<Print>",      spawn myPrintScreen)
-    -- Menu scripts
-    , ("M-S-p M-S-p",  spawn ("menu-edit-script" ++ (args[myMenu,myEditor])))
-    , ("M-S-p M-S-e",  spawn ("menu-edit-config" ++ (args[myMenu,myEditor])))
-    , ("M-S-p M-S-c",  spawn ("menu-change-colourscheme" ++ (args[myMenu])))
-    , ("M-S-p M-S-z",  spawn ("menu-read-pdf" ++ (args[myMenu,myPdfReader])))
+myKeys :: XConfig l -> [((KeyMask, KeySym), NamedAction)]
+myKeys conf = let
+
+    subKeys name list = subtitle name : mkNamedKeymap conf list
+
+    menuEditScript         = args "menu-edit-script" [myMenu,myEditor]
+    menuEditConfig         = args "menu-edit-config" [myMenu,myEditor]
+    menuChangeColourscheme = args "menu-edit-colourscheme" [myMenu]
+    menuReadPdf            = args "menu-read-pdf" [myMenu,myPdfReader]
+
+    in
+
+    subKeys "System"
+    [ ("M-q",        addName "Recompile & Restart"              $ spawn myBuildScript)
+    , ("C-<Escape>", addName "Application Launcher (Super Key)" $ spawn myLauncher)
+    , ("M-S-f",      addName "Toggle Fullscreen"                $ sendMessage ToggleStruts)
+    , ("<Print>",    addName "Take Screenshot"                  $ spawn myPrintScreen)
+    ] ^++^
+
+    subKeys "Applications"
+    [ ("M-e",   addName "Text Editor"            $ spawn myEditor)
+    , ("M-w",   addName "Web Browser (Minimal)"  $ spawn myBrowser)
+    , ("M-S-w", addName "Firefox"                $ spawn "firefox")
+    , ("M-f",   addName "Graphical File Manager" $ spawn myGuiFileManager)
+    , ("M-z",   addName "Zoom"                   $ spawn "zoom")
+    ] ^++^
+
+    subKeys "My Scripts"
+    [ ("M-S-p M-S-p", addName "Edit Scripts"        $ spawn menuEditScript)
+    , ("M-S-p M-S-e", addName "Edit Configs"        $ spawn menuEditConfig)
+    , ("M-S-p M-S-c", addName "Change Colourscheme" $ spawn menuChangeColourscheme)
+    , ("M-S-p M-S-z", addName "Read PDF File"       $ spawn menuReadPdf)
+    , ("M-S-e",       addName "Open Chordsheets"    $ editIfExists "Chords/index.txt")
     ]
 
 -- Keybinding to display the keybinding cheatsheet
