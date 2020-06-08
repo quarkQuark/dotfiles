@@ -6,10 +6,6 @@
 import XMonad -- standard xmonad library
 import XMonad.Config.Desktop -- default desktopConfig
 
--- More fine-grained control over window placement
--- Must be qualified, as otherwise it clashes with XMonad.workspaces
-import qualified XMonad.StackSet as W
-
 -- Used to make sure my autostart script is run only on login
 import XMonad.Util.SpawnOnce
 
@@ -60,6 +56,7 @@ myStatusBar      = "xmobar " ++ myXmobarRC
 --myLauncher = "dmenu_run"
 --myMenu     = "dmenu -i -p"
 -- rofi looks much nicer, but is less minimal and the default theme is ugly
+myLauncher, myMenu :: [Char]
 myLauncher = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
 myMenu     = "rofi -dmenu -i -p"
 
@@ -99,6 +96,7 @@ args arguments = " " ++ unwords (map show arguments)
 --------------------------------------------------------------------------------
 
 -- spawn runs a string on my system shell
+myKeys :: [( [Char], X () )]
 myKeys = [ ("M-q",          spawn myBuildScript) -- recompile xmonad
          , ("C-<Escape>",   spawn myLauncher)  -- launch dmenu with Super
          -- Toggle fullscreen
@@ -132,7 +130,10 @@ mySpacing = spacingRaw True             -- Only for >1 window
                        (Border 5 5 5 5) -- Size of window gaps
                        True             -- Enable window gaps
 
+myBorderWidth :: Dimension
 myBorderWidth = 2
+
+myNormalBorderColour, myFocusedBorderColour :: [Char]
 myNormalBorderColour = "#111111"
 myFocusedBorderColour = "#268bd2"
 
@@ -152,12 +153,13 @@ myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
 -- XMonad.Hooks.DynamicLog (dynamicLogWithPP) allows us to format the output
 -- XMonad.Hooks.DynamicLog (xmobarPP) gives us some defaults
 myLogHook bar = dynamicLogWithPP xmobarPP
-        -- Formatting to apply to the entire log, after all the other formatting
+        -- Write to bar instead of stdout
         { ppOutput          = hPutStrLn bar
         -- How to order the different sections of the log
-        -- I only want to display the various workspaces
         , ppOrder           = \(workspace:layout:title:extras)
-                            -> [workspace] -- Only send workspace information
+                            -> [workspace,layout]
+        -- Separator between different sections of the log
+        , ppSep             = "  "
         -- Format the workspace information
         , ppCurrent         = xmobarColor "white" "" . myCurrentWsSymbol
         , ppHidden          = xmobarColor "white" "" . myHiddenWsSymbol
@@ -169,6 +171,7 @@ myLogHook bar = dynamicLogWithPP xmobarPP
 -- special rules based on window types
 --------------------------------------------------------------------------------
 
+myManageHook :: ManageHook
 myManageHook = composeAll . concat $
     -- Windows to automatically float
     [ [ className =? c --> doFloat           | c <- myFloatClasses ]
@@ -192,6 +195,7 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 --------------------------------------------------------------------------------
 
 -- This is the part that is actually run as a window manager
+main :: IO ()
 main = do
     -- spawnPipe starts xmobar and returns a handle - named xmproc - for input
     xmproc <- spawnPipe myStatusBar
