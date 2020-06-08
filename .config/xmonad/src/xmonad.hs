@@ -47,7 +47,7 @@ myHeavyBrowser   = "firefox"
 myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
 myPrintScreen    = "spectacle"
-myStatusBar      = "xmobar " ++ myXmobarRC
+myStatusBar      = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
 
 -- Command to use for the various menus
 --  myLauncher is the menu for opening applications
@@ -70,8 +70,6 @@ myConfigDir   = "~/.config/xmonad/src/"
 myBuildScript = "~/.config/xmonad/build"
 -- Programs to start automatically on login
 myAutostart   = myConfigDir ++ "autostart.sh"
--- Config for the xmobar status bar
-myXmobarRC    = myConfigDir ++ "xmobarrc.hs"
 -- Directory that contains all my rofi themes, for the rofi menu program
 rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 
