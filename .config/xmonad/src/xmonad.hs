@@ -10,10 +10,14 @@ import System.IO
 -- Used to make sure my autostart script is run only on login
 import XMonad.Util.SpawnOnce
 
--- Simplifies the syntax for defining keybindings
+-- Simpler keybinding syntax
 import XMonad.Util.EZConfig
--- Simpler keybinding syntax, with help popup
+-- AwesomeWM-style keybindings cheatsheet
 import XMonad.Util.NamedActions
+-- For specifying the size of a floating window
+import XMonad.Hooks.ManageHelpers (doRectFloat)
+import qualified XMonad.StackSet as W
+import Data.Ratio -- fractions for defining RationalRect
 
 -- Removes window borders if they aren't needed
 import XMonad.Layout.NoBorders (smartBorders)
@@ -100,6 +104,7 @@ myKeys conf = let
 
     subKeys name list = subtitle name : mkNamedKeymap conf list
 
+    -- Abbreviations for certain actions
     menuEditScript         = args "menu-edit-script" [myMenu,myEditor]
     menuEditConfig         = args "menu-edit-config" [myMenu,myEditor]
     menuChangeColourscheme = args "menu-edit-colourscheme" [myMenu]
@@ -137,10 +142,13 @@ myCheatsheetKey = (myModMask .|. shiftMask, xK_slash)
 -- How to display the cheatsheet (from Ethan Schoonover's config)
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
 showKeybindings keyMap = addName "Show Keybindings" $ io $ do
-    cheatsheet <- spawnPipe "zenity --text-info --font=ubuntumono"
+    cheatsheet <- spawnPipe "zenity --text-info --font='ubuntumono 12'"
     hPutStr cheatsheet (unlines $ showKm keyMap)
     hClose cheatsheet
     return ()
+
+-- Size and location of the popup
+myCheatsheetSize = W.RationalRect (1%4) (1%4) (1%2) (1%2)
 
 --------------------------------------------------------------------------------
 -- AESTHETICS
@@ -202,6 +210,7 @@ myManageHook = composeAll . concat $
     -- Windows to automatically float
     [ [ className =? c --> doFloat           | c <- myFloatClasses ]
     , [ title     =? t --> doFloat           | t <- myFloatTitles ]
+    , [ className =? "Zenity" --> doRectFloat myCheatsheetSize ]
     ]
   -- To find a window class or title, run xprop in a terminal, then click on it
   where myFloatClasses = ["Gimp","conky","plasmashell","vlc","Caprine", "Nitrogen"]
@@ -252,4 +261,3 @@ myConfig bar = desktopConfig
         , workspaces  = myWorkspaces
         , startupHook = spawnOnce myAutostart
         }
-        --`additionalKeysP` myKeys
