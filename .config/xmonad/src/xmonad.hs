@@ -3,6 +3,7 @@
 --------------------------------------------------------------------------------
 
 -- Foundations
+import Prelude hiding (lookup) -- to avoid confusing errors when mistyping Map.lookup
 import XMonad -- standard xmonad library
 import XMonad.Config.Desktop -- default desktopConfig
 import System.IO
@@ -17,9 +18,9 @@ import XMonad.Util.NamedActions
 -- For specifying the size of a floating window
 
 -- For graphically displaying the keybindings
-import Data.List.Split (chunksOf)
+import Data.List.Split (chunksOf)        -- Requires the package 'split'
 import Data.Ord (comparing)
-import Test.FitSpec.PrettyPrint (columns)
+import Test.FitSpec.PrettyPrint (columns) -- Requires the package 'fitspec'
 
 -- Removes window borders if they aren't needed
 import XMonad.Layout.NoBorders (smartBorders)
@@ -141,14 +142,19 @@ myKeys conf = let
 myCheatsheetKey :: (KeyMask, KeySym)
 myCheatsheetKey = (myModMask .|. shiftMask, xK_slash)
 
-rowsFromColumns list nCol = 1 + length list `div` nCol
+-- Number of colomns with with which to display the cheatsheet
+myCheatsheetCols :: Int
 myCheatsheetCols = 3
-myCheatsheetRows list = rowsFromColumns list myCheatsheetCols
 
+-- Format the keybindings so they can be sent to the display
+formatList :: [String] -> String
 formatList list = columns "SeparatorPlaceholder" -- Normalise column widths -> Table
                 $ map unlines -- Connect the sublists with line breals -> [column1,column2,...]
                 $ chunksOf (myCheatsheetRows (list))
                 $ list -- The list to be formatted
+
+        where rowsFromColumns list nCol = 1 + length list `div` nCol
+              myCheatsheetRows list = rowsFromColumns list myCheatsheetCols
 
 -- How to display the cheatsheet (from Ethan Schoonover's config)
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
@@ -156,7 +162,6 @@ showKeybindings myKeyList = addName "Show Keybindings" $ io $ do
     handle <- spawnPipe "dzen2-display-cheatsheet"
     hPutStrLn handle "TitlePlaceholder\n" -- Replaced in the script
     hPutStrLn handle $ formatList (showKm myKeyList)
-    --spawn $ "notify-send " ++ show (myCheatsheetSize (showKm myKeyList))
     hClose handle
     return ()
 
