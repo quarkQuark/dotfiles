@@ -1,0 +1,63 @@
+#!/usr/bin/sh
+
+font="UbuntuMono"
+
+# Colours
+background='#000000'
+titleColour='^fg(#00AAAA)'
+asideColour='^fg(#666666)'
+headingColour='^fg(#FFFFFF)'
+keyColour='^fg(#AAAA00)'
+descColour='^fg(#AAAAAA)'
+
+# Patterns to replace
+keyLines='\(M4-\|C-Escape\|Print\)[^ ]*'
+headings='>>'
+
+# Replacement Variables
+super=${keyColour}Super${titleColour}
+windows=${keyColour}Windows${titleColour}
+title="${titleColour}XMonad Keybindings (with the $super or $windows key)"\
+"${asideColour}        -    Click to close"
+
+# Screen dimensions, for positioning calculations
+screenXY=`xdpyinfo | awk '/dimensions:/ { print $2 }'`
+screenX=${screenXY%x*}
+screenY=${screenXY#*x}
+
+# Dimensions
+lineHeight=20
+lines=32
+replaceSeparator="s/SeparatorPlaceholder/    /g"
+width=1200
+height=`expr ${lineHeight} \* \( ${lines} + 1 \)`
+
+# Position
+xPos=`expr \( ${screenX} - ${width} \) / 2`
+yPos=`expr \( ${screenY} - ${height} \) / 2`
+
+# Dzen behaviour
+eventActions='onstart=uncollapse'\
+';button1=exit;button3=exit;key_Escape=exit'\
+';button4=scrollup;button5=scrolldown'
+
+# Format colour
+colourKeyLines="s/${keyLines}/${keyColour}&${descColour}/g"
+colourHeadings="s/${headings}/${headingColour}&/g"
+colourSuper="s/Super/${keyColour}Super${descColour}/g"
+formatColour="${colourKeyLines};${colourHeadings};${colourSuper}"
+
+replaceTitle="s/TitlePlaceholder/${title}/g"
+replaceMod="s/M4-\([^ ]*\)/\1   /g"
+replaceSuper="s/C-Escape/Super   /g"
+replaceText="${replaceTitle};${replaceMod};${replaceSuper};${replaceSeparator}"
+
+addMargin="/[^<${title}>]/s/^/  /g"
+
+sed "${formatColour};${replaceText};${addMargin}" \
+    | dzen2 -p \
+            -bg $background \
+            -h "$lineHeight" -w "$width" -l "$lines" \
+            -x "$xPos" -y "$yPos" \
+            -fn $font \
+            -e $eventActions

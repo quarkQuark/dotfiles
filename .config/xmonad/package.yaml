@@ -4,10 +4,8 @@ dependencies:
     - base
     - xmonad
     - xmonad-contrib
-    - containers
-    - text
-    - X11
-    - ghc
+    - split
+    - fitspec
 
 executables:
     xmonad:

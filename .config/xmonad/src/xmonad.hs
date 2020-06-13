@@ -15,9 +15,11 @@ import XMonad.Util.EZConfig
 -- AwesomeWM-style keybindings cheatsheet
 import XMonad.Util.NamedActions
 -- For specifying the size of a floating window
-import XMonad.Hooks.ManageHelpers (doRectFloat)
-import qualified XMonad.StackSet as W
-import Data.Ratio -- fractions for defining RationalRect
+
+-- For graphically displaying the keybindings
+import Data.List.Split (chunksOf)
+import Data.Ord (comparing)
+import Test.FitSpec.PrettyPrint (columns)
 
 -- Removes window borders if they aren't needed
 import XMonad.Layout.NoBorders (smartBorders)
@@ -113,42 +115,50 @@ myKeys conf = let
     in
 
     subKeys "System"
-    [ ("M-q",        addName "Recompile & Restart"              $ spawn myBuildScript)
-    , ("C-<Escape>", addName "Application Launcher (Super Key)" $ spawn myLauncher)
-    , ("M-S-f",      addName "Toggle Fullscreen"                $ sendMessage ToggleStruts)
-    , ("<Print>",    addName "Take Screenshot"                  $ spawn myPrintScreen)
+    [ ("M-q",        addName "Recompile & restart"  $ spawn myBuildScript)
+    , ("C-<Escape>", addName "Application launcher" $ spawn myLauncher)
+    , ("M-S-f",      addName "Toggle fullscreen"    $ sendMessage ToggleStruts)
+    , ("<Print>",    addName "Take screenshot"      $ spawn myPrintScreen)
     ] ^++^
 
     subKeys "Applications"
-    [ ("M-e",   addName "Text Editor"            $ spawn myEditor)
-    , ("M-w",   addName "Web Browser (Minimal)"  $ spawn myBrowser)
+    [ ("M-e",   addName "Text editor"            $ spawn myEditor)
+    , ("M-w",   addName "Web browser (minimal)"  $ spawn myBrowser)
     , ("M-S-w", addName "Firefox"                $ spawn "firefox")
-    , ("M-f",   addName "Graphical File Manager" $ spawn myGuiFileManager)
+    , ("M-f",   addName "Graphical file manager" $ spawn myGuiFileManager)
     , ("M-z",   addName "Zoom"                   $ spawn "zoom")
     ] ^++^
 
     subKeys "My Scripts"
-    [ ("M-S-p M-S-p", addName "Edit Scripts"        $ spawn menuEditScript)
-    , ("M-S-p M-S-e", addName "Edit Configs"        $ spawn menuEditConfig)
-    , ("M-S-p M-S-c", addName "Change Colourscheme" $ spawn menuChangeColourscheme)
-    , ("M-S-p M-S-z", addName "Read PDF File"       $ spawn menuReadPdf)
-    , ("M-S-e",       addName "Open Chordsheets"    $ editIfExists "Chords/index.txt")
+    [ ("M-S-p M-S-p", addName "Edit scripts"        $ spawn menuEditScript)
+    , ("M-S-p M-S-e", addName "Edit configs"        $ spawn menuEditConfig)
+    , ("M-S-p M-S-c", addName "Change colourscheme" $ spawn menuChangeColourscheme)
+    , ("M-S-p M-S-z", addName "Read PDF file"       $ spawn menuReadPdf)
+    , ("M-S-e",       addName "Open chordsheets"    $ editIfExists "Chords/index.txt")
     ]
 
 -- Keybinding to display the keybinding cheatsheet
 myCheatsheetKey :: (KeyMask, KeySym)
 myCheatsheetKey = (myModMask .|. shiftMask, xK_slash)
 
+rowsFromColumns list nCol = 1 + length list `div` nCol
+myCheatsheetCols = 3
+myCheatsheetRows list = rowsFromColumns list myCheatsheetCols
+
+formatList list = columns "SeparatorPlaceholder" -- Normalise column widths -> Table
+                $ map unlines -- Connect the sublists with line breals -> [column1,column2,...]
+                $ chunksOf (myCheatsheetRows (list))
+                $ list -- The list to be formatted
+
 -- How to display the cheatsheet (from Ethan Schoonover's config)
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
-showKeybindings keyMap = addName "Show Keybindings" $ io $ do
-    cheatsheet <- spawnPipe "zenity --text-info --font='ubuntumono 12'"
-    hPutStr cheatsheet (unlines $ showKm keyMap)
-    hClose cheatsheet
+showKeybindings myKeyList = addName "Show Keybindings" $ io $ do
+    handle <- spawnPipe "dzen2-display-cheatsheet"
+    hPutStrLn handle "TitlePlaceholder\n" -- Replaced in the script
+    hPutStrLn handle $ formatList (showKm myKeyList)
+    --spawn $ "notify-send " ++ show (myCheatsheetSize (showKm myKeyList))
+    hClose handle
     return ()
-
--- Size and location of the popup
-myCheatsheetSize = W.RationalRect (1%4) (1%4) (1%2) (1%2)
 
 --------------------------------------------------------------------------------
 -- AESTHETICS
@@ -208,9 +218,8 @@ myLogHook bar = dynamicLogWithPP xmobarPP
 myManageHook :: ManageHook
 myManageHook = composeAll . concat $
     -- Windows to automatically float
-    [ [ className =? c --> doFloat           | c <- myFloatClasses ]
-    , [ title     =? t --> doFloat           | t <- myFloatTitles ]
-    , [ className =? "Zenity" --> doRectFloat myCheatsheetSize ]
+    [ [ className =? c --> doFloat                 | c <- myFloatClasses ]
+    , [ title     =? t --> doFloat                 | t <- myFloatTitles ]
     ]
   -- To find a window class or title, run xprop in a terminal, then click on it
   where myFloatClasses = ["Gimp","conky","plasmashell","vlc","Caprine", "Nitrogen"]

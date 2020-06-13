@@ -56,7 +56,7 @@
     stalonetray
     qutebrowser
     spectacle
-    zenity
+    dzen2
     ```
 
 ## Usage
