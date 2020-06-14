@@ -4,9 +4,12 @@
 
 -- Foundations
 import Prelude hiding (lookup) -- to avoid confusing errors when mistyping Map.lookup
+import System.IO
 import XMonad -- standard xmonad library
 import XMonad.Config.Desktop -- default desktopConfig
-import System.IO
+import System.Exit (exitSuccess)
+
+import qualified XMonad.StackSet as W
 
 -- Used to make sure my autostart script is run only on login
 import XMonad.Util.SpawnOnce
@@ -115,27 +118,70 @@ myKeys conf = let
 
     in
 
-    subKeys "System"
-    [ ("M-q",        addName "Recompile & restart"  $ spawn myBuildScript)
+    subKeys "Core"
+    [ ("M-S-q",      addName "Quit XMonad (logout)" $ io exitSuccess)
+    , ("M-q",        addName "Recompile & restart"  $ spawn myBuildScript)
+    -- I use xcape to remap C-Esc to the super key on its own
     , ("C-<Escape>", addName "Application launcher" $ spawn myLauncher)
-    , ("M-S-f",      addName "Toggle fullscreen"    $ sendMessage ToggleStruts)
     , ("<Print>",    addName "Take screenshot"      $ spawn myPrintScreen)
+    , ("M-S-c",      addName "Close window"         $ kill)
+    ] ^++^
+
+    -- Untested as I currently only have one screen
+    -- Also, the default keys clash with some of mine
+    --subKeys "Screens" (
+    --[("M-"++key,   addName "Focus screen"
+                  -- $ screenWorkspace sc >>= flip whenJust (windows . W.view))
+       -- | (key,sc) <- zip ["w","e","r"] [0..]
+    --] ^++^
+    --[("M-S-"++key, addName "Send to screen"
+                  -- $ screenWorkspace sc >>= flip whenJust (windows . W.shift))
+       -- | (key,sc) <- zip ["w","e","r"] [0..]
+    --]) ^++^
+
+    subKeys "Workspaces" (
+    [ ("M-"++show key, addName ("View workspace " ++ i) $ windows $ W.greedyView i)
+        | (key,i) <- zip [1..9] (XMonad.workspaces conf)
+    ] ^++^
+    [ ("M-S-"++show key, addName ("Send to workspace " ++ i) $ windows $ W.shift i)
+        | (key,i) <- zip [1..9] (XMonad.workspaces conf)
+    ]) ^++^
+
+    subKeys "Layouts"
+    [ ("M-S-f",       addName "Toggle fullscreen"    $ sendMessage ToggleStruts)
+    , ("M-h",         addName "Shrink master"        $ sendMessage Shrink)
+    , ("M-l",         addName "Expand master"        $ sendMessage Expand)
+    , ("M-,",         addName "More master windows"  $ sendMessage $ IncMasterN 1)
+    , ("M-.",         addName "Fewer master windows" $ sendMessage $ IncMasterN (-1))
+    , ("M-<Space>",   addName "Next layout"          $ sendMessage NextLayout)
+    ] ^++^
+
+    subKeys "Windows"
+    [ ("M-<Tab>",    addName "Focus next"     $ windows W.focusDown)
+    , ("M-S-<Tab>",  addName "Focus previous" $ windows W.focusUp)
+    , ("M-j",        addName "Focus next"     $ windows W.focusDown)
+    , ("M-k",        addName "Focus previous" $ windows W.focusUp)
+    , ("M-m",        addName "Focus master"   $ windows W.focusMaster)
+    , ("M-S-j",      addName "Swap next"      $ windows W.swapDown)
+    , ("M-S-k",      addName "Swap previous"  $ windows W.swapUp)
+    , ("M-<Return>", addName "Swap master"    $ windows W.swapMaster)
+    , ("M-t",        addName "Unfloat"        $ withFocused $ windows . W.sink)
     ] ^++^
 
     subKeys "Applications"
-    [ ("M-e",   addName "Text editor"            $ spawn myEditor)
-    , ("M-w",   addName "Web browser (minimal)"  $ spawn myBrowser)
-    , ("M-S-w", addName "Firefox"                $ spawn "firefox")
-    , ("M-f",   addName "Graphical file manager" $ spawn myGuiFileManager)
-    , ("M-z",   addName "Zoom"                   $ spawn "zoom")
+    [ ("M-S-<Return>", addName "Terminal emulator"      $ spawn myTerminal)
+    , ("M-e",          addName "Text editor"            $ spawn myEditor)
+    , ("M-w",          addName "Web browser (minimal)"  $ spawn myBrowser)
+    , ("M-S-w",        addName "Firefox"                $ spawn "firefox")
+    , ("M-f",          addName "Graphical file manager" $ spawn myGuiFileManager)
+    , ("M-z",          addName "Zoom"                   $ spawn "zoom")
     ] ^++^
 
     subKeys "My Scripts"
-    [ ("M-S-p M-S-p", addName "Edit scripts"        $ spawn menuEditScript)
-    , ("M-S-p M-S-e", addName "Edit configs"        $ spawn menuEditConfig)
-    , ("M-S-p M-S-c", addName "Change colourscheme" $ spawn menuChangeColourscheme)
-    , ("M-S-p M-S-z", addName "Read PDF file"       $ spawn menuReadPdf)
-    , ("M-S-e",       addName "Open chordsheets"    $ editIfExists "Chords/index.txt")
+    [ ("M-p M-p", addName "Edit scripts"        $ spawn menuEditScript)
+    , ("M-p M-e", addName "Edit configs"        $ spawn menuEditConfig)
+    , ("M-p M-c", addName "Change colourscheme" $ spawn menuChangeColourscheme)
+    , ("M-p M-z", addName "Read PDF file"       $ spawn menuReadPdf)
     ]
 
 -- Keybinding to display the keybinding cheatsheet
@@ -256,7 +302,8 @@ main = do
         -- Use my config, with the process handle for xmobar
         -- Add keybindings in such a way as to allow viewing a cheatsheet with M-?
         -- showKeybindings is the script used to display them
-        $ addDescrKeys (myCheatsheetKey, showKeybindings) myKeys
+        -- The prime shows that we are not merging with the default keys
+        $ addDescrKeys' (myCheatsheetKey, showKeybindings) myKeys
         $ myConfig xmproc
 
 -- Adding all of my stuff to the default desktop config
