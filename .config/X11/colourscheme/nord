@@ -24,10 +24,10 @@
 #define nord15 #B48EAD
 
 *.foreground:   nord4
-*.background:   [95]nord0
+*.background:   nord0
 *.cursorColor:  nord4
 *fading: 5
-*fadeColor: [0]nord3
+*fadeColor: nord3
 
 *.color0: nord1
 *.color1: nord11
