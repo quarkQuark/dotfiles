@@ -86,16 +86,8 @@ myAutostart   = myConfigDir ++ "autostart.sh"
 rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 
 --------------------------------------------------------------------------------
--- MY FUNCTIONS AND SCRIPTS
+-- FUNCTIONS AND SCRIPTS
 --------------------------------------------------------------------------------
-
--- Edit a file if it exists, otherwise show an error
--- This basically just concatenates togather a simple shell script
-editIfExists :: MonadIO m => [Char] -> m ()
-editIfExists fileName =  spawn
-    $ "[ -f " ++ fileName ++ " ] \
-      \&& " ++ myEditor ++ fileName ++ " \
-      \||  notify-send \"" ++ fileName ++ " not found\""
 
 -- Convert multiword strings to arguments (concatenate with delimiters)
 -- This makes sure my shell scripts correctly interpret their arguments
@@ -238,7 +230,6 @@ myFocusedBorderColour = "#268bd2"
 --------------------------------------------------------------------------------
 
 -- Symbols for displaying workspaces in xmobar
-
 -- Must be functions, as it expects a different symbol for each
 myCurrentWsSymbol workspaceName = "[●]" -- The workspace currently active
 myHiddenWsSymbol  workspaceName =  "●"  -- Workspaces with open windows
