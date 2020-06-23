@@ -35,8 +35,6 @@ export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 
 # Runtime locations (in /run/user/1000)
 export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
-# Breaks LightDM - see
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 # Program settings
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
