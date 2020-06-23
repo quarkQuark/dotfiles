@@ -1,1 +1,1 @@
-source "$HOME"/.config/sh/envrc
+source "$HOME"/.config/shell/envrc
