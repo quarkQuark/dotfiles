@@ -1,6 +1,7 @@
 # Desktop
 nitrogen --restore &
 picom &
+redshift
 
 # Settings
 xcape -e 'Super_L=Control_L|Escape' &
@@ -8,7 +9,7 @@ xrdb -merge "$HOME/.config/X11/Xresources" &
 
 # Daemons
 urxvtd -q -o -f &
-#emacs --daemon &
+emacs --daemon &
 
 # Tray
 stalonetray --config ~/.config/xmonad/src/stalonetrayrc &
