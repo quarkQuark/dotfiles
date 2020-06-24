@@ -103,21 +103,13 @@ myKeys conf = let
     subKeys name list = subtitle name : mkNamedKeymap conf list
 
     -- Abbreviations for certain actions
-    menuEditScript         = args "menu-edit-script" [myMenu,myEditor]
-    menuEditConfig         = args "menu-edit-config" [myMenu,myEditor]
-    menuChangeColourscheme = args "menu-edit-colourscheme" [myMenu]
-    menuReadPdf            = args "menu-read-pdf" [myMenu,myPdfReader]
+    menuEditScript         = spawn $ args "menu-edit-script" [myMenu,myEditor]
+    menuEditConfig         = spawn $ args "menu-edit-config" [myMenu,myEditor]
+    menuChangeColourscheme = spawn $ args "menu-edit-colourscheme" [myMenu]
+    menuReadPdf            = spawn $ args "menu-read-pdf" [myMenu,myPdfReader]
 
-    -- TODO Convert to shell script
-    volumeAdjust "toggle"       = spawn $ concat
-        [ "amixer set Master toggle && notify-send \"Volume "
-        , "`amixer get Master | grep 'Left: ' | awk -F'[][]' '{ print $4 }'`"
-        , "\""]
-    volumeAdjust percentage     =  spawn $ concat
-        [ "amixer set Master " , percentage , " unmute"
-        , " && notify-send \"Volume "
-        , "`amixer get Master | grep 'Left: ' | awk -F'[][]' '{ print $2 }'`"
-        , "\"" ]
+    volumeAdjust "toggle" = spawn "adjust-volume toggle"
+    volumeAdjust value    = spawn $ args "adjust-volume" $ words value
 
     brightnessAdjust percentage = spawn
         $ "xbacklight " ++ percentage ++ " && notify-send \"Brightness `xbacklight -get`%\""
@@ -184,21 +176,21 @@ myKeys conf = let
     ] ^++^
 
     subKeys "My Scripts"
-    [ ("M-p M-p", addName "Edit scripts"        $ spawn menuEditScript)
-    , ("M-p M-e", addName "Edit configs"        $ spawn menuEditConfig)
-    , ("M-p M-c", addName "Change colourscheme" $ spawn menuChangeColourscheme)
-    , ("M-p M-z", addName "Read PDF file"       $ spawn menuReadPdf)
+    [ ("M-p M-p", addName "Edit scripts"        $ menuEditScript)
+    , ("M-p M-e", addName "Edit configs"        $ menuEditConfig)
+    , ("M-p M-c", addName "Change colourscheme" $ menuChangeColourscheme)
+    , ("M-p M-z", addName "Read PDF file"       $ menuReadPdf)
     ] ^++^
 
     subKeys "Multimedia Keys"
     [ ("<XF86AudioMute>",         addName "Toggle mute"         $ volumeAdjust "toggle")
-    , ("<XF86AudioLowerVolume>",  addName "Decrease volume"     $ volumeAdjust "5%-")
-    , ("<XF86AudioRaiseVolume>",  addName "Increase volume"     $ volumeAdjust "5%+")
+    , ("<XF86AudioLowerVolume>",  addName "Decrease volume"     $ volumeAdjust "- 5%")
+    , ("<XF86AudioRaiseVolume>",  addName "Increase volume"     $ volumeAdjust "+ 5%")
     , ("<XF86MonBrightnessDown>", addName "Decrease brightness" $ brightnessAdjust "-dec 10")
     , ("<XF86MonBrightnessUp>",   addName "Increase brightness" $ brightnessAdjust "-inc 10")
     , ("C-<F1>",                  addName "Toggle mute"         $ volumeAdjust "toggle")
-    , ("C-<F2>",                  addName "Decrease volume"     $ volumeAdjust "5%-")
-    , ("C-<F3>",                  addName "Increase volume"     $ volumeAdjust "5%+")
+    , ("C-<F2>",                  addName "Decrease volume"     $ volumeAdjust "- 5%")
+    , ("C-<F3>",                  addName "Increase volume"     $ volumeAdjust "+ 5%")
     , ("C-<F11>",                 addName "Decrease brightness" $ brightnessAdjust "-dec 10")
     , ("C-<F12>",                 addName "Increase brightness" $ brightnessAdjust "-inc 10")
     ]
