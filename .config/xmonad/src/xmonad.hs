@@ -22,7 +22,6 @@ import XMonad.Util.NamedActions
 
 -- For graphically displaying the keybindings
 import Data.List.Split (chunksOf)        -- Requires the package 'split'
-import Data.Ord (comparing)
 import Test.FitSpec.PrettyPrint (columns) -- Requires the package 'fitspec'
 
 -- Removes window borders if they aren't needed
@@ -91,6 +90,7 @@ rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
 
 -- Convert multiword strings to arguments (concatenate with delimiters)
 -- This makes sure my shell scripts correctly interpret their arguments
+args :: String -> [String] -> String
 args command arguments = command ++ " " ++ unwords (map show arguments)
 
 --------------------------------------------------------------------------------
@@ -107,6 +107,20 @@ myKeys conf = let
     menuEditConfig         = args "menu-edit-config" [myMenu,myEditor]
     menuChangeColourscheme = args "menu-edit-colourscheme" [myMenu]
     menuReadPdf            = args "menu-read-pdf" [myMenu,myPdfReader]
+
+    -- TODO Convert to shell script
+    volumeAdjust "toggle"       = spawn $ concat
+        [ "amixer set Master toggle && notify-send \"Volume "
+        , "`amixer get Master | grep 'Left: ' | awk -F'[][]' '{ print $4 }'`"
+        , "\""]
+    volumeAdjust percentage     =  spawn $ concat
+        [ "amixer set Master " , percentage , " unmute"
+        , " && notify-send \"Volume "
+        , "`amixer get Master | grep 'Left: ' | awk -F'[][]' '{ print $2 }'`"
+        , "\"" ]
+
+    brightnessAdjust percentage = spawn
+        $ "xbacklight " ++ percentage ++ " && notify-send \"Brightness `xbacklight -get`%\""
 
     in
 
@@ -174,6 +188,19 @@ myKeys conf = let
     , ("M-p M-e", addName "Edit configs"        $ spawn menuEditConfig)
     , ("M-p M-c", addName "Change colourscheme" $ spawn menuChangeColourscheme)
     , ("M-p M-z", addName "Read PDF file"       $ spawn menuReadPdf)
+    ] ^++^
+
+    subKeys "Multimedia Keys"
+    [ ("<XF86AudioMute>",         addName "Toggle mute"         $ volumeAdjust "toggle")
+    , ("<XF86AudioLowerVolume>",  addName "Decrease volume"     $ volumeAdjust "5%-")
+    , ("<XF86AudioRaiseVolume>",  addName "Increase volume"     $ volumeAdjust "5%+")
+    , ("<XF86MonBrightnessDown>", addName "Decrease brightness" $ brightnessAdjust "-dec 10")
+    , ("<XF86MonBrightnessUp>",   addName "Increase brightness" $ brightnessAdjust "-inc 10")
+    , ("C-<F1>",                  addName "Toggle mute"         $ volumeAdjust "toggle")
+    , ("C-<F2>",                  addName "Decrease volume"     $ volumeAdjust "5%-")
+    , ("C-<F3>",                  addName "Increase volume"     $ volumeAdjust "5%+")
+    , ("C-<F11>",                 addName "Decrease brightness" $ brightnessAdjust "-dec 10")
+    , ("C-<F12>",                 addName "Increase brightness" $ brightnessAdjust "-inc 10")
     ]
 
 -- Keybinding to display the keybinding cheatsheet
