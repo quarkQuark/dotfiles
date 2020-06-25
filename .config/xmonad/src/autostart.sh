@@ -1,7 +1,7 @@
 # Desktop
 nitrogen --restore &
 picom &
-redshift
+redshift &
 
 # Settings
 xcape -e 'Super_L=Control_L|Escape' &
