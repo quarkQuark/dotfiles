@@ -5,7 +5,7 @@ Config { position = Top
        , alpha = 50  -- 0 transparent, 255 opaque
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% } %time% { %date% %coretemp%  %battery%        "
+       , template = " %StdinReader% } %time% { %date% | %coretemp% | %battery%        "
 
        , commands = [ Run StdinReader
                     , Run Date "%_I:%M" "time" 300 -- every 30s
@@ -26,7 +26,7 @@ Config { position = Top
                                    , "--high"     , "#33BB33"
                                    -- Battery-specific options
                                    , "--"
-                                   , "-o" , "<left>% (<timeleft>)"      -- discharging
+                                   , "-o" , "<left>% (<timeleft> left)"      -- discharging
                                    , "-O" , "<fc=#DDDD00>+<left>%+</fc>" -- charging
                                    , "-i" , "<fc=#008800>Full</fc>"  -- fully charged
                                    ] 50 -- every 5s
