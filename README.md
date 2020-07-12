@@ -2,18 +2,8 @@
 
 1.  Dependencies:
 
-    Required:
-    ```bash
-    git
-    nerd-fonts-complete  # aur, for URxvt
-    ```
-
-    Optional:
-    ```bash
-    nvim
-    neofetch
-    exa
-    ```
+    * Required: `git aur/nerd-fonts-complete`
+    * Optional: `exa neofetch nvim`
 
 2.  Clone
 
@@ -33,31 +23,27 @@
     ripgrep
     ```
 
-4.  Xmonad is installed via `stack-static` from the aur
+4.  Xmonad is installed via `stack-static` from the aur:
     ```bash
     cd ~/.config/xmonad
     stack install
+    cd ~/.config/taffybar
+    stack install
+    stack install xmobar
+    stack install status-notifier-item  # For taffybar's system tray
     ```
-    This also installs xmonad-contrib and xmobar
     
     My xmonad configuration also depends on the following packages:
-    ```bash
-    nitrogen
-    aur/picom-ibhagwan-git
-    xcape
-    alacritty
-    nvim
-    networkmanager
-    network-manager-applet
-    udiskie
-    volumeicon
-    xfce4-power-manager
-    rofi
-    stalonetray
-    qutebrowser
-    spectacle
-    dzen2
-    ```
+    * System:           `network-manager nitrogen aur/picom-ibhagwan-git`
+    * Default programs: `alacritty nvim qutebrowser rofi spectacle`
+    * Bar applets:      `network-manager-applet udiskie pasystray`
+    * For xmobar:       `stalonetray xfce4-power-manager`
+    * For taffybar:     `lxqt-power-management`
+    * Other:
+      ``` bash
+      dzen2  # For the keybinding cheatsheet
+      xcape  # For rebinding C-Esc to super
+      ```
 
 ## Usage
 

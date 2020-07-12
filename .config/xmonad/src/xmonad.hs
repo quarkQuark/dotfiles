@@ -2,45 +2,23 @@
 -- IMPORTS
 --------------------------------------------------------------------------------
 
--- Foundations
-import Prelude hiding (lookup) -- to avoid confusing errors when mistyping Map.lookup
-import System.IO
-import XMonad -- standard xmonad library
-import XMonad.Config.Desktop -- default desktopConfig
+import Data.List.Split (chunksOf)         -- Requires the package 'split'
+import Prelude hiding (lookup)            -- to avoid confusing errors when mistyping Map.lookup
 import System.Exit (exitSuccess)
-
-import qualified XMonad.StackSet as W
-
--- Used to make sure my autostart script is run only on login
-import XMonad.Util.SpawnOnce
-
--- Simpler keybinding syntax
-import XMonad.Util.EZConfig
--- AwesomeWM-style keybindings cheatsheet
-import XMonad.Util.NamedActions
--- For specifying the size of a floating window
-
--- For graphically displaying the keybindings
-import Data.List.Split (chunksOf)        -- Requires the package 'split'
+import System.IO
 import Test.FitSpec.PrettyPrint (columns) -- Requires the package 'fitspec'
-
--- Removes window borders if they aren't needed
-import XMonad.Layout.NoBorders (smartBorders)
--- Allow gaps to be displayed around windows, for aesthetic purposes
-import XMonad.Layout.Spacing
--- Fixes automatic fullscreening of applications
-import XMonad.Hooks.EwmhDesktops
-
---------------------------------------------------------------------------------
-
--- For xmobar
-
--- For starting and sending information to processes
-import XMonad.Util.Run
--- Allows us to customise the logHook that sends information to xmobar
-import XMonad.Hooks.DynamicLog
--- Provides tools to manipulate docks and panels, and to avoid overlapping them
-import XMonad.Hooks.ManageDocks
+import XMonad                             -- standard xmonad library
+import XMonad.Config.Desktop              -- default desktopConfig
+import XMonad.Hooks.DynamicLog            -- Customising the logHook (sends data to xmobar)
+import XMonad.Hooks.EwmhDesktops          -- Fixes the automatic fullscreening of applications
+import XMonad.Hooks.ManageDocks           -- Manipulate and avoid docks and panels
+import XMonad.Layout.NoBorders            -- Remove borders when unnecessary (smartBorders)
+import XMonad.Layout.Spacing              -- Gaps around windows
+import qualified XMonad.StackSet as W
+import XMonad.Util.EZConfig               -- Simpler keybinding syntax
+import XMonad.Util.NamedActions           -- AwesomeWM-style keybinding syntax
+import XMonad.Util.Run                    -- Start and send information to processes
+import XMonad.Util.SpawnOnce              -- For running autostart only once (on login)
 
 --------------------------------------------------------------------------------
 -- VARIABLES AND DEFAULT PROGRAMS
@@ -58,7 +36,13 @@ myBrowser        = "qutebrowser"
 myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
 myPrintScreen    = "spectacle"
-myStatusBar      = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
+
+-- Status bar
+data Bar = Taffybar | XMobar
+myBar :: Bar
+myBar = Taffybar
+myBarCommand XMobar   = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
+myBarCommand Taffybar = "taffybar"
 
 -- Command to use for the various menus
 --  myLauncher is the menu for opening applications
@@ -302,8 +286,8 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 -- This is the part that is actually run as a window manager
 main :: IO ()
 main = do
-    -- spawnPipe starts xmobar and returns a handle - named xmproc - for input
-    xmproc <- spawnPipe myStatusBar
+    -- spawnPipe starts the bar and returns a handle - named barProc - for input
+    barProc <- spawnPipe (myBarCommand myBar)
 
     -- Applies this config file over the default config for desktop use
     xmonad
@@ -314,7 +298,7 @@ main = do
         -- showKeybindings is the script used to display them
         -- The prime shows that we are not merging with the default keys
         $ addDescrKeys' (myCheatsheetKey, showKeybindings) myKeys
-        $ myConfig xmproc
+        $ myConfig barProc
 
 -- Adding all of my stuff to the default desktop config
 myConfig bar = desktopConfig

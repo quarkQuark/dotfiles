@@ -1,0 +1,16 @@
+name: myTaffybar
+
+dependencies:
+    - base
+    - taffybar
+
+executables:
+    taffybar:
+        source-dirs: src
+        main:        taffybar.hs
+        ghc-options:
+            - -threaded
+            - -rtsopts
+            - -with-rtsopts=-N
+        ghc-prof-options:
+            - -fprof-auto
