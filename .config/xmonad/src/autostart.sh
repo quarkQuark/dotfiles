@@ -1,7 +1,3 @@
-# Watch for applications that want to use the system tray (for taffybar)
-# Part of the haskell package status-notifier-item
-status-notifier-watcher &
-
 # Settings
 xcape -e 'Super_L=Control_L|Escape' &
 xrdb -merge "$HOME/.config/X11/Xresources" &

@@ -41,32 +41,28 @@ myPrintScreen    = "spectacle"
 data Bar = Taffybar | XMobar
 myBar :: Bar
 myBar = Taffybar
+
+myBarCommand :: Bar -> String
 myBarCommand XMobar   = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
 myBarCommand Taffybar = "taffybar"
 
--- Command to use for the various menus
---  myLauncher is the menu for opening applications
---  myMenu is used for displaying user-generated menus (my shell menu scripts)
+myTrayCommand :: Bar -> String
+myTrayCommand XMobar   = "stalonetray --config " ++ myConfigDir ++ "stalonetrayrc"
+myTrayCommand Taffybar = "status-notifier-watcher"  -- From status-notifier-item
+
+myLauncher, myMenu :: [Char]
 -- dmenu is a much simpler option, but with less eye-candy
 --myLauncher = "dmenu_run"
 --myMenu     = "dmenu -i -p"
 -- rofi looks much nicer, but is less minimal and the default theme is ugly
-myLauncher, myMenu :: [Char]
-myLauncher = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre"
-myMenu     = "rofi -dmenu -i -p"
-
---------------------------------------------------------------------------------
+myLauncher = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre" -- Command to open applications
+myMenu     = "rofi -dmenu -i -p"  -- For scripts that require user input
 
 -- Config locations
-
--- Directory for storing xmonad-related config files
-myConfigDir   = "~/.config/xmonad/src/"
--- The script run to recompile xmonad after config changes
-myBuildScript = "~/.config/xmonad/build"
--- Programs to start automatically on login
-myAutostart   = myConfigDir ++ "autostart.sh"
--- Directory that contains all my rofi themes, for the rofi menu program
-rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi"
+myConfigDir   = "~/.config/xmonad/src/"       -- XMonad-related config
+myBuildScript = "~/.config/xmonad/build"      -- Script to recompile and restart xmonad
+myAutostart   = myConfigDir ++ "autostart.sh" -- Script to run on login
+rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi" -- Rofi theme directory
 
 --------------------------------------------------------------------------------
 -- FUNCTIONS AND SCRIPTS
@@ -314,5 +310,7 @@ myConfig bar = desktopConfig
         , layoutHook  = avoidStruts $ mySpacing $ smartBorders (layoutHook desktopConfig)
         , logHook     = myLogHook bar
         , workspaces  = myWorkspaces
-        , startupHook = spawnOnce myAutostart
+        , startupHook = do
+            spawnOnce (myTrayCommand myBar)
+            spawnOnce myAutostart
         }
