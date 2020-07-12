@@ -282,8 +282,8 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 -- This is the part that is actually run as a window manager
 main :: IO ()
 main = do
-    -- spawnPipe starts the bar and returns a handle - named barProc - for input
-    barProc <- spawnPipe (myBarCommand myBar)
+    barProc <- spawnPipe (myBarCommand myBar)  -- Start myBar and return a handle
+    spawn "pkill -o taffybar" -- Kill oldest taffybar instance (move to M-q binding?)
 
     -- Applies this config file over the default config for desktop use
     xmonad
