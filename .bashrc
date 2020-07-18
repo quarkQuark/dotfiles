@@ -53,7 +53,7 @@ LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 # Check and update neofetch cache
 NEOFETCH_CACHE=$XDG_CACHE_HOME/neofetch.txt
 command -v neofetch >/dev/null \
-    && ! find $NEOFETCH_CACHE -mtime -1 >/dev/null \
+    && [[ ! `find $NEOFETCH_CACHE -mtime -1 >/dev/null` ]] \
     && neofetch > $NEOFETCH_CACHE
 
 # Print out neofetch cache
