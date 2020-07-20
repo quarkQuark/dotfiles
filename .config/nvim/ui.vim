@@ -18,9 +18,9 @@ endif
 hi! Normal  ctermbg=NONE guibg=NONE
 hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
-"""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" => Statusline
-"""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Hide default mode text, as airline has it instead
 set noshowmode
@@ -29,3 +29,47 @@ set noshowmode
 let g:airline_powerline_fonts=1
 
 let g:airline_theme = 'powerlineish'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" => startify welcome screen
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:startify_padding_left = 22
+
+let g:startify_lists = [
+      \ { 'type': 'sessions',  'header': startify#pad(['Sessions'])     },
+      \ { 'type': 'bookmarks', 'header': startify#pad(['Bookmarks'])    },
+      \ { 'type': 'commands',  'header': startify#pad(['Commands'])     },
+      \ { 'type': 'files',     'header': startify#pad(['Recent Files']) },
+      \ ]
+
+let g:startify_bookmarks = [
+      \ { 'c': '~/Chords/index.txt' },
+      \ ]
+
+" Files to ignore in 'Recent Files'
+" NB: Wildcard * must be written as .*
+let g:startify_skiplist = [
+      \ "Chords",
+      \ ".local/share/nvim/plugged/.*/doc",
+      \ "/usr/share/nvim/runtime/doc",
+      \ ]
+
+" Default is 'startify#pad(startify#fortune#cowsay())'
+let g:startify_custom_header = [
+      \ '       s++       so                                                                ',
+      \ '     sss+++      ooso                                           NN                 ',
+      \ '   yyyss++++     oooos                                          ""                 ',
+      \ '   yyyys++++++   ooooo    NNNNNN   mNNNNNm   NNNNNN  Nmm    Nmm Nm  Nmm mmmNm mmmm ',
+      \ '   yyyyy ++++++  sssss    N     m N       N mm    mm  mmm  Nmm  Nm  NmmN  mmmN  mmm',
+      \ '   yyyyy  ++++++ sssss    N     m NNNNNNNN  N      N   mmNNmm   Nm  Nmm   Nmm   Nmm',
+      \ '   yyyyy   ++++++sssss    N     m N         mm    mm    mmmm    Nm  Nmm   Nmm   Nmm',
+      \ '   yyyyy    +++++yssss    N     m  NNNNNNY   NNNNNN      mm     Nm  Mmm   Nmm   Nmm',
+      \ '   hyyyy     ++++yysss                                                             ',
+      \ '     hhh      +++yyy                                                               ',
+      \ '       d        +yF                                                                ',
+      \ ]
+
+"" May be useful in future
+" Autoloads session if Session.vim found in current directory
+"let g:startify_session_autoload = 1

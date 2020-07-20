@@ -23,6 +23,7 @@ Plug 'plasticboy/vim-markdown'
 "" Haskell
 
 "" Aesthetics
+Plug 'mhinz/vim-startify', {'branch':'center'}
 Plug 'ryanoasis/vim-devicons'			" Adds icons
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'	" Adds icons to NERDTree; requires vim-devicons
 Plug 'vim-airline/vim-airline'
@@ -38,7 +39,8 @@ call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
 
-"let g:airline#extensions#ale#enabled = 1  " Integrate airline with ale for linting
+" Integrate airline with ale for linting
+let g:airline#extensions#ale#enabled = 1
 
 """"""""""""""""""""""""""""""""""""""""
 "" => NERDTree
@@ -52,9 +54,6 @@ let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 1
 let NERDTreeShowHidden = 1      " Toggle with I (Shift-i)
 
-" Keybinding
-nnoremap <Leader>t :NERDTreeToggle<CR>
-
 """"""""""""""""""""""""""""""""""""""""
 "" => nnn.vim
 """"""""""""""""""""""""""""""""""""""""
@@ -64,10 +63,7 @@ let g:nnn#set_default_mappings = 0
 " Show as a floating window
 let g:nnn#layout = { 'window':{ 'width':0.9, 'height':0.6, 'highlight':'Debug' } }
 " Start in nav-to-type mode
-let g:nnn#command = 'nnn -n'
-
-" Start nnn in the current file's directory
-nnoremap <leader>n :NnnPicker '%:p:h'<CR>
+"let g:nnn#command = 'nnn -n'
 
 """"""""""""""""""""""""""""""""""""""""
 "" => Fuzzy finding
@@ -81,9 +77,6 @@ let g:picker_custom_find_flags = '--color never --files --hidden'
 nnoremap <leader>fy :PickerEdit %:p:h<CR>
 nnoremap <leader>fh :PickerSplit %:p:h<CR>
 nnoremap <leader>fv :PickerVsplit %:p:h<CR>
-
-"" fzf
-nnoremap <leader>ff :Files %:p:h<CR>
 
 """"""""""""""""""""""""""""""""""""""""
 "" => vim-hexokinase
