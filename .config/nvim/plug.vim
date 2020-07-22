@@ -9,6 +9,7 @@ Plug 'scrooloose/nerdtree', {'on':'NERDTreeToggle'}
 Plug 'mcchrish/nnn.vim'
 Plug 'srstevenson/vim-picker'  " fzy integration
 Plug 'junegunn/fzf.vim'
+Plug 'sirver/ultisnips'
 
 "" General Coding
 Plug 'w0rp/ale'  " linting
@@ -17,10 +18,14 @@ Plug 'w0rp/ale'  " linting
 Plug 'vim-scripts/indentpython.vim', {'for':'python'}
 Plug 'nvie/vim-flake8', {'for':'python'}
 
-"" Markdown
-Plug 'plasticboy/vim-markdown'
-
 "" Haskell
+
+"" Markdown
+Plug 'plasticboy/vim-markdown', {'for':'markdown'}
+
+"" LaTeX
+Plug 'lervag/vimtex', {'for':'tex'}
+Plug 'KeitaNakamura/tex-conceal.vim', {'for':'tex'}
 
 "" Aesthetics
 Plug 'mhinz/vim-startify', {'branch':'center'}
@@ -77,6 +82,14 @@ let g:picker_custom_find_flags = '--color never --files --hidden'
 nnoremap <leader>fy :PickerEdit %:p:h<CR>
 nnoremap <leader>fh :PickerSplit %:p:h<CR>
 nnoremap <leader>fv :PickerVsplit %:p:h<CR>
+
+""""""""""""""""""""""""""""""""""""""""
+"" => UltiSnips
+""""""""""""""""""""""""""""""""""""""""
+
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 """"""""""""""""""""""""""""""""""""""""
 "" => vim-hexokinase

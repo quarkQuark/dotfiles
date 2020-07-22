@@ -14,7 +14,10 @@ else
     colorscheme nord
 endif
 
-" Fixes transparency in alacritty
+" Fix unreadable conceal colours in some colourschemes
+hi Conceal guibg=Normal guifg=Normal ctermbg=None ctermfg=None
+
+" Fix transparency in alacritty
 hi! Normal  ctermbg=NONE guibg=NONE
 hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 

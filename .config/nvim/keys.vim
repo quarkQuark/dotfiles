@@ -1,3 +1,5 @@
+" I reserve m for filetype keybindings
+
 " Use jk as escape
 inoremap jk <esc>
 
