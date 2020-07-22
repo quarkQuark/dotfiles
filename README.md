@@ -2,7 +2,7 @@
 
 1.  Dependencies:
 
-    * Required: `git aur/nerd-fonts-complete`
+    * Required: `aur/nerd-fonts-ubuntu-mono`
     * Optional: `exa neofetch nvim`
 
 2.  Clone
