@@ -50,16 +50,16 @@ shopt -s checkwinsize
 #[ -x /usr/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe)"
 LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
 
-# Check and update neofetch cache
-NEOFETCH_CACHE=$XDG_CACHE_HOME/neofetch.txt
-command -v neofetch >/dev/null \
-    && [[ ! `find $NEOFETCH_CACHE -mtime -1 >/dev/null` ]] \
-    && neofetch > $NEOFETCH_CACHE
-
-# Print out neofetch cache
-[ -f $NEOFETCH_CACHE ] \
-    && cat $NEOFETCH_CACHE \
-    || echo "neofetch not found"
+## Check and update neofetch cache
+#NEOFETCH_CACHE=$XDG_CACHE_HOME/neofetch.txt
+#command -v neofetch >/dev/null \
+#    && [[ ! `find $NEOFETCH_CACHE -mtime -1 >/dev/null` ]] \
+#    && neofetch > $NEOFETCH_CACHE
+## Print out neofetch cache
+#[ -f $NEOFETCH_CACHE ] \
+#    && cat $NEOFETCH_CACHE \
+#    || echo "neofetch not found"
+neofetch
 
 ALIAS_FILE=$XDG_CONFIG_HOME/shell/aliasrc
 [ -f $ALIAS_FILE ] && source $ALIAS_FILE
