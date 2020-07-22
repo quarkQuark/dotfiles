@@ -35,7 +35,7 @@
     
     My xmonad configuration also depends on the following packages:
     * System:           `network-manager nitrogen aur/picom-ibhagwan-git`
-    * Default programs: `alacritty nvim qutebrowser rofi spectacle`
+    * Default programs: `alacritty nvim qutebrowser redshift rofi spectacle`
     * Bar applets:      `network-manager-applet udiskie pasystray`
     * For xmobar:       `stalonetray xfce4-power-manager`
     * For taffybar:     `lxqt-power-management`
