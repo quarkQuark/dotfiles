@@ -1,21 +1,13 @@
 #!/usr/bin/env bash
-#
-# Neofetch config file
-# https://github.com/dylanaraps/neofetch
 
-
-# See this wiki page for more info:
-# https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 print_info() {
     #info title
-    info "OS" distro
+    info distro
     info "Kernel" kernel
-    #info "Install Date" install_date
     info "Packages" packages
 
     info "DE" de
     info "WM" wm
-    info "WM Theme" wm_theme
 
     info "Shell" shell
     info "Terminal" term
@@ -26,11 +18,10 @@ print_info() {
     info "Model" model
     info "Resolution" resolution
 
-    info "Uptime" uptime
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
-    info "Disk" disk
+    info "Disc Usage" disk
 
     info line_break
     info cols
