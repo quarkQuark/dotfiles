@@ -5,7 +5,7 @@ Config { position = Top
        , alpha = 50  -- 0 transparent, 255 opaque
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% } %time% { %date% | %coretemp% | %battery%        "
+       , template = " %StdinReader% } %time% { %date% | %coretemp% | %battery%            "
 
        , commands = [ Run StdinReader
                     , Run Date "%_I:%M" "time" 300 -- every 30s
