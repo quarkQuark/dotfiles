@@ -1,7 +1,3 @@
-# Settings
-xcape -e 'Super_L=Control_L|Escape' &
-xrdb -merge "$HOME/.config/X11/Xresources" &
-
 # Desktop
 nitrogen --restore &
 picom &
@@ -21,3 +17,7 @@ pasystray &  # Works for IvanMalison
 # I still prefer xfce4-power-manager to lxqt-powermanagement,
 # but I can't get it to show up in taffybar
 #xfce4-power-manager &
+
+# Settings
+xrdb -merge "$HOME/.config/X11/Xresources" &
+$HOME/.config/xmonad/src/modifiers.sh &
