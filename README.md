@@ -4,6 +4,7 @@
 
     * Required: `aur/nerd-fonts-ubuntu-mono`
     * Optional: `exa neofetch nvim`
+    I also use `autorandr` to automatically manage my monitors.
 
 2.  Clone
 

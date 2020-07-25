@@ -20,6 +20,11 @@ import XMonad.Util.NamedActions           -- AwesomeWM-style keybinding syntax
 import XMonad.Util.Run                    -- Start and send information to processes
 import XMonad.Util.SpawnOnce              -- For running autostart only once (on login)
 
+-- I want to figure out how window decorations work, but my Haskell is not yet good enough
+import XMonad.Layout.Decoration
+import XMonad.Util.Types
+import SideDecoration
+
 --------------------------------------------------------------------------------
 -- VARIABLES AND DEFAULT PROGRAMS
 --------------------------------------------------------------------------------
@@ -33,6 +38,7 @@ myModMask  = mod4Mask
 myTerminal       = "alacritty"
 myEditor         = myTerminal ++ " -e nvim "
 myBrowser        = "qutebrowser"
+myFileManager    = myTerminal ++ " -e ranger "
 myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
 myPrintScreen    = "spectacle"
@@ -40,7 +46,7 @@ myPrintScreen    = "spectacle"
 -- Status bar
 data Bar = Taffybar | XMobar
 myBar :: Bar
-myBar = Taffybar
+myBar = XMobar
 
 myBarCommand :: Bar -> String
 myBarCommand XMobar   = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
@@ -76,6 +82,9 @@ args command arguments = command ++ " " ++ unwords (map show arguments)
 --------------------------------------------------------------------------------
 -- KEYBINDINGS
 --------------------------------------------------------------------------------
+-- M = M1 is Super, which I have also set to space when held down
+-- M3 is Hyper, which I have set to Caps Lock
+-- C-Esc is Super tapped on its own
 
 myKeys :: XConfig l -> [((KeyMask, KeySym), NamedAction)]
 myKeys conf = let
@@ -88,91 +97,97 @@ myKeys conf = let
     menuChangeColourscheme = spawn $ args "menu-edit-colourscheme" [myMenu]
     menuReadPdf            = spawn $ args "menu-read-pdf" [myMenu,myPdfReader]
 
+    viewScreen s          = screenWorkspace s >>= flip whenJust (windows . W.view)
+    shiftScreen s         = screenWorkspace s >>= flip whenJust (windows . W.shift)
+    unFloat               = withFocused $ windows . W.sink
+
     volumeAdjust "toggle" = spawn "adjust-volume toggle"
     volumeAdjust value    = spawn $ args "adjust-volume" $ words value
 
-    brightnessAdjust percentage = spawn
-        $ "xbacklight " ++ percentage ++ " && notify-send \"Brightness `xbacklight -get`%\""
+    brightnessAdjust perc = spawn
+        $ "xbacklight " ++ perc ++ " && notify-send \"Brightness `xbacklight -get`%\""
 
     in
 
     subKeys "Core"
-    [ ("M-S-q",      addName "Quit XMonad (logout)" $ io exitSuccess)
-    , ("M-q",        addName "Recompile & restart"  $ spawn myBuildScript)
-    -- I use xcape to remap C-Esc to the super key on its own
-    , ("C-<Escape>", addName "Application launcher" $ spawn myLauncher)
-    , ("<Print>",    addName "Take screenshot"      $ spawn myPrintScreen)
-    , ("M-S-c",      addName "Close window"         $ kill)
+    [ ("M-S-q",                   addName "Quit XMonad (logout)"   $ io exitSuccess)
+    , ("M-q",                     addName "Recompile & restart"    $ spawn myBuildScript)
+    , ("C-<Escape>",              addName "Application launcher"   $ spawn myLauncher)
+    , ("M-S-c",                   addName "Close window"           $ kill)
     ] ^++^
 
-    -- Untested as I currently only have one screen
-    -- Also, the default keys clash with some of mine
-    --subKeys "Screens" (
-    --[("M-"++key,   addName "Focus screen"
-                  -- $ screenWorkspace sc >>= flip whenJust (windows . W.view))
-       -- | (key,sc) <- zip ["w","e","r"] [0..]
-    --] ^++^
-    --[("M-S-"++key, addName "Send to screen"
-                  -- $ screenWorkspace sc >>= flip whenJust (windows . W.shift))
-       -- | (key,sc) <- zip ["w","e","r"] [0..]
-    --]) ^++^
+    subKeys "Screens" (
+    [("M-"++key,                  addName ("Focus screen "++show sc)   $ viewScreen sc)
+        | (key,sc) <- zip ["w","e","r"] [0..]
+    ] ^++^
+    [("M-S-"++key,                addName ("Send to screen "++show sc) $ shiftScreen sc)
+        | (key,sc) <- zip ["w","e","r"] [0..]
+    ]) ^++^
 
     subKeys "Workspaces" (
-    [ ("M-"++show key, addName ("View workspace " ++ i) $ windows $ W.greedyView i)
+    --[ ("M-u",                     addName "View next"              $ )
+    --, ("M-i,",                    addName "View previous"          $ )
+    --, ("M-S-u",                   addName "Send to next"           $ )
+    --, ("M-S-i",                   addName "Send to previous"       $ )
+    --] ^++^
+    [ ("M-"++show key,            addName ("View workspace "++i)    $ windows $ W.greedyView i)
         | (key,i) <- zip [1..9] (XMonad.workspaces conf)
     ] ^++^
-    [ ("M-S-"++show key, addName ("Send to workspace " ++ i) $ windows $ W.shift i)
+    [ ("M-S-"++show key,          addName ("Send to workspace "++i) $ windows $ W.shift i)
         | (key,i) <- zip [1..9] (XMonad.workspaces conf)
     ]) ^++^
 
     subKeys "Layouts"
-    [ ("M-S-f",       addName "Toggle fullscreen"    $ sendMessage ToggleStruts)
-    , ("M-h",         addName "Shrink master"        $ sendMessage Shrink)
-    , ("M-l",         addName "Expand master"        $ sendMessage Expand)
-    , ("M-,",         addName "More master windows"  $ sendMessage $ IncMasterN 1)
-    , ("M-.",         addName "Fewer master windows" $ sendMessage $ IncMasterN (-1))
-    , ("M-<Space>",   addName "Next layout"          $ sendMessage NextLayout)
+    [ ("M-S-f",                   addName "Toggle fullscreen"      $ sendMessage ToggleStruts)
+    , ("M-h",                     addName "Shrink master"          $ sendMessage Shrink)
+    , ("M-l",                     addName "Expand master"          $ sendMessage Expand)
+    , ("M-,",                     addName "Inc master windows"     $ sendMessage $ IncMasterN 1)
+    , ("M-.",                     addName "Dec master windows"     $ sendMessage $ IncMasterN (-1))
+    , ("M3-<Space>",              addName "Next layout"            $ sendMessage NextLayout)
     ] ^++^
 
     subKeys "Windows"
-    [ ("M-<Tab>",    addName "Focus next"     $ windows W.focusDown)
-    , ("M-S-<Tab>",  addName "Focus previous" $ windows W.focusUp)
-    , ("M-j",        addName "Focus next"     $ windows W.focusDown)
-    , ("M-k",        addName "Focus previous" $ windows W.focusUp)
-    , ("M-m",        addName "Focus master"   $ windows W.focusMaster)
-    , ("M-S-j",      addName "Swap next"      $ windows W.swapDown)
-    , ("M-S-k",      addName "Swap previous"  $ windows W.swapUp)
-    , ("M-<Return>", addName "Swap master"    $ windows W.swapMaster)
-    , ("M-t",        addName "Unfloat"        $ withFocused $ windows . W.sink)
+    [ ("M-<Tab>",                 addName "Focus next"             $ windows W.focusDown)
+    , ("M-S-<Tab>",               addName "Focus previous"         $ windows W.focusUp)
+    , ("M-j",                     addName "Focus next"             $ windows W.focusDown)
+    , ("M-k",                     addName "Focus previous"         $ windows W.focusUp)
+    , ("M-m",                     addName "Focus master"           $ windows W.focusMaster)
+    , ("M-S-j",                   addName "Swap next"              $ windows W.swapDown)
+    , ("M-S-k",                   addName "Swap previous"          $ windows W.swapUp)
+    , ("M-<Return>",              addName "Swap master"            $ windows W.swapMaster)
+    , ("M-t",                     addName "Unfloat"                $ unFloat)
     ] ^++^
 
     subKeys "Applications"
-    [ ("M-S-<Return>", addName "Terminal emulator"      $ spawn myTerminal)
-    , ("M-e",          addName "Text editor"            $ spawn myEditor)
-    , ("M-w",          addName "Web browser (minimal)"  $ spawn myBrowser)
-    , ("M-S-w",        addName "Firefox"                $ spawn "firefox")
-    , ("M-f",          addName "Graphical file manager" $ spawn myGuiFileManager)
-    , ("M-z",          addName "Zoom"                   $ spawn "zoom")
+    [ ("M-S-<Return>",            addName "Terminal emulator"      $ spawn myTerminal)
+    , ("M3-<Return>",             addName "Terminal emulator"      $ spawn myTerminal)
+    , ("M3-e",                    addName "Text editor"            $ spawn myEditor)
+    , ("M3-w",                    addName "Web browser (minimal)"  $ spawn myBrowser)
+    , ("M3-S-w",                  addName "Firefox"                $ spawn "firefox")
+    , ("M3-f",                    addName "Terminal file manager"  $ spawn myFileManager)
+    , ("M3-S-f",                  addName "Graphical file manager" $ spawn myGuiFileManager)
+    , ("M3-z",                    addName "Zoom"                   $ spawn "zoom")
     ] ^++^
 
     subKeys "My Scripts"
-    [ ("M-p M-p", addName "Edit scripts"        $ menuEditScript)
-    , ("M-p M-e", addName "Edit configs"        $ menuEditConfig)
-    , ("M-p M-c", addName "Change colourscheme" $ menuChangeColourscheme)
-    , ("M-p M-z", addName "Read PDF file"       $ menuReadPdf)
+    [ ("M-p M-p",                 addName "Edit scripts"           $ menuEditScript)
+    , ("M-p M-e",                 addName "Edit configs"           $ menuEditConfig)
+    , ("M-p M-c",                 addName "Change colourscheme"    $ menuChangeColourscheme)
+    , ("M-p M-z",                 addName "Read PDF file"          $ menuReadPdf)
     ] ^++^
 
     subKeys "Multimedia Keys"
-    [ ("<XF86AudioMute>",         addName "Toggle mute"         $ volumeAdjust "toggle")
-    , ("<XF86AudioLowerVolume>",  addName "Decrease volume"     $ volumeAdjust "- 5%")
-    , ("<XF86AudioRaiseVolume>",  addName "Increase volume"     $ volumeAdjust "+ 5%")
-    , ("<XF86MonBrightnessDown>", addName "Decrease brightness" $ brightnessAdjust "-dec 10")
-    , ("<XF86MonBrightnessUp>",   addName "Increase brightness" $ brightnessAdjust "-inc 10")
-    , ("C-<F1>",                  addName "Toggle mute"         $ volumeAdjust "toggle")
-    , ("C-<F2>",                  addName "Decrease volume"     $ volumeAdjust "- 5%")
-    , ("C-<F3>",                  addName "Increase volume"     $ volumeAdjust "+ 5%")
-    , ("C-<F11>",                 addName "Decrease brightness" $ brightnessAdjust "-dec 10")
-    , ("C-<F12>",                 addName "Increase brightness" $ brightnessAdjust "-inc 10")
+    [ ("<XF86AudioMute>",         addName "Toggle mute"            $ volumeAdjust "toggle")
+    , ("<XF86AudioLowerVolume>",  addName "Decrease volume"        $ volumeAdjust "- 5%")
+    , ("<XF86AudioRaiseVolume>",  addName "Increase volume"        $ volumeAdjust "+ 5%")
+    , ("<XF86MonBrightnessDown>", addName "Decrease brightness"    $ brightnessAdjust "-dec 10")
+    , ("<XF86MonBrightnessUp>",   addName "Increase brightness"    $ brightnessAdjust "-inc 10")
+    , ("C-<F1>",                  addName "Toggle mute"            $ volumeAdjust "toggle")
+    , ("C-<F2>",                  addName "Decrease volume"        $ volumeAdjust "- 5%")
+    , ("C-<F3>",                  addName "Increase volume"        $ volumeAdjust "+ 5%")
+    , ("C-<F11>",                 addName "Decrease brightness"    $ brightnessAdjust "-dec 10")
+    , ("C-<F12>",                 addName "Increase brightness"    $ brightnessAdjust "-inc 10")
+    , ("<Print>",                 addName "Take screenshot"        $ spawn myPrintScreen)
     ]
 
 -- Keybinding to display the keybinding cheatsheet
@@ -203,6 +218,16 @@ showKeybindings myKeyList = addName "Show Keybindings" $ io $ do
     return ()
 
 --------------------------------------------------------------------------------
+-- LAYOUTHOOK
+--------------------------------------------------------------------------------
+
+myLayoutHook = avoidStruts
+             $ mySpacing
+             $ smartBorders
+--              $ mySideDecorate  -- Messes up everythin. I don't know why (too complicated for me to understamd
+             ( layoutHook desktopConfig )
+
+--------------------------------------------------------------------------------
 -- AESTHETICS
 --------------------------------------------------------------------------------
 
@@ -219,9 +244,15 @@ mySpacing = spacingRaw True             -- Only for >1 window
 myBorderWidth :: Dimension
 myBorderWidth = 2
 
-myNormalBorderColour, myFocusedBorderColour :: [Char]
+myNormalBorderColour, myFocusedBorderColour :: String
 myNormalBorderColour = "#111111"
 myFocusedBorderColour = "#268bd2"
+
+mySideDecorationTheme :: Theme
+mySideDecorationTheme = def
+
+mySideDecorate :: Eq a => l a -> ModifiedLayout (Decoration SideDecoration DefaultShrinker) l a
+mySideDecorate = decoration shrinkText mySideDecorationTheme (SideDecoration L)
 
 --------------------------------------------------------------------------------
 -- LOGHOOK
@@ -307,7 +338,7 @@ myConfig bar = desktopConfig
         , focusedBorderColor = myFocusedBorderColour
         -- Hooks
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
-        , layoutHook  = avoidStruts $ mySpacing $ smartBorders (layoutHook desktopConfig)
+        , layoutHook  = myLayoutHook
         , logHook     = myLogHook bar
         , workspaces  = myWorkspaces
         , startupHook = do

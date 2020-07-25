@@ -7,17 +7,21 @@ background='#000000'
 titleColour='^fg(#00AAAA)'
 asideColour='^fg(#666666)'
 headingColour='^fg(#FFFFFF)'
-keyColour='^fg(#AAAA00)'
+keyColourSuper='^fg(#AAAA00)'
+keyColourHyper='^fg(#AA88FF)'
+keyColourMedia='^fg(#FF8888)'
 descColour='^fg(#AAAAAA)'
 
 # Patterns to replace
-keyLines='\(M4-\|C-Escape\|Print\)[^ ]*'
+keyLinesSuper='\(M4-\|Super\)[^ ]*'
+keyLinesHyper='M3-[^ ]*'
+keyLinesMedia='\(Print\|XF86\|C-\)[^ ]*'
 headings='>>'
 
 # Replacement Variables
-super=${keyColour}Super${titleColour}
-windows=${keyColour}Windows${titleColour}
-title="${titleColour}XMonad Keybindings (with the $super or $windows key)"\
+super="${keyColourSuper}Super(Windows\/Space)${titleColour}"
+hyper="${keyColourHyper}Hyper(Caps Lock)${titleColour}"
+title="${titleColour}XMonad Keybindings (with the $super or $hyper key)"\
 "${asideColour}        -    Click to close"
 
 # Screen dimensions, for positioning calculations
@@ -41,20 +45,29 @@ eventActions='onstart=uncollapse'\
 ';button1=exit;button3=exit;key_Escape=exit'\
 ';button4=scrollup;button5=scrolldown'
 
-# Format colour
-colourKeyLines="s/${keyLines}/${keyColour}&${descColour}/g"
-colourHeadings="s/${headings}/${headingColour}&/g"
-colourSuper="s/Super/${keyColour}Super${descColour}/g"
-formatColour="${colourKeyLines};${colourHeadings};${colourSuper}"
-
+# Replace placeholders
 replaceTitle="s/TitlePlaceholder/${title}/g"
-replaceMod="s/M4-\([^ ]*\)/\1   /g"
-replaceSuper="s/C-Escape/Super   /g"
-replaceText="${replaceTitle};${replaceMod};${replaceSuper};${replaceSeparator}"
+replaceSuperTap="s/C-Escape/Super   /g"
+replaceShift="s/Shift-\([^ ]*\)/S-\1    /g"
+replaceSlash="s/slash/\/    /g"
+replacePlaceholders="${replaceTitle};${replaceM4};${replaceSuperTap}
+;${replaceShift};${replaceSlash};${replaceSeparator}"
+
+# Format colour
+colourKeyLinesSuper="s/${keyLinesSuper}/${keyColourSuper}&${descColour}/g"
+colourKeyLinesHyper="s/${keyLinesHyper}/${keyColourHyper}&${descColour}/g"
+colourKeyLinesMedia="s/${keyLinesMedia}/${keyColourMedia}&${descColour}/g"
+colourHeadings="s/${headings}/${headingColour}&/g"
+formatColour="${colourKeyLinesSuper};${colourKeyLinesHyper};${colourKeyLinesMedia};${colourHeadings}"
+
+# Remove modifier codes
+removeM4="s/M4-\([^ ]*\)/\1   /g"
+removeM3="s/M3-\([^ ]*\)/\1   /g"
+removeModifiers="${removeM4};${removeM3}"
 
 addMargin="/[^<${title}>]/s/^/  /g"
 
-sed "${formatColour};${replaceText};${addMargin}" \
+sed "${replacePlaceholders};${formatColour};${addMargin};${removeModifiers}" \
     | dzen2 -p \
             -bg $background \
             -h "$lineHeight" -w "$width" -l "$lines" \
