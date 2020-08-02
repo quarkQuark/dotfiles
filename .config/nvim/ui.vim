@@ -1,4 +1,6 @@
 set cursorline
+set relativenumber  " Show relative line numbers
+set title           " Show filename in window title
 
 " Needed for vim-hexokinase colour previews, but messes up urxvt
 if has('termguicolors')

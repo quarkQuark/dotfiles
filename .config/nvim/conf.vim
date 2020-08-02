@@ -8,8 +8,6 @@ set tabstop=4       " Render TABs using this many spaces
 set softtabstop=4   "
 set shiftwidth=4    " Indentation amount for > and < commands
 
-" Show filename in window title
-set title
 
 " Scroll when the cursor is within 3 lines of bottom
 set scrolloff=3
@@ -22,4 +20,3 @@ set clipboard+=unnamedplus
 
 " Other
 set showmatch       " Show matching brackets
-set number          " Show line numbers
