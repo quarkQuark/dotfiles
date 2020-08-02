@@ -7,6 +7,9 @@ inoremap jk <esc>
 nnoremap j gj
 nnoremap k gk
 
+" Matches behaviour of C and D (by default, Y is yy)
+nnoremap Y y$
+
 " Clear search highlights
 nnoremap <Leader>/ :nohlsearch<CR>
 
