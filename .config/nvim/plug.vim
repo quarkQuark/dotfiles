@@ -9,9 +9,13 @@ Plug 'scrooloose/nerdtree', {'on':'NERDTreeToggle'}
 Plug 'mcchrish/nnn.vim'
 Plug 'srstevenson/vim-picker'  " fzy integration
 Plug 'junegunn/fzf.vim'
-Plug 'sirver/ultisnips'
+Plug 'tpope/vim-repeat'        " make more plugins work with '.'
 
-"" General Coding
+"" Text editing
+Plug 'sirver/ultisnips'
+Plug 'tpope/vim-surround'
+
+"" General coding
 Plug 'w0rp/ale'  " linting
 
 "" Python
@@ -29,7 +33,7 @@ Plug 'KeitaNakamura/tex-conceal.vim', {'for':'tex'}
 
 "" Aesthetics
 Plug 'mhinz/vim-startify', {'branch':'center'}
-Plug 'ryanoasis/vim-devicons'			" Adds icons
+Plug 'ryanoasis/vim-devicons'			        " Adds icons
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'	" Adds icons to NERDTree; requires vim-devicons
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
