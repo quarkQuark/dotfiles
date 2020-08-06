@@ -18,7 +18,7 @@ FILES_LIST=`echo $FILES | sed 's/ /\\\n/g'`
 CHOICE=`echo $FILES_LIST | $FORMATTING | sort | $MENU_CMD 'Read PDF: '`
 
 # Find filepath from filename
-FILE=`echo $FILES_LIST | rg ${CHOICE} -`
+FILE=`echo $FILES_LIST | rg ${CHOICE}.pdf -`
 
 # If something is chosen (ESC not pressed), then edit it
 ERROR='notify-send ${FILE} not found'
