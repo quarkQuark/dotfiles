@@ -20,11 +20,12 @@ export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Data locations
-export STACK_ROOT="$XDG_DATA_HOME/stack"
-export HISTFILE="$XDG_DATA_HOME/bash/history"
-export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export CRAWL_DIR="$XDG_DATA_HOME/crawl/" # DCSS (trailing slash required)
 export GEM_HOME="$XDG_DATA_HOME/gem"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export HISTFILE="$XDG_DATA_HOME/bash/history"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
+export STACK_ROOT="$XDG_DATA_HOME/stack"
 
 # Cache locations
 export LESSHISTFILE=-
