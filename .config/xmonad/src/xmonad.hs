@@ -42,26 +42,9 @@ myFileManager    = myTerminal ++ " -e ranger "
 myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
 myPrintScreen    = "spectacle"
+myBar            = Tint2
 
--- Status bar
-data Bar = Taffybar | XMobar
-myBar :: Bar
-myBar = XMobar
-
-myBarCommand :: Bar -> String
-myBarCommand XMobar   = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
-myBarCommand Taffybar = "taffybar"
-
-myTrayCommand :: Bar -> String
-myTrayCommand XMobar   = "stalonetray --config " ++ myConfigDir ++ "stalonetrayrc"
-myTrayCommand Taffybar = "status-notifier-watcher"  -- From status-notifier-item
-
-myLauncher, myMenu :: [Char]
--- dmenu is a much simpler option, but with less eye-candy
---myLauncher = "dmenu_run"
---myMenu     = "dmenu -i -p"
--- rofi looks much nicer, but is less minimal and the default theme is ugly
-myLauncher = "rofi -show drun -theme " ++ rofiTheme "blurry-icons-centre" -- Command to open applications
+myMenu :: String
 myMenu     = "rofi -dmenu -i -p"  -- For scripts that require user input
 
 -- Config locations
@@ -71,8 +54,22 @@ myAutostart   = myConfigDir ++ "autostart.sh" -- Script to run on login
 rofiTheme theme = "~/.config/rofi/themes/" ++ theme ++ ".rasi" -- Rofi theme directory
 
 --------------------------------------------------------------------------------
--- FUNCTIONS AND SCRIPTS
+-- TYPES, FUNCTIONS AND SCRIPTS
 --------------------------------------------------------------------------------
+
+-- Status bar management
+data Bar = Taffybar | XMobar | Tint2
+myBar :: Bar
+spawnBarProcCmd, myBarAutostart :: Bar -> String
+
+-- If I want it to be able to read myLogHook
+spawnBarProcCmd XMobar = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
+spawnBarProcCmd other  = ""
+
+-- Anything else bar-dependent
+myBarAutostart XMobar   = "stalonetray --config " ++ myConfigDir ++ "stalonetrayrc"
+myBarAutostart Tint2    = "tint2 -c ~/.config/tint2/xmonad.tint2rc"
+myBarAutostart Taffybar = "status-notifier-watcher && taffybar" -- From status-notifier-item
 
 -- Convert multiword strings to arguments (concatenate with delimiters)
 -- This makes sure my shell scripts correctly interpret their arguments
@@ -112,7 +109,7 @@ myKeys conf = let
     subKeys "Core"
     [ ("M-S-q",                   addName "Quit XMonad (logout)"   $ io exitSuccess)
     , ("M-q",                     addName "Recompile & restart"    $ spawn myBuildScript)
-    , ("C-<Escape>",              addName "Application launcher"   $ spawn myLauncher)
+    , ("C-<Escape>",              addName "Application launcher"   $ spawn "appmenu")
     , ("M-S-c",                   addName "Close window"           $ kill)
     ] ^++^
 
@@ -268,9 +265,9 @@ myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
 -- bar points to the status bar's process handle
 -- XMonad.Hooks.DynamicLog (dynamicLogWithPP) allows us to format the output
 -- XMonad.Hooks.DynamicLog (xmobarPP) gives us some defaults
-myLogHook bar = dynamicLogWithPP xmobarPP
+myLogHook barProc = dynamicLogWithPP xmobarPP
         -- Write to bar instead of stdout
-        { ppOutput          = hPutStrLn bar
+        { ppOutput          = hPutStrLn barProc
         -- How to order the different sections of the log
         , ppOrder           = \(workspace:layout:title:extras)
                             -> [workspace,layout]
@@ -294,7 +291,8 @@ myManageHook = composeAll . concat $
     , [ title     =? t --> doFloat                 | t <- myFloatTitles ]
     ]
   -- To find a window class or title, run xprop in a terminal, then click on it
-  where myFloatClasses = ["Gimp","conky","plasmashell","vlc","Caprine", "Nitrogen"]
+  where myFloatClasses = [ "Gimp", "conky", "plasmashell", "vlc", "Caprine", "Nitrogen"
+                         , "Tint2conf"]
         myFloatTitles  = ["Whisker Menu"]
 
 --------------------------------------------------------------------------------
@@ -313,7 +311,7 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 -- This is the part that is actually run as a window manager
 main :: IO ()
 main = do
-    barProc <- spawnPipe (myBarCommand myBar)  -- Start myBar and return a handle
+    barProc <- spawnPipe (spawnBarProcCmd myBar)  -- Start myBar and return a handle
     spawn "pkill -o taffybar" -- Kill oldest taffybar instance (move to M-q binding?)
 
     -- Applies this config file over the default config for desktop use
@@ -328,7 +326,7 @@ main = do
         $ myConfig barProc
 
 -- Adding all of my stuff to the default desktop config
-myConfig bar = desktopConfig
+myConfig barProc = desktopConfig
         -- Variables
         { modMask  = myModMask
         , terminal = myTerminal
@@ -339,9 +337,9 @@ myConfig bar = desktopConfig
         -- Hooks
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
         , layoutHook  = myLayoutHook
-        , logHook     = myLogHook bar
+        , logHook     = myLogHook barProc
         , workspaces  = myWorkspaces
         , startupHook = do
-            spawnOnce (myTrayCommand myBar)
+            spawnOnce (myBarAutostart myBar)
             spawnOnce myAutostart
         }
