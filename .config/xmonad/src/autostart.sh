@@ -21,4 +21,4 @@ pasystray &  # Works for IvanMalison
 # Settings
 xrdb -merge "$HOME/.config/X11/Xresources" &
 $HOME/.config/xmonad/src/modifiers.sh &
-command -v autorandr >/dev/null && autorandr --change &
+#command -v autorandr >/dev/null && autorandr --change
