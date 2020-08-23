@@ -1,6 +1,6 @@
 # My XMonad Configuration
 
-!(/../Screenshots/2020-08-23-XMonad.png?raw=true "XMonad with tint2")
+!(/../Screenshots/2020-08-23-XMonad.png?raw=true)
 
 XMonad is my favourite window manager, configured in Haskell, my favourite programming language.
 I've configured it quite heavily already, and envisage much more configuration in the
@@ -23,6 +23,8 @@ The most bloated. The main reason I like tint2 is that I can have a vertical pan
 left of my screen, a feature that is inexplicably left out of pretty much every other
 desktop-agnostic panel. Tint2 is also the easiest to configure as it has an optional graphical
 configuration manager.
+
+This is the panel shown in the above screenshot.
 
 ### XMobar
 
