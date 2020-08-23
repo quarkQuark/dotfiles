@@ -41,7 +41,9 @@ to do anything impressive with it. And I'm pretty sure it doesn't do vertical ba
 
 One of the most unique features of this config is the keybinding cheatsheet that can be
 brought up at any time with `Super+?`, inspired by AwesomeWM.
-In [src/modifiers.sh](/src/modifiers.sh) I also bind `Caps Lock` to `Hyper`
+This is achieved with `dzen2` and
+[a shell script with lots of regex](/.scripts/dzen2-display-cheatsheet).
+In [src/modifiers.sh](./src/modifiers.sh) I also bind `Caps Lock` to `Hyper`
 and `Space`, when held down, to an additional `Super` (Windows) key.
 The goal of this is to enable more ergonomic keybindings.
 
