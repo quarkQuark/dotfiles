@@ -205,7 +205,7 @@ formatList list = columns "SeparatorPlaceholder" -- Normalise column widths -> T
         where rowsFromColumns list nCol = 1 + length list `div` nCol
               myCheatsheetRows list = rowsFromColumns list myCheatsheetCols
 
--- How to display the cheatsheet (from Ethan Schoonover's config)
+-- How to display the cheatsheet (adapted from Ethan Schoonover's config)
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
 showKeybindings myKeyList = addName "Show Keybindings" $ io $ do
     handle <- spawnPipe "dzen2-display-cheatsheet"
