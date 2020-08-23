@@ -1,3 +1,15 @@
+# My Configuration
+
+![XMonad](/.config/Screenshots/2020-08-23-XMonad.png?raw=true)
+
+Hello there!
+These are my dotfiles, which are text-based configuration files for most of the programs
+I use on Linux. I have dabbled in a few different window managers, but my current daily
+driver - and hence the only one that is in any sort of working order - is XMonad.
+See
+[my XMonad config README.md](.config/xmonad/src/xmonad.hs)
+for more XMonad-specific information!
+
 ## Setup on fresh install
 
 1.  Dependencies:
