@@ -39,3 +39,5 @@ export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
 
 # Program settings
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+export GPG_TTY=$(tty)
+export GPG_AGENT_INFO=""
