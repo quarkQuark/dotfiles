@@ -60,14 +60,15 @@ colourKeyLinesMedia="s/${keyLinesMedia}/${keyColourMedia}&${descColour}/g"
 colourHeadings="s/${headings}/${headingColour}&/g"
 formatColour="${colourKeyLinesSuper};${colourKeyLinesHyper};${colourKeyLinesMedia};${colourHeadings}"
 
-# Remove modifier codes
+# Remove redundancies
 removeM4="s/M4-\([^ ]*\)/\1   /g"
 removeM3="s/M3-\([^ ]*\)/\1   /g"
-removeModifiers="${removeM4};${removeM3}"
+screen="s/ S \(.\)/ \1  /g"
+removeRedundancies="${removeM4};${removeM3};${screen}"
 
 addMargin="/[^<${title}>]/s/^/  /g"
 
-sed "${replacePlaceholders};${formatColour};${addMargin};${removeModifiers}" \
+sed "${replacePlaceholders};${formatColour};${addMargin};${removeRedundancies}" \
     | dzen2 -p \
             -bg $background \
             -h "$lineHeight" -w "$width" -l "$lines" \
