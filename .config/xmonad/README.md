@@ -1,6 +1,6 @@
 # My XMonad Configuration
 
-!(/../Screenshots/2020-08-23-XMonad.png?raw=true)
+![](../Screenshots/2020-08-23-XMonad.png?raw=true)
 
 XMonad is my favourite window manager, configured in Haskell, my favourite programming language.
 I've configured it quite heavily already, and envisage much more configuration in the
@@ -15,7 +15,7 @@ The installation instructions for this config currently live at
 
 I've configured XMonad to work with three different panels.
 The current panel can be easily changed by changing the `myBar` variable in
-[xmonad.hs](/src/xmonad.hs)
+[xmonad.hs](/src/xmonad.hs "XMonad with Tint2)
 
 ### Tint2
 
