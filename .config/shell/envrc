@@ -14,30 +14,31 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 
 # Config locations
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # Data locations
-export CRAWL_DIR="$XDG_DATA_HOME/crawl/" # DCSS (trailing slash required)
 export GEM_HOME="$XDG_DATA_HOME/gem"
+export CRAWL_DIR="$XDG_DATA_HOME/crawl/" # DCSS (trailing slash required)
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export HISTFILE="$XDG_DATA_HOME/bash/history"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
 export STACK_ROOT="$XDG_DATA_HOME/stack"
 
 # Cache locations
-export LESSHISTFILE=-
+export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+export LESSHISTFILE=-
 export OCTAVE_HISTFILE="$XDG_CACHE_HOME/octave_hist"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 
 # Runtime locations (in /run/user/1000)
 export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
 
 # Program settings
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
-export GPG_TTY=$(tty)
 export GPG_AGENT_INFO=""
+export GPG_TTY=$(tty)
