@@ -30,7 +30,7 @@ endglobal
 
 # LaTeX headers
 # b - only at beginning of line
-snippet template "LaTeX headers and template" b
+snippet preamble "LaTeX headers and template" b
 \title{$1}
 
 \documentclass{amsart}
@@ -42,8 +42,7 @@ snippet template "LaTeX headers and template" b
 \newtheorem{lemma}[theorem]{Lemma}
 
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-
+\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 
@@ -58,6 +57,17 @@ $0
 \end{document}
 endsnippet
 
+# Sections
+snippet sec "Section" bA
+\section{$1}
+$0
+snippet ssec "Subsection" bA
+\subsection{$1}\hfill
+$0
+snippet sssec "Subsubsection" bA
+\subsubsection{$1}\hfill
+$0
+
 # Create an environment
 # A - expands automatically
 snippet beg "begin{} / end{}" bA
@@ -69,6 +79,7 @@ endsnippet
 # A digit after an alphanumeral is autematically subscripted
 # w - only expand if the trigger is surrounded by non-word characters
 # r - the tab trigger contains a Python regular expression
+context "maths()"
 snippet '([A-Za-z])(\d)' "auto index subscript" wrA
 `!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
 endsnippet
