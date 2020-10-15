@@ -18,5 +18,10 @@ set mouse=a
 " Use system clipboard
 set clipboard+=unnamedplus
 
+" Recognise all *.tex files as LaTeX
+"let g:tex_flavor = 'latex' " Moved to ftplugin
+" Recognise .cls files as LaTeX
+autocmd BufRead,BufNewFile *.cls setlocal filetype=tex
+
 " Other
 set showmatch       " Show matching brackets
