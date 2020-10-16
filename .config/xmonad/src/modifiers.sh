@@ -10,6 +10,7 @@ setxkbmap -option caps:hyper       # The caps key is now seen by the system as H
 xmodmap -e 'remove mod4 = Hyper_L' # Hyper used to do the same as Super
 xmodmap -e 'add mod3 = Hyper_L'    # But now Hyper does its own thing!
 # Hyper (Caps Lock) on release sends C-esc
+pkill xcape # Avoid typing multiple spaces on one keypress
 xcape -e 'Hyper_L=Control_L|Escape'
 
 # S on release sends C-M-S-F1
