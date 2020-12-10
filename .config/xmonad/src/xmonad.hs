@@ -2,6 +2,7 @@
 -- IMPORTS
 --------------------------------------------------------------------------------
 
+import Data.List (isInfixOf)
 import Data.List.Split (chunksOf)         -- Requires the package 'split'
 import Prelude hiding (lookup)            -- to avoid confusing errors when mistyping Map.lookup
 import System.Exit (exitSuccess)
@@ -287,13 +288,15 @@ myLogHook barProc = dynamicLogWithPP xmobarPP
 myManageHook :: ManageHook
 myManageHook = composeAll . concat $
     -- Windows to automatically float
-    [ [ className =? c --> doFloat                 | c <- myFloatClasses ]
-    , [ title     =? t --> doFloat                 | t <- myFloatTitles ]
+    [ [ className =? c                                    --> doFloat | c <- myFloatClasses ]
+    , [ title     =? t                                    --> doFloat | t <- myFloatTitles ]
+    , [ className =? "zoom" <&&> fmap (isInfixOf z) title --> doFloat | z <- myZoomFloats ]
     ]
   -- To find a window class or title, run xprop in a terminal, then click on it
-  where myFloatClasses = [ "Gimp", "conky", "plasmashell", "vlc", "Caprine", "Nitrogen"
-                         , "Tint2conf"]
+  where myFloatClasses = ["Gimp", "conky", "plasmashell", "vlc", "Nitrogen", "Tint2conf"]
         myFloatTitles  = ["Whisker Menu"]
+        -- This allows annoying classes such as "Participants (n)" where n is the number of people
+        myZoomFloats  = ["Chat", "Participants", "Rooms"] -- Currently untested for breakout rooms
 
 --------------------------------------------------------------------------------
 -- WORKSPACES
