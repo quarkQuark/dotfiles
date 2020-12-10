@@ -337,7 +337,7 @@ myConfig barProc = desktopConfig
         -- Hooks
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
         , layoutHook  = myLayoutHook
-        , logHook     = myLogHook barProc
+        --, logHook     = myLogHook barProc -- Seems to lead to crashes with tint2 or taffybar
         , workspaces  = myWorkspaces
         , startupHook = do
             spawnOnce (myBarAutostart myBar)
