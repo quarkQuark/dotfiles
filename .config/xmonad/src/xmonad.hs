@@ -92,7 +92,7 @@ myKeys conf = let
     -- Abbreviations for certain actions
     menuEditScript         = spawn $ args "menu-edit-script" [myMenu,myEditor]
     menuEditConfig         = spawn $ args "menu-edit-config" [myMenu,myEditor]
-    menuChangeColourscheme = spawn $ args "menu-edit-colourscheme" [myMenu]
+    menuChangeColourscheme = spawn $ args "menu-change-colourscheme" [myMenu]
     menuReadPdf            = spawn $ args "menu-read-pdf" [myMenu,myPdfReader]
 
     viewScreen s          = screenWorkspace s >>= flip whenJust (windows . W.view)
