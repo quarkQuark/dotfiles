@@ -291,6 +291,7 @@ myManageHook = composeAll . concat $
     [ [ className =? c                                    --> doFloat | c <- myFloatClasses ]
     , [ title     =? t                                    --> doFloat | t <- myFloatTitles ]
     , [ className =? "zoom" <&&> fmap (isInfixOf z) title --> doFloat | z <- myZoomFloats ]
+    , [ className =? "zoom" <&&> title =? "zoom"          --> doFloat ] -- Zoom notification popups
     ]
   -- To find a window class or title, run xprop in a terminal, then click on it
   where myFloatClasses = ["Gimp", "conky", "plasmashell", "vlc", "Nitrogen", "Tint2conf"]
