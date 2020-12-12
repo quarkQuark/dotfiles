@@ -3,11 +3,8 @@
 --------------------------------------------------------------------------------
 
 import Data.List (isInfixOf)
-import Data.List.Split (chunksOf)         -- Requires the package 'split'
 import Prelude hiding (lookup)            -- to avoid confusing errors when mistyping Map.lookup
 import System.Exit (exitSuccess)
-import System.IO
-import Test.FitSpec.PrettyPrint (columns) -- Requires the package 'fitspec'
 import XMonad                             -- standard xmonad library
 import XMonad.Config.Desktop              -- default desktopConfig
 import XMonad.Hooks.DynamicLog            -- Customising the logHook (sends data to xmobar)
@@ -20,6 +17,8 @@ import XMonad.Util.EZConfig               -- Simpler keybinding syntax
 import XMonad.Util.NamedActions           -- AwesomeWM-style keybinding syntax
 import XMonad.Util.Run                    -- Start and send information to processes
 import XMonad.Util.SpawnOnce              -- For running autostart only once (on login)
+
+import MyCheatsheet
 
 -- I want to figure out how window decorations work, but my Haskell is not yet good enough
 --import XMonad.Layout.Decoration
@@ -192,29 +191,6 @@ myKeys conf = let
 myCheatsheetKey :: (KeyMask, KeySym)
 myCheatsheetKey = (myModMask .|. shiftMask, xK_slash)
 
--- Number of colomns with with which to display the cheatsheet
-myCheatsheetCols :: Int
-myCheatsheetCols = 3
-
--- Format the keybindings so they can be sent to the display
-formatList :: [String] -> String
-formatList list = columns "SeparatorPlaceholder" -- Normalise column widths -> Table
-                $ map unlines -- Connect the sublists with line breals -> [column1,column2,...]
-                $ chunksOf (myCheatsheetRows (list))
-                $ list -- The list to be formatted
-
-        where rowsFromColumns list nCol = 1 + length list `div` nCol
-              myCheatsheetRows list = rowsFromColumns list myCheatsheetCols
-
--- How to display the cheatsheet (adapted from Ethan Schoonover's config)
-showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
-showKeybindings myKeyList = addName "Show Keybindings" $ io $ do
-    handle <- spawnPipe "dzen2-display-cheatsheet"
-    hPutStrLn handle "TitlePlaceholder\n" -- Replaced in the script
-    hPutStrLn handle $ formatList (showKm myKeyList)
-    hClose handle
-    return ()
-
 --------------------------------------------------------------------------------
 -- LAYOUTHOOK
 --------------------------------------------------------------------------------
@@ -326,7 +302,7 @@ main = do
         -- Add keybindings in such a way as to allow viewing a cheatsheet with M-?
         -- showKeybindings is the script used to display them
         -- The prime shows that we are not merging with the default keys
-        $ addDescrKeys' (myCheatsheetKey, showKeybindings) myKeys
+        $ addDescrKeys' (myCheatsheetKey, myCheatsheet) myKeys
         $ myConfig barProc
 
 -- Adding all of my stuff to the default desktop config
