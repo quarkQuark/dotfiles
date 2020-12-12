@@ -7,10 +7,14 @@ dependencies:
     - split
     - fitspec
 
+library:
+    source-dirs: src
+
 executables:
     xmonad:
-        source-dirs: app
-        main:        Main.hs
+        source-dirs:  app
+        main:         Main.hs
+        dependencies: myXmonad
         ghc-options:
             - -threaded
             - -rtsopts
