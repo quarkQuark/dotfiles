@@ -3,13 +3,15 @@ where
 
 import System.IO
 import XMonad.Hooks.DynamicLog
+import XMonad.Util.Run (spawnPipe)
 import MyPrograms
 
-
--- If I want it to be able to read myLogHook
 spawnBarProcCmd :: Bar -> String
 spawnBarProcCmd XMobar = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
 spawnBarProcCmd other  = ""
+
+mySpawnBar :: IO (Handle)
+mySpawnBar = spawnPipe (spawnBarProcCmd myBar)
 
 -- Processes that need starting
 myBarAutostart :: Bar -> String
@@ -27,7 +29,7 @@ myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
 -- barProc points to the status bar's process handle
 -- dynamicLogWithPP allows us to format the output
 -- xmobarPP gives us some defaults
-myLogHook XMobar barProc = dynamicLogWithPP xmobarPP
+whichLogHook XMobar barProc = dynamicLogWithPP xmobarPP
         -- Write to bar instead of stdout
         { ppOutput          = hPutStrLn barProc
         -- How to order the different sections of the log
@@ -41,4 +43,5 @@ myLogHook XMobar barProc = dynamicLogWithPP xmobarPP
         , ppHiddenNoWindows = xmobarColor "white" "" . myEmptyWsSymbol
         }
 -- Dont't output a log for other bars (can crash XMonad)
-myLogHook other barProc = def
+whichLogHook other barProc = def
+myLogHook = whichLogHook myBar

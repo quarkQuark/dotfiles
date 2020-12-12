@@ -97,7 +97,7 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 -- This is the part that is actually run as a window manager
 main :: IO ()
 main = do
-    barProc <- spawnPipe (spawnBarProcCmd myBar)  -- Start myBar and return a handle
+    barProc <- mySpawnBar     -- Start myBar and return a handle
     spawn "pkill -o taffybar" -- Kill oldest taffybar instance (move to M-q binding?)
 
     -- Applies this config file over the default config for desktop use
@@ -123,7 +123,7 @@ myConfig barProc = desktopConfig
         -- Hooks
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
         , layoutHook  = myLayoutHook
-        , logHook     = myLogHook myBar barProc
+        , logHook     = myLogHook barProc
         , workspaces  = myWorkspaces
         , startupHook = do
             spawnOnce (myBarAutostart myBar)
