@@ -11,7 +11,6 @@ import XMonad.Hooks.ManageDocks           -- Manipulate and avoid docks and pane
 import XMonad.Layout.NoBorders            -- Remove borders when unnecessary (smartBorders)
 import XMonad.Layout.Spacing              -- Gaps around windows
 import XMonad.Util.NamedActions (addDescrKeys')
-import XMonad.Util.Run                    -- Start and send information to processes
 import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on login)
 
 -- Local Modules
@@ -32,7 +31,7 @@ import MyBar
 myLayoutHook = avoidStruts
              $ mySpacing
              $ smartBorders
---              $ mySideDecorate  -- Messes up everythin. I don't know why (too complicated for me to understamd
+--              $ mySideDecorate  -- Messes up everything - I don't yet understand why
              ( layoutHook desktopConfig )
 
 --------------------------------------------------------------------------------
@@ -58,7 +57,6 @@ myFocusedBorderColour = "#268bd2"
 
 --mySideDecorationTheme :: Theme
 --mySideDecorationTheme = def
-
 --mySideDecorate :: Eq a => l a -> ModifiedLayout (Decoration SideDecoration DefaultShrinker) l a
 --mySideDecorate = decoration shrinkText mySideDecorationTheme (SideDecoration L)
 
@@ -91,10 +89,8 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 --------------------------------------------------------------------------------
 -- MAIN
--- putting it all together
 --------------------------------------------------------------------------------
 
--- This is the part that is actually run as a window manager
 main :: IO ()
 main = do
     barProc <- mySpawnBar     -- Start myBar and return a handle
@@ -104,19 +100,14 @@ main = do
     xmonad
         -- Increased compliance with the Extended Window Manager Hints standard
         $ ewmh
-        -- Use my config, with the process handle for xmobar
         -- Add keybindings in such a way as to allow viewing a cheatsheet with M-?
-        -- showKeybindings is the script used to display them
-        -- The prime shows that we are not merging with the default keys
         $ addDescrKeys' (myCheatsheetKey, myCheatsheet) myKeys
         $ myConfig barProc
 
--- Adding all of my stuff to the default desktop config
 myConfig barProc = desktopConfig
         -- Variables
         { modMask  = myModMask
         , terminal = myTerminal
-        -- Borders
         , borderWidth        = myBorderWidth
         , normalBorderColor  = myNormalBorderColour
         , focusedBorderColor = myFocusedBorderColour
@@ -126,6 +117,6 @@ myConfig barProc = desktopConfig
         , logHook     = myLogHook barProc
         , workspaces  = myWorkspaces
         , startupHook = do
-            spawnOnce (myBarAutostart myBar)
+            spawnOnce myBarAutostart
             spawnOnce myAutostart
         }

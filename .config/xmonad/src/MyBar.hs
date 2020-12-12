@@ -1,23 +1,30 @@
 module MyBar
+(mySpawnBar, myBarAutostart, myLogHook)
 where
 
 import System.IO
+import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run (spawnPipe)
 import MyPrograms
 
+--  The command used to spawn the correct bar
 spawnBarProcCmd :: Bar -> String
 spawnBarProcCmd XMobar = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
 spawnBarProcCmd other  = ""
 
+-- Spawn the bar, returning its handle
 mySpawnBar :: IO (Handle)
 mySpawnBar = spawnPipe (spawnBarProcCmd myBar)
 
--- Processes that need starting
-myBarAutostart :: Bar -> String
-myBarAutostart XMobar   = "stalonetray --config " ++ myConfigDir ++ "stalonetrayrc"
-myBarAutostart Tint2    = "tint2 -c ~/.config/tint2/xmonad.tint2rc"
-myBarAutostart Taffybar = "status-notifier-watcher && taffybar" -- From status-notifier-item
+-- Other processes that need starting, depending on the bar
+whichBarAutostart :: Bar -> String
+whichBarAutostart XMobar   = "stalonetray --config " ++ myConfigDir ++ "stalonetrayrc"
+whichBarAutostart Tint2    = "tint2 -c ~/.config/tint2/xmonad.tint2rc"
+whichBarAutostart Taffybar = "status-notifier-watcher && taffybar" -- From status-notifier-item
+
+myBarAutostart :: String
+myBarAutostart = whichBarAutostart myBar
 
 -- Symbols for displaying workspaces in xmobar
 -- Must be functions, as it expects a different symbol for each
@@ -27,6 +34,7 @@ myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
 
 -- Data to be sent to the bar 
 -- barProc points to the status bar's process handle
+whichLogHook :: Bar -> Handle -> X ()
 -- dynamicLogWithPP allows us to format the output
 -- xmobarPP gives us some defaults
 whichLogHook XMobar barProc = dynamicLogWithPP xmobarPP
@@ -44,4 +52,6 @@ whichLogHook XMobar barProc = dynamicLogWithPP xmobarPP
         }
 -- Dont't output a log for other bars (can crash XMonad)
 whichLogHook other barProc = def
+
+myLogHook :: Handle -> X ()
 myLogHook = whichLogHook myBar
