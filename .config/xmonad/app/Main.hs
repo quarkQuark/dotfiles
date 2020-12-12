@@ -11,10 +11,11 @@ import XMonad.Hooks.EwmhDesktops          -- Fixes the automatic fullscreening o
 import XMonad.Hooks.ManageDocks           -- Manipulate and avoid docks and panels
 import XMonad.Layout.NoBorders            -- Remove borders when unnecessary (smartBorders)
 import XMonad.Layout.Spacing              -- Gaps around windows
-import XMonad.Util.NamedActions           -- AwesomeWM-style keybinding syntax
+import XMonad.Util.NamedActions (addDescrKeys')
 import XMonad.Util.Run                    -- Start and send information to processes
-import XMonad.Util.SpawnOnce              -- For running autostart only once (on login)
+import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on login)
 
+-- Local Modules
 import MyPrograms
 import MyKeys
 import MyCheatsheet
@@ -87,7 +88,7 @@ myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
 -- bar points to the status bar's process handle
 -- XMonad.Hooks.DynamicLog (dynamicLogWithPP) allows us to format the output
 -- XMonad.Hooks.DynamicLog (xmobarPP) gives us some defaults
-myLogHook barProc = dynamicLogWithPP xmobarPP
+myLogHook XMobar barProc = dynamicLogWithPP xmobarPP
         -- Write to bar instead of stdout
         { ppOutput          = hPutStrLn barProc
         -- How to order the different sections of the log
@@ -100,6 +101,8 @@ myLogHook barProc = dynamicLogWithPP xmobarPP
         , ppHidden          = xmobarColor "white" "" . myHiddenWsSymbol
         , ppHiddenNoWindows = xmobarColor "white" "" . myEmptyWsSymbol
         }
+-- Dont't output a log for other bars (can crash XMonad)
+myLogHook other barProc = def
 
 --------------------------------------------------------------------------------
 -- MANAGEHOOK
@@ -162,7 +165,7 @@ myConfig barProc = desktopConfig
         -- Hooks
         , manageHook  = manageDocks <+> manageHook desktopConfig <+> myManageHook
         , layoutHook  = myLayoutHook
-        --, logHook     = myLogHook barProc -- Seems to lead to crashes with tint2 or taffybar
+        , logHook     = myLogHook myBar barProc
         , workspaces  = myWorkspaces
         , startupHook = do
             spawnOnce (myBarAutostart myBar)
