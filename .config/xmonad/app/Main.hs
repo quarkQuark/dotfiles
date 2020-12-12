@@ -6,7 +6,6 @@ import Data.List (isInfixOf)
 import Prelude hiding (lookup)            -- to avoid confusing errors when mistyping Map.lookup
 import XMonad                             -- standard xmonad library
 import XMonad.Config.Desktop              -- default desktopConfig
-import XMonad.Hooks.DynamicLog            -- Customising the logHook (sends data to xmobar)
 import XMonad.Hooks.EwmhDesktops          -- Fixes the automatic fullscreening of applications
 import XMonad.Hooks.ManageDocks           -- Manipulate and avoid docks and panels
 import XMonad.Layout.NoBorders            -- Remove borders when unnecessary (smartBorders)
@@ -19,23 +18,12 @@ import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on
 import MyPrograms
 import MyKeys
 import MyCheatsheet
+import MyBar
 
 -- I want to figure out how window decorations work, but my Haskell is not yet good enough
 --import XMonad.Layout.Decoration
 --import XMonad.Util.Types
 --import SideDecoration
-
--- Status bar management
-spawnBarProcCmd, myBarAutostart :: Bar -> String
-
--- If I want it to be able to read myLogHook
-spawnBarProcCmd XMobar = "xmobar " ++ myConfigDir ++ "xmobarrc.hs"
-spawnBarProcCmd other  = ""
-
--- Anything else bar-dependent
-myBarAutostart XMobar   = "stalonetray --config " ++ myConfigDir ++ "stalonetrayrc"
-myBarAutostart Tint2    = "tint2 -c ~/.config/tint2/xmonad.tint2rc"
-myBarAutostart Taffybar = "status-notifier-watcher && taffybar" -- From status-notifier-item
 
 --------------------------------------------------------------------------------
 -- LAYOUTHOOK
@@ -73,36 +61,6 @@ myFocusedBorderColour = "#268bd2"
 
 --mySideDecorate :: Eq a => l a -> ModifiedLayout (Decoration SideDecoration DefaultShrinker) l a
 --mySideDecorate = decoration shrinkText mySideDecorationTheme (SideDecoration L)
-
---------------------------------------------------------------------------------
--- LOGHOOK
--- The information to send to xmobar, through the handle we defined earlier
---------------------------------------------------------------------------------
-
--- Symbols for displaying workspaces in xmobar
--- Must be functions, as it expects a different symbol for each
-myCurrentWsSymbol workspaceName = "[●]" -- The workspace currently active
-myHiddenWsSymbol  workspaceName =  "●"  -- Workspaces with open windows
-myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
-
--- bar points to the status bar's process handle
--- XMonad.Hooks.DynamicLog (dynamicLogWithPP) allows us to format the output
--- XMonad.Hooks.DynamicLog (xmobarPP) gives us some defaults
-myLogHook XMobar barProc = dynamicLogWithPP xmobarPP
-        -- Write to bar instead of stdout
-        { ppOutput          = hPutStrLn barProc
-        -- How to order the different sections of the log
-        , ppOrder           = \(workspace:layout:title:extras)
-                            -> [workspace,layout]
-        -- Separator between different sections of the log
-        , ppSep             = "  "
-        -- Format the workspace information
-        , ppCurrent         = xmobarColor "white" "" . myCurrentWsSymbol
-        , ppHidden          = xmobarColor "white" "" . myHiddenWsSymbol
-        , ppHiddenNoWindows = xmobarColor "white" "" . myEmptyWsSymbol
-        }
--- Dont't output a log for other bars (can crash XMonad)
-myLogHook other barProc = def
 
 --------------------------------------------------------------------------------
 -- MANAGEHOOK
