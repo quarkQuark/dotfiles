@@ -22,9 +22,9 @@ import XMonad.Util.Run                    -- Start and send information to proce
 import XMonad.Util.SpawnOnce              -- For running autostart only once (on login)
 
 -- I want to figure out how window decorations work, but my Haskell is not yet good enough
-import XMonad.Layout.Decoration
-import XMonad.Util.Types
-import SideDecoration
+--import XMonad.Layout.Decoration
+--import XMonad.Util.Types
+--import SideDecoration
 
 --------------------------------------------------------------------------------
 -- VARIABLES AND DEFAULT PROGRAMS
@@ -246,11 +246,11 @@ myNormalBorderColour, myFocusedBorderColour :: String
 myNormalBorderColour = "#111111"
 myFocusedBorderColour = "#268bd2"
 
-mySideDecorationTheme :: Theme
-mySideDecorationTheme = def
+--mySideDecorationTheme :: Theme
+--mySideDecorationTheme = def
 
-mySideDecorate :: Eq a => l a -> ModifiedLayout (Decoration SideDecoration DefaultShrinker) l a
-mySideDecorate = decoration shrinkText mySideDecorationTheme (SideDecoration L)
+--mySideDecorate :: Eq a => l a -> ModifiedLayout (Decoration SideDecoration DefaultShrinker) l a
+--mySideDecorate = decoration shrinkText mySideDecorationTheme (SideDecoration L)
 
 --------------------------------------------------------------------------------
 -- LOGHOOK
