@@ -19,10 +19,10 @@ myPrintScreen    = "spectacle"
 
 data Bar = Taffybar | XMobar | Tint2
 myBar :: Bar
-myBar            = Tint2
+myBar = XMobar
 
 myMenu :: String
-myMenu     = "rofi -dmenu -i -p"  -- For scripts that require user input
+myMenu = "rofi -dmenu -i -p"  -- For scripts that require user input
 
 -- Config locations
 myConfigDir   = "~/.config/xmonad/src/"       -- XMonad-related config
