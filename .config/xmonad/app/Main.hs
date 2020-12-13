@@ -5,7 +5,10 @@ import XMonad.Config.Desktop              -- default desktopConfig
 import XMonad.Hooks.EwmhDesktops          -- Fixes the automatic fullscreening of applications
 import XMonad.Hooks.ManageDocks           -- Manipulate and avoid docks and panels
 import XMonad.Layout.NoBorders            -- Remove borders when unnecessary (smartBorders)
+import XMonad.Layout.Renamed              -- Rename layouts
+import XMonad.Layout.ResizableTile
 import XMonad.Layout.Spacing              -- Gaps around windows
+import XMonad.Layout.ThreeColumns
 import XMonad.Util.NamedActions (addDescrKeys')
 import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on login)
 
@@ -18,21 +21,6 @@ import MyBar
 --import XMonad.Layout.Decoration
 --import XMonad.Util.Types
 --import SideDecoration
-
---------------------------------------------------------------------------------
--- LAYOUTHOOK
-
-myLayouts = myTall ||| Mirror myTall ||| Full
-    where
-        myTall = Tall 1       -- Number of master panes
-                      (1/2)   -- Relative width of master pane
-                      (3/100) -- Increment when resizing
-
-myLayoutHook = avoidStruts
-             $ mySpacing
-             $ smartBorders
---           $ mySideDecorate  -- Messes up everything - I don't yet understand why
-               myLayouts
 
 --------------------------------------------------------------------------------
 -- AESTHETICS
@@ -60,6 +48,34 @@ myFocusedBorderColour = "#268bd2"
 --mySideDecorate = decoration shrinkText mySideDecorationTheme (SideDecoration L)
 
 --------------------------------------------------------------------------------
+-- LAYOUTHOOK
+
+myLayouts = tall ||| three ||| wide ||| Full
+    where
+        tall  = renamed [Replace "Tall"]
+              $ mySpacing
+              $ ResizableTall 1 (3/100) (1/2) []
+
+        three = renamed [Replace "Three"]
+              $ mySpacing
+              $ ThreeColMid 1 (3/100) (1/2)
+
+        wide  = renamed [Replace "Wide"]
+              $ Mirror tall
+
+myLayoutHook = avoidStruts
+             $ smartBorders
+--           $ mySideDecorate  -- Messes up everything - I don't yet understand why
+               myLayouts
+
+--------------------------------------------------------------------------------
+-- WORKSPACES
+
+-- My workspaces are currently just numbers
+myWorkspaces :: [String]
+myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
+
+--------------------------------------------------------------------------------
 -- MANAGEHOOK
 -- To find a window class or title, run xprop in a terminal, then click on it
 
@@ -79,13 +95,6 @@ manageSpecific = composeAll . concat $
 
 myManageHook :: ManageHook
 myManageHook = manageDocks <+> manageHook desktopConfig <+> manageSpecific
-
---------------------------------------------------------------------------------
--- WORKSPACES
-
--- My workspaces are currently just numbers
-myWorkspaces :: [String]
-myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 --------------------------------------------------------------------------------
 -- MAIN
