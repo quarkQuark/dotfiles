@@ -1,7 +1,3 @@
---------------------------------------------------------------------------------
--- IMPORTS
---------------------------------------------------------------------------------
-
 import Data.List (isInfixOf)
 import Prelude hiding (lookup)            -- to avoid confusing errors when mistyping Map.lookup
 import XMonad                             -- standard xmonad library
@@ -13,7 +9,6 @@ import XMonad.Layout.Spacing              -- Gaps around windows
 import XMonad.Util.NamedActions (addDescrKeys')
 import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on login)
 
--- Local Modules
 import MyPrograms
 import MyKeys
 import MyCheatsheet
@@ -26,7 +21,6 @@ import MyBar
 
 --------------------------------------------------------------------------------
 -- LAYOUTHOOK
---------------------------------------------------------------------------------
 
 myLayoutHook = avoidStruts
              $ mySpacing
@@ -36,17 +30,16 @@ myLayoutHook = avoidStruts
 
 --------------------------------------------------------------------------------
 -- AESTHETICS
---------------------------------------------------------------------------------
 
 -- Gaps around and between windows
 -- Changes only seem to apply if I log out then in again
 -- Dimensions are given as (Border top bottom right left)
-mySpacing = spacingRaw True             -- Only for >1 window
+mySpacing = spacingRaw True                -- Only for >1 window
                        -- The bottom edge seems to look narrower than it is
                        (Border 0 15 10 10) -- Size of screen edge gaps
-                       True             -- Enable screen edge gaps
-                       (Border 5 5 5 5) -- Size of window gaps
-                       True             -- Enable window gaps
+                       True                -- Enable screen edge gaps
+                       (Border 5 5 5 5)    -- Size of window gaps
+                       True                -- Enable window gaps
 
 myBorderWidth :: Dimension
 myBorderWidth = 2
@@ -62,8 +55,7 @@ myFocusedBorderColour = "#268bd2"
 
 --------------------------------------------------------------------------------
 -- MANAGEHOOK
--- special rules based on window types
---------------------------------------------------------------------------------
+-- To find a window class or title, run xprop in a terminal, then click on it
 
 myManageHook :: ManageHook
 myManageHook = manageDocks <+> manageHook desktopConfig <+> manageSpecific
@@ -75,15 +67,14 @@ myManageHook = manageDocks <+> manageHook desktopConfig <+> manageSpecific
             , [ className =? "zoom" <&&> fmap (isInfixOf z) title --> doFloat | z <- myZoomFloats ]
             , [ className =? "zoom" <&&> title =? "zoom"          --> doFloat ] -- Zoom notification popups
             ]
-          -- To find a window class or title, run xprop in a terminal, then click on it
-          where myFloatClasses = ["Gimp", "conky", "plasmashell", "vlc", "Nitrogen", "Tint2conf"]
+            where
+                myFloatClasses = ["Gimp", "conky", "plasmashell", "vlc", "Nitrogen", "Tint2conf"]
                 myFloatTitles  = ["Whisker Menu"]
                 -- This allows annoying classes such as "Participants (n)" where n is the number of people
                 myZoomFloats  = ["Chat", "Participants", "Rooms"] -- Currently untested for breakout rooms
 
 --------------------------------------------------------------------------------
 -- WORKSPACES
---------------------------------------------------------------------------------
 
 -- My workspaces are currently just numbers
 myWorkspaces :: [String]
@@ -91,7 +82,6 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 --------------------------------------------------------------------------------
 -- MAIN
---------------------------------------------------------------------------------
 
 main :: IO ()
 main = do
@@ -108,17 +98,17 @@ main = do
 
 myConfig barProc = desktopConfig
         -- Variables
-        { modMask  = myModMask
-        , terminal = myTerminal
+        { modMask            = myModMask
+        , terminal           = myTerminal
         , borderWidth        = myBorderWidth
         , normalBorderColor  = myNormalBorderColour
         , focusedBorderColor = myFocusedBorderColour
         -- Hooks
-        , manageHook  = myManageHook
-        , layoutHook  = myLayoutHook
-        , logHook     = myLogHook barProc
-        , workspaces  = myWorkspaces
-        , startupHook = do
+        , manageHook         = myManageHook
+        , layoutHook         = myLayoutHook
+        , logHook            = myLogHook barProc
+        , workspaces         = myWorkspaces
+        , startupHook        = do
             spawnOnce myBarAutostart
             spawnOnce myAutostart
         }
