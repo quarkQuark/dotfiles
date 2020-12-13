@@ -22,11 +22,17 @@ import MyBar
 --------------------------------------------------------------------------------
 -- LAYOUTHOOK
 
+myLayouts = tiled ||| Mirror tiled ||| Full
+    where
+        tiled = Tall 1     -- Number of master panes
+                     1/2   -- Relative width of master pane
+                     3/100 -- Increment when resizing
+
 myLayoutHook = avoidStruts
              $ mySpacing
              $ smartBorders
---              $ mySideDecorate  -- Messes up everything - I don't yet understand why
-             ( layoutHook desktopConfig )
+--           $ mySideDecorate  -- Messes up everything - I don't yet understand why
+               myLayouts
 
 --------------------------------------------------------------------------------
 -- AESTHETICS
