@@ -22,11 +22,11 @@ import MyBar
 --------------------------------------------------------------------------------
 -- LAYOUTHOOK
 
-myLayouts = tiled ||| Mirror tiled ||| Full
+myLayouts = myTall ||| Mirror myTall ||| Full
     where
-        tiled = Tall 1     -- Number of master panes
-                     1/2   -- Relative width of master pane
-                     3/100 -- Increment when resizing
+        myTall = Tall 1       -- Number of master panes
+                      (1/2)   -- Relative width of master pane
+                      (3/100) -- Increment when resizing
 
 myLayoutHook = avoidStruts
              $ mySpacing
