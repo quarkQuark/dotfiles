@@ -1,7 +1,7 @@
 {-# LANGUAGE NoMonomorphismRestriction, FlexibleContexts #-}
 
 module MyLayoutHook
-(myLayoutHook, full)
+(myLayoutHook)
 where
 
 import XMonad.Hooks.ManageDocks (avoidStruts)
