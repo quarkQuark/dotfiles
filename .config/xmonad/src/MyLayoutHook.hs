@@ -6,7 +6,7 @@ where
 
 import XMonad.Hooks.ManageDocks (avoidStruts)
 import XMonad.Layout
-import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Spacing
@@ -35,19 +35,26 @@ myTabConfig = def { fontName            = "xft:Ubuntu Nerd Font:size=10"
 
 tall  = renamed [Replace "Tall"]
       $ mySpacing
+      $ avoidStruts
       $ ResizableTall 1 (3/100) (1/2) []
 
 three = renamed [Replace "Three"]
       $ mySpacing
+      $ avoidStruts
       $ ThreeColMid 1 (3/100) (1/2)
 
 wide  = renamed [Replace "Wide"]
+      $ avoidStruts
       $ Mirror tall
 
 tabs  = renamed [Replace "Tabs"]
+      $ avoidStruts
       $ tabbed shrinkText myTabConfig
 
-myLayoutHook = avoidStruts
-             $ smartBorders
+full  = renamed [Replace "Full"]
+      $ noBorders
+      $ Full
+
+myLayoutHook = smartBorders
 --           $ mySideDecorate  -- Messes up everything - I don't yet understand why
-             tall ||| three ||| wide ||| Full ||| tabs
+               tall ||| three ||| wide ||| full ||| tabs
