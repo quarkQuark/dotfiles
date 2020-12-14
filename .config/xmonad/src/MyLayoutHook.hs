@@ -1,16 +1,17 @@
 {-# LANGUAGE NoMonomorphismRestriction, FlexibleContexts #-}
+
 module MyLayoutHook
 (myLayoutHook)
 where
 
-import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageDocks (avoidStruts)
 import XMonad.Layout
-import XMonad.Layout.NoBorders            -- Remove borders when unnecessary (smartBorders)
-import XMonad.Layout.Renamed              -- Rename layouts
+import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile
-import XMonad.Layout.Spacing              -- Gaps around windows
+import XMonad.Layout.Spacing
+import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
-import XMonad.Layout.LayoutModifier
 
 -- Gaps around and between windows
 -- Changes only seem to apply if I log out then in again
@@ -21,6 +22,16 @@ mySpacing = spacingRaw True                -- Only for >1 window
                        True                -- Enable screen edge gaps
                        (Border 5 5 5 5)    -- Size of window gaps
                        True                -- Enable window gaps
+
+myTabConfig = def { fontName            = "xft:Ubuntu Nerd Font:size=10"
+                  -- Colours copied from DistroTube (gitlab/dwt1)
+                  , activeColor         = "#46D9FF"
+                  , inactiveColor       = "#313846"
+                  , activeBorderColor   = "#46D9FF"
+                  , inactiveBorderColor = "#282C34"
+                  , activeTextColor     = "#282C34"
+                  , inactiveTextColor   = "#D0D0D0"
+                  }
 
 tall  = renamed [Replace "Tall"]
       $ mySpacing
@@ -33,9 +44,10 @@ three = renamed [Replace "Three"]
 wide  = renamed [Replace "Wide"]
       $ Mirror tall
 
-myLayoutHook =
-              -- uncommenting either of the following two lines gives an ambiguous tyoe error
-              avoidStruts
-              $ smartBorders
+tabs  = renamed [Replace "Tabs"]
+      $ tabbed shrinkText myTabConfig
+
+myLayoutHook = avoidStruts
+             $ smartBorders
 --           $ mySideDecorate  -- Messes up everything - I don't yet understand why
-              tall ||| three ||| wide ||| Full
+             tall ||| three ||| wide ||| Full ||| tabs
