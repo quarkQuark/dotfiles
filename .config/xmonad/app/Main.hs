@@ -13,9 +13,6 @@ import MyCheatsheet
 import MyBar
 import MyLayoutHook
 
-import XMonad.Hooks.ManageDocks
-import XMonad.Layout.Monocle
-
 -- I want to figure out how window decorations work, but my Haskell is not yet good enough
 --import XMonad.Layout.Decoration
 --import XMonad.Util.Types
