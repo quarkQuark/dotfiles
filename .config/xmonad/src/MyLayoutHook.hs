@@ -15,6 +15,8 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 
+import Options
+
 -- Gaps around and between windows
 -- Changes only seem to apply if I log out then in again
 -- Dimensions are given as (Border top bottom right left)
@@ -25,14 +27,13 @@ mySpacing = spacingRaw True                -- Only for >1 window
                        (Border 5 5 5 5)    -- Size of window gaps
                        True                -- Enable window gaps
 
-myTabConfig = def { fontName            = "xft:Ubuntu Nerd Font:size=10"
-                  -- Colours copied from DistroTube (gitlab/dwt1)
-                  , activeColor         = "#46D9FF"
-                  , inactiveColor       = "#313846"
-                  , activeBorderColor   = "#46D9FF"
-                  , inactiveBorderColor = "#282C34"
-                  , activeTextColor     = "#282C34"
-                  , inactiveTextColor   = "#D0D0D0"
+myTabConfig = def { fontName            = myFont
+                  , activeColor         = myTabActiveColour
+                  , inactiveColor       = myTabInactiveColour
+                  , activeBorderColor   = myTabActiveBorderColour
+                  , inactiveBorderColor = myTabInactiveBorderColour
+                  , activeTextColor     = myTabActiveTextColour
+                  , inactiveTextColor   = myTabInactiveTextColour
                   }
 
 tall  = renamed [Replace "Tall"]

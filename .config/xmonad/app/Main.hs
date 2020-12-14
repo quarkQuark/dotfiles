@@ -18,32 +18,16 @@ import MyLayoutHook
 --import XMonad.Util.Types
 --import SideDecoration
 
---------------------------------------------------------------------------------
--- AESTHETICS
-
-myBorderWidth :: Dimension
-myBorderWidth = 2
-
-myNormalBorderColour, myFocusedBorderColour :: String
-myNormalBorderColour = "#111111"
-myFocusedBorderColour = "#268bd2"
-
 --mySideDecorationTheme :: Theme
 --mySideDecorationTheme = def
 --mySideDecorate :: Eq a => l a -> ModifiedLayout (Decoration SideDecoration DefaultShrinker) l a
 --mySideDecorate = decoration shrinkText mySideDecorationTheme (SideDecoration L)
 
---------------------------------------------------------------------------------
--- WORKSPACES
-
 -- My workspaces are currently just numbers
 myWorkspaces :: [String]
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
---------------------------------------------------------------------------------
--- MANAGEHOOK
 -- To find a window class or title, run xprop in a terminal, then click on it
-
 manageSpecific :: ManageHook
 manageSpecific = composeAll . concat $
     -- Windows to automatically float
@@ -60,9 +44,6 @@ manageSpecific = composeAll . concat $
 
 myManageHook :: ManageHook
 myManageHook = manageDocks <+> manageHook desktopConfig <+> manageSpecific
-
---------------------------------------------------------------------------------
--- MAIN
 
 main :: IO ()
 main = do
