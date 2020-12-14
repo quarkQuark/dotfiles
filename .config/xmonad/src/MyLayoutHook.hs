@@ -45,10 +45,6 @@ three = renamed [Replace "Three"]
       $ avoidStruts
       $ ThreeColMid 1 (3/100) (1/2)
 
-wide  = renamed [Replace "Wide"]
-      $ avoidStruts
-      $ Mirror tall
-
 tabs  = renamed [Replace "Tabs"]
       $ avoidStruts
       $ tabbed shrinkText myTabConfig
@@ -56,4 +52,4 @@ tabs  = renamed [Replace "Tabs"]
 myLayoutHook = smartBorders
 --           $ mySideDecorate  -- Messes up everything - I don't yet understand why
              $ mkToggle (single NBFULL)
-             $ tall ||| three ||| wide ||| tabs
+             $ tall ||| three ||| tabs
