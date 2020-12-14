@@ -6,7 +6,7 @@ import System.IO
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run (spawnPipe)
-import MyPrograms
+import Options
 
 --  The command used to spawn the correct bar
 spawnBarProcCmd :: Bar -> String

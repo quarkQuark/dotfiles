@@ -7,7 +7,7 @@ import XMonad.Hooks.ManageDocks           -- Manipulate and avoid docks and pane
 import XMonad.Util.NamedActions (addDescrKeys')
 import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on login)
 
-import MyPrograms
+import Options
 import MyKeys
 import MyCheatsheet
 import MyBar

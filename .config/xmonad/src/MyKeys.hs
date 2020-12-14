@@ -12,7 +12,7 @@ import XMonad.Util.NamedActions -- Allows labelling of keybindings
 import qualified XMonad.StackSet as W
 
 -- Which programs to use as defaults
-import MyPrograms
+import Options
 
 -- Convert multiword strings to arguments (concatenate with delimiters)
 -- This makes sure my shell scripts correctly interpret their arguments

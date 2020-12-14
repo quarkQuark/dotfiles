@@ -1,4 +1,4 @@
-module MyPrograms
+module Options
 where
 
 import XMonad
