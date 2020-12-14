@@ -89,8 +89,7 @@ myConfig barProc = desktopConfig
         , focusedBorderColor = myFocusedBorderColour
         -- Hooks
         , manageHook         = myManageHook
-        -- Remove 'avoidStruts' once I get it working in the MyLayoutHook module
-        , layoutHook         = avoidStruts myLayoutHook
+        , layoutHook         = myLayoutHook
         , logHook            = myLogHook barProc
         , workspaces         = myWorkspaces
         , startupHook        = do

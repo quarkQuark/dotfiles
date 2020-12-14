@@ -1,3 +1,4 @@
+{-# LANGUAGE NoMonomorphismRestriction, FlexibleContexts #-}
 module MyLayoutHook
 (myLayoutHook)
 where
@@ -34,7 +35,7 @@ wide  = renamed [Replace "Wide"]
 
 myLayoutHook =
               -- uncommenting either of the following two lines gives an ambiguous tyoe error
-              -- avoidStruts
-              -- $ smartBorders
+              avoidStruts
+              $ smartBorders
 --           $ mySideDecorate  -- Messes up everything - I don't yet understand why
               tall ||| three ||| wide ||| Full
