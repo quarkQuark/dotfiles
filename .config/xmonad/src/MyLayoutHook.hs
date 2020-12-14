@@ -53,11 +53,7 @@ tabs  = renamed [Replace "Tabs"]
       $ avoidStruts
       $ tabbed shrinkText myTabConfig
 
-full  = renamed [Replace "Full"]
-      $ noBorders
-      $ Full
-
 myLayoutHook = smartBorders
 --           $ mySideDecorate  -- Messes up everything - I don't yet understand why
              $ mkToggle (single NBFULL)
-             $ tall ||| three ||| wide ||| full ||| tabs
+             $ tall ||| three ||| wide ||| tabs
