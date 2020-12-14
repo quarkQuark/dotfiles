@@ -1,11 +1,13 @@
 {-# LANGUAGE NoMonomorphismRestriction, FlexibleContexts #-}
 
 module MyLayoutHook
-(myLayoutHook)
+(myLayoutHook, full)
 where
 
 import XMonad.Hooks.ManageDocks (avoidStruts)
 import XMonad.Layout
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile
@@ -57,4 +59,5 @@ full  = renamed [Replace "Full"]
 
 myLayoutHook = smartBorders
 --           $ mySideDecorate  -- Messes up everything - I don't yet understand why
-               tall ||| three ||| wide ||| full ||| tabs
+             $ mkToggle (single NBFULL)
+             $ tall ||| three ||| wide ||| full ||| tabs

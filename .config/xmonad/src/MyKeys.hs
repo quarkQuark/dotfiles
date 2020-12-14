@@ -4,6 +4,8 @@ where
 
 import System.Exit (exitSuccess)
 import XMonad
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 import XMonad.Util.EZConfig     -- Simpler keybinding syntax
 import XMonad.Util.NamedActions -- Allows labelling of keybindings
 import qualified XMonad.StackSet as W
@@ -77,6 +79,7 @@ myKeys conf = let
     , ("M-,",                     addName "Inc master windows"     $ sendMessage $ IncMasterN 1)
     , ("M-.",                     addName "Dec master windows"     $ sendMessage $ IncMasterN (-1))
     , ("M3-<Space>",              addName "Next layout"            $ sendMessage NextLayout)
+    , ("M-f",                     addName "Toggle fullscreen"      $ sendMessage $ Toggle NBFULL)
     ] ^++^
 
     subKeys "Windows"
