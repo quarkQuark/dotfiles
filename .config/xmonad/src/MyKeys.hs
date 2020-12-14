@@ -6,6 +6,7 @@ import System.Exit (exitSuccess)
 import XMonad
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
+import XMonad.Layout.ResizableTile
 import XMonad.Util.EZConfig     -- Simpler keybinding syntax
 import XMonad.Util.NamedActions -- Allows labelling of keybindings
 import qualified XMonad.StackSet as W
@@ -76,6 +77,8 @@ myKeys conf = let
     subKeys "Layouts"
     [ ("M-h",                     addName "Shrink master"          $ sendMessage Shrink)
     , ("M-l",                     addName "Expand master"          $ sendMessage Expand)
+    , ("M-i",                     addName "Shrink slave"           $ sendMessage MirrorExpand)
+    , ("M-u",                     addName "Expand slave"           $ sendMessage MirrorShrink)
     , ("M-,",                     addName "Inc master windows"     $ sendMessage $ IncMasterN 1)
     , ("M-.",                     addName "Dec master windows"     $ sendMessage $ IncMasterN (-1))
     , ("M3-<Space>",              addName "Next layout"            $ sendMessage NextLayout)
