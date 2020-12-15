@@ -20,7 +20,7 @@ myPrintScreen    = "spectacle"
 
 data Bar = Taffybar | XMobar | Tint2 deriving (Eq)
 myBar :: Bar
-myBar = Taffybar
+myBar = XMobar
 
 myMenu :: String
 myMenu = "rofi -dmenu -i -p"  -- For scripts that require user input
