@@ -4,7 +4,7 @@ picom &
 redshift-gtk &
 
 # Daemons
-emacs --daemon &
+#emacs --daemon &
 
 # Tray Icons
 status-notifier-watcher # Tracks tray applets for Taffybar
@@ -21,6 +21,4 @@ pasystray &  # Works for IvanMalison
 
 # Settings
 xrdb -merge "$HOME/.config/X11/Xresources" &
-set xkbmap -layout gb,gb -variant ,dvorak -option grp:ctrls_toggle
 $HOME/.scripts/set-modifiers.sh &
-#command -v autorandr >/dev/null && autorandr --change
