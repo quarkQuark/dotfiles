@@ -1,9 +1,6 @@
-import Data.List (isInfixOf)
-import Prelude hiding (lookup)            -- to avoid confusing errors when mistyping Map.lookup
 import XMonad                             -- standard xmonad library
 import XMonad.Config.Desktop              -- default desktopConfig
 import XMonad.Hooks.EwmhDesktops          -- Fixes the automatic fullscreening of applications
-import XMonad.Hooks.ManageDocks           -- Manipulate and avoid docks and panels
 import XMonad.Util.NamedActions (addDescrKeys')
 import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on login)
 
@@ -12,6 +9,7 @@ import MyKeys
 import MyCheatsheet
 import MyBar
 import MyLayoutHook
+import MyManageHook
 
 -- I want to figure out how window decorations work, but my Haskell is not yet good enough
 --import XMonad.Layout.Decoration
@@ -26,24 +24,6 @@ import MyLayoutHook
 -- My workspaces are currently just numbers
 myWorkspaces :: [String]
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
-
--- To find a window class or title, run xprop in a terminal, then click on it
-manageSpecific :: ManageHook
-manageSpecific = composeAll . concat $
-    -- Windows to automatically float
-    [ [ className =? c                                    --> doFloat | c <- myFloatClasses ]
-    , [ title     =? t                                    --> doFloat | t <- myFloatTitles ]
-    , [ className =? "zoom" <&&> fmap (isInfixOf z) title --> doFloat | z <- myZoomFloats ]
-    , [ className =? "zoom" <&&> title =? "zoom"          --> doFloat ] -- Zoom notification popups
-    ]
-    where
-        myFloatClasses = ["Gimp", "conky", "plasmashell", "vlc", "Nitrogen", "Tint2conf"]
-        myFloatTitles  = ["Whisker Menu"]
-        -- This allows annoying classes such as "Participants (n)" where n is the number of people
-        myZoomFloats  = ["Chat", "Participants", "Rooms"] -- Currently untested for breakout rooms
-
-myManageHook :: ManageHook
-myManageHook = manageDocks <+> manageHook desktopConfig <+> manageSpecific
 
 main :: IO ()
 main = do
