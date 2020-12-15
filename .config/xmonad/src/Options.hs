@@ -31,8 +31,8 @@ myMenu = "rofi -dmenu -i -p"  -- For scripts that require user input
 myConfigDir       = "~/.config/xmonad/src/"       -- XMonad-related config
 myBuildScript     = "~/.config/xmonad/build"      -- Script to recompile and restart xmonad
 myAutostart       = "~/.config/xmonad/src/autostart.sh" -- Script to run on login
-myXMobarConf      = "~/.config/xmonad/src/xmobarrc.hs"
-myStalonetrayConf = "~/.config/xmonad/src/stalonetrayrc"
+myXMobarConf      = "~/.config/xmobar/xmobarrc.hs"
+myStalonetrayConf = "~/.config/stalonetray/stalonetrayrc"
 myTint2Conf       = "~/.config/tint2/xmonad.tint2rc"
 
 --------------------------------------------------------------------------------
