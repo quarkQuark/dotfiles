@@ -18,9 +18,9 @@ myGuiFileManager = "pcmanfm"
 myPdfReader      = "zathura"
 myPrintScreen    = "spectacle"
 
-data Bar = Taffybar | XMobar | Tint2
+data Bar = Taffybar | XMobar | Tint2 deriving (Eq)
 myBar :: Bar
-myBar = XMobar
+myBar = Taffybar
 
 myMenu :: String
 myMenu = "rofi -dmenu -i -p"  -- For scripts that require user input
@@ -28,9 +28,12 @@ myMenu = "rofi -dmenu -i -p"  -- For scripts that require user input
 --------------------------------------------------------------------------------
 -- FILEPATHS
 
-myConfigDir   = "~/.config/xmonad/src/"       -- XMonad-related config
-myBuildScript = "~/.config/xmonad/build"      -- Script to recompile and restart xmonad
-myAutostart   = myConfigDir ++ "autostart.sh" -- Script to run on login
+myConfigDir       = "~/.config/xmonad/src/"       -- XMonad-related config
+myBuildScript     = "~/.config/xmonad/build"      -- Script to recompile and restart xmonad
+myAutostart       = "~/.config/xmonad/src/autostart.sh" -- Script to run on login
+myXMobarConf      = "~/.config/xmonad/src/xmobarrc.hs"
+myStalonetrayConf = "~/.config/xmonad/src/stalonetrayrc"
+myTint2Conf       = "~/.config/tint2/xmonad.tint2rc"
 
 --------------------------------------------------------------------------------
 -- THEME

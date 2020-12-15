@@ -47,7 +47,7 @@ myManageHook = manageDocks <+> manageHook desktopConfig <+> manageSpecific
 
 main :: IO ()
 main = do
-    barProc <- mySpawnBar     -- Start myBar and return a handle
+    barProc <- spawnBarWithHandle  -- Start myBar and return a handle
     spawn "pkill -o taffybar" -- Kill oldest taffybar instance (move to M-q binding?)
 
     -- Applies this config file over the default config for desktop use
@@ -59,18 +59,15 @@ main = do
         $ myConfig barProc
 
 myConfig barProc = desktopConfig
-        -- Variables
         { modMask            = myModMask
         , terminal           = myTerminal
         , borderWidth        = myBorderWidth
         , normalBorderColor  = myNormalBorderColour
         , focusedBorderColor = myFocusedBorderColour
-        -- Hooks
         , manageHook         = myManageHook
         , layoutHook         = myLayoutHook
         , logHook            = myLogHook barProc
         , workspaces         = myWorkspaces
-        , startupHook        = do
-            spawnOnce myBarAutostart
-            spawnOnce myAutostart
+        , startupHook        = do spawnOnce myBarAutostart
+                                  spawnOnce myAutostart
         }

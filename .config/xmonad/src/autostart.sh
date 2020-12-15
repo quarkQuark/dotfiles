@@ -7,6 +7,7 @@ redshift-gtk &
 emacs --daemon &
 
 # Tray Icons
+status-notifier-watcher # Tracks tray applets for Taffybar
 udiskie --tray --appindicator --no-config &
 nm-applet --indicator &
 lxqt-powermanagement &
