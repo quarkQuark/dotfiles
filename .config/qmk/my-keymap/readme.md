@@ -8,4 +8,4 @@ ln -s ~/.config/qmk/my-keymap <qmk home>/keyboards/ergodox_ez/keymaps/quarkQuark
 By default, `qmk setup` sets the qmk home as `~/qmk-firmware`.
 To choose a different location, run `qmk setup -H <filepath>` instead.
 
-![Default](https://i.imgur.com/Be53jH7.png)
+![](ergodox-80-blank.png)
