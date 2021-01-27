@@ -6,6 +6,7 @@
 #define BASE 0 // default layer
 #define SYMB 1 // symbols
 #define MDIA 2 // media keys
+#define QWER 3 // qwerty
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
@@ -21,12 +22,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |Grv/L1|  '"  |AltShf| Left | Right|                                       |  Up  | Down |   [  |   ]  | ~L1  |
  *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        | App  | LGui |       | Alt  |Ctrl/Esc|
+ *                                        ,-------------.       ,---------------.
+ *                                        | App  | L3   |       | Alt  |Ctrl/Esc|
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |  1   |  2   | Home |       | PgUp |   3    |   4  |
+ *                                 | ~L1  |  2   | Home |       | PgUp |   3    | LGui |
  *                                 |------|------|------|       |------|--------|------|
- *                                 | Enter| BkSp | End  |       | PgDn |  Tab   |Space |
+ *                                 | Enter| Esc  | End  |       | PgDn |  Tab   |Space |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -39,9 +40,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,          CTL_T(KC_Z), KC_X,          KC_C,    KC_D,    KC_V,  ALL_T(KC_NO),
         LT(SYMB,KC_GRV),  KC_QUOT,     LALT(KC_LSFT), KC_LEFT, KC_RGHT,
 
-                                                                        ALT_T(KC_APP),  KC_LGUI,
-                                                                KC_1,   KC_2,           KC_HOME,
-                                                                KC_ENT, KC_BSPC,        KC_END,
+                                                                          ALT_T(KC_APP), TG(QWER),
+                                                                TT(SYMB), KC_2,          KC_HOME,
+                                                                KC_ENT,   KC_ESC,        KC_END,
         // right hand
         KC_RGHT,       KC_6, KC_7,  KC_8,    KC_9,    KC_0,               KC_MINS,
         TG(SYMB),      KC_J, KC_L,  KC_U,    KC_Y,    LT(MDIA, KC_SCLN),  KC_BSLS,
@@ -50,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              KC_UP, KC_DOWN, KC_LBRC, KC_RBRC,            TT(SYMB),
 
         KC_LALT, CTL_T(KC_ESC),
-        KC_PGUP, KC_3,          KC_4,
+        KC_PGUP, KC_3,          KC_LGUI,
         KC_PGDN, KC_TAB,        KC_SPC
     ),
 /* Keymap 1: Symbol Layer
@@ -140,6 +141,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_WBAK
 ),
+
+// QWERTY
+[QWER] = LAYOUT_ergodox_80(
+       KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  KC_TRNS,
+       KC_TRNS,  KC_A   , KC_S   , KC_D   , KC_F   , KC_G   ,
+       KC_TRNS,  KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   ,  KC_TRNS,
+       KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+
+                                                     KC_TRNS, KC_TRNS,
+								            KC_TRNS, KC_TRNS, KC_TRNS,
+                                            KC_TRNS, KC_TRNS, KC_TRNS,
+    // right hand
+       KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,
+       KC_TRNS,  KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   ,  KC_TRNS,
+                 KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN,  KC_TRNS,
+       KC_TRNS,  KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH,  KC_TRNS,
+                          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,
+
+       KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS, KC_TRNS
+    ),
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
