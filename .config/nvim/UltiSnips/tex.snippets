@@ -31,8 +31,6 @@ endglobal
 # LaTeX headers
 # b - only at beginning of line
 snippet preamble "LaTeX headers and template" b
-\title{$1}
-
 \documentclass{amsart}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb, amsthm}
@@ -51,8 +49,9 @@ snippet preamble "LaTeX headers and template" b
 \newcommand{\pderiv}[2]{\frac{\partial~#1}{\partial~#2}}
 \newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
 
+\title{$1}
 \begin{document}
-\large\textbf{$1}
+\maketitle
 $0
 \end{document}
 endsnippet
