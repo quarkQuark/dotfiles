@@ -23,7 +23,7 @@ manageSpecific = composeAll . concat $
     where
         myFloatClasses = ["Gimp", "conky", "plasmashell", "vlc", "Nitrogen", "Tint2conf"]
         myFloatTitles  = ["Whisker Menu"]
-        myZoomFloats   = ["Chat", "Participants", "Rooms"] -- Currently untested for breakout rooms
+        myZoomFloats   = ["Chat", "Participants", "Rooms"]
 
 myManageHook :: ManageHook
 myManageHook = manageSpecific <+> manageDocks
