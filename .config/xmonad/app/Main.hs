@@ -1,15 +1,15 @@
 import XMonad                             -- standard xmonad library
 import XMonad.Config.Desktop              -- default desktopConfig
-import XMonad.Hooks.EwmhDesktops          -- Fixes the automatic fullscreening of applications
+import XMonad.Hooks.EwmhDesktops (ewmh)   -- Fixes the automatic fullscreening of applications
 import XMonad.Util.NamedActions (addDescrKeys')
 import XMonad.Util.SpawnOnce (spawnOnce)  -- For running autostart only once (on login)
 
-import Options
-import MyKeys
-import MyCheatsheet
 import MyBar
+import MyCheatsheet
+import MyKeys
 import MyLayoutHook
 import MyManageHook
+import Options
 
 -- I want to figure out how window decorations work, but my Haskell is not yet good enough
 --import XMonad.Layout.Decoration
@@ -37,17 +37,18 @@ main = do
         -- Add keybindings in such a way as to allow viewing a cheatsheet with M-?
         $ addDescrKeys' (myCheatsheetKey, myCheatsheet) myKeys
         $ myConfig barProc
+
   where
     myConfig barProc = desktopConfig
-            { modMask            = myModMask
-            , terminal           = myTerminal
-            , borderWidth        = myBorderWidth
-            , normalBorderColor  = myNormalBorderColour
-            , focusedBorderColor = myFocusedBorderColour
-            , manageHook         = myManageHook
-            , layoutHook         = myLayoutHook
-            , logHook            = myLogHook barProc
-            , workspaces         = myWorkspaces
-            , startupHook        = do spawnOnce myBarAutostart
-                                      spawnOnce myAutostart
-            }
+        { modMask            = myModMask
+        , terminal           = myTerminal
+        , borderWidth        = myBorderWidth
+        , normalBorderColor  = myNormalBorderColour
+        , focusedBorderColor = myFocusedBorderColour
+        , manageHook         = myManageHook
+        , layoutHook         = myLayoutHook
+        , logHook            = myLogHook barProc
+        , workspaces         = myWorkspaces
+        , startupHook        = do spawnOnce myBarAutostart
+                                  spawnOnce myAutostart
+        }
