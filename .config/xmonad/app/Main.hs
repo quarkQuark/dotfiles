@@ -37,17 +37,17 @@ main = do
         -- Add keybindings in such a way as to allow viewing a cheatsheet with M-?
         $ addDescrKeys' (myCheatsheetKey, myCheatsheet) myKeys
         $ myConfig barProc
-
-myConfig barProc = desktopConfig
-        { modMask            = myModMask
-        , terminal           = myTerminal
-        , borderWidth        = myBorderWidth
-        , normalBorderColor  = myNormalBorderColour
-        , focusedBorderColor = myFocusedBorderColour
-        , manageHook         = myManageHook
-        , layoutHook         = myLayoutHook
-        , logHook            = myLogHook barProc
-        , workspaces         = myWorkspaces
-        , startupHook        = do spawnOnce myBarAutostart
-                                  spawnOnce myAutostart
-        }
+  where
+    myConfig barProc = desktopConfig
+            { modMask            = myModMask
+            , terminal           = myTerminal
+            , borderWidth        = myBorderWidth
+            , normalBorderColor  = myNormalBorderColour
+            , focusedBorderColor = myFocusedBorderColour
+            , manageHook         = myManageHook
+            , layoutHook         = myLayoutHook
+            , logHook            = myLogHook barProc
+            , workspaces         = myWorkspaces
+            , startupHook        = do spawnOnce myBarAutostart
+                                      spawnOnce myAutostart
+            }
