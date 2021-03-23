@@ -1,54 +1,57 @@
 module MyBar
-(spawnBarWithHandle, myBarAutostart, myLogHook)
+(barSpawnPipe', barAutostart', barLogHook')
 where
 
 import System.IO
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.SpawnOnce (spawnOnce)
 import Options
 
--- Shell commands
+data BarCommand = BarCommand
+    { barSpawnPipe :: IO (Handle)    -- Command to start bar with handle
+    , barAutostart :: X ()           -- Autostart programs dependent on bar
+    , barLogHook   :: Handle -> X () -- Data XMonad needs to send to the bar
+    }
 
--- Spawn the bar, returning its handle
-spawnBarWithHandle :: IO (Handle)
-spawnBarWithHandle
-    | myBar == XMobar = spawnPipe $ "xmobar " ++ myXMobarConf
-    | otherwise       = spawnPipe ""
+defBarCommand = BarCommand
+    { barSpawnPipe = spawnPipe ""
+    , barAutostart = spawnOnce ""
+    , barLogHook   = def
+    }
 
--- Other processes that need to run, depending on the bar
-myBarAutostart :: String
-myBarAutostart
-    | myBar == XMobar   = "stalonetray --config " ++ myStalonetrayConf
-    | myBar == Tint2    = "tint2 -c "             ++ myTint2Conf
-    | myBar == Taffybar = "taffybar"
+barCommand :: Bar -> BarCommand
 
--- Symbols for displaying workspaces in xmobar
--- Must be functions, as it expects a different symbol for each
-myCurrentWsSymbol workspaceName = "[●]" -- The workspace currently active
-myHiddenWsSymbol  workspaceName =  "●"  -- Workspaces with open windows
-myEmptyWsSymbol   workspaceName =  "○"  -- Workspaces with no windows
+barCommand XMobar = defBarCommand
+    { barSpawnPipe = spawnPipe $ "xmobar " ++ myXMobarConf
+    , barAutostart = spawnOnce $ "stalonetray --config " ++ myStalonetrayConf
+      -- dynamicLogWithPP allows us to format the output
+      -- xmobarPP gives us some defaults
+    , barLogHook   = \h -> dynamicLogWithPP xmobarPP
+          -- Write to bar instead of stdout
+          { ppOutput          = hPutStrLn h
+          -- How to order the different sections of the log
+          , ppOrder           = \(workspace:layout:title:extras)
+                              -> [workspace,layout]
+          -- Separator between different sections of the log
+          , ppSep             = "  "
+          -- Format the workspace information
+          , ppCurrent         = wsSymb "[●]" -- The workspace currently active
+          , ppHidden          = wsSymb "●"   -- Workspaces with open windows
+          , ppHiddenNoWindows = wsSymb "○"   -- Workspaces with no windows
+          }
+    }
+  where
+    -- xmobarPP expects function of workspace name
+    wsSymb s workspace = xmobarColor "white" "" s
 
--- Data to be sent to the bar 
--- barProc points to the status bar's process handle
-myXMobarLogHook :: Handle -> X ()
--- dynamicLogWithPP allows us to format the output
--- xmobarPP gives us some defaults
-myXMobarLogHook barProc = dynamicLogWithPP xmobarPP
-        -- Write to bar instead of stdout
-        { ppOutput          = hPutStrLn barProc
-        -- How to order the different sections of the log
-        , ppOrder           = \(workspace:layout:title:extras)
-                            -> [workspace,layout]
-        -- Separator between different sections of the log
-        , ppSep             = "  "
-        -- Format the workspace information
-        , ppCurrent         = xmobarColor "white" "" . myCurrentWsSymbol
-        , ppHidden          = xmobarColor "white" "" . myHiddenWsSymbol
-        , ppHiddenNoWindows = xmobarColor "white" "" . myEmptyWsSymbol
-        }
+barCommand Tint2 = defBarCommand
+    { barAutostart = spawnOnce $ "tint2 -c " ++ myTint2Conf }
 
-myLogHook :: Handle -> X ()
-myLogHook barProc
-    | myBar == XMobar = myXMobarLogHook barProc
-    | otherwise       = def  -- Outputting an unread log can crash XMonad
+barCommand Taffybar = defBarCommand
+    { barAutostart = spawnOnce "taffybar" }
+
+barSpawnPipe' = barSpawnPipe . barCommand
+barAutostart' = barAutostart . barCommand
+barLogHook'   = barLogHook   . barCommand

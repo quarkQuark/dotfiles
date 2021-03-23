@@ -27,7 +27,7 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 main :: IO ()
 main = do
-    barProc <- spawnBarWithHandle  -- Start myBar and return a handle
+    barProc <- barSpawnPipe' myBar  -- Start myBar and return a handle
     spawn "pkill -o taffybar" -- Kill oldest taffybar instance (move to M-q binding?)
 
     -- Applies this config file over the default config for desktop use
@@ -47,8 +47,8 @@ main = do
         , focusedBorderColor = myFocusedBorderColour
         , manageHook         = myManageHook
         , layoutHook         = myLayoutHook
-        , logHook            = myLogHook barProc
+        , logHook            = barLogHook' myBar barProc
         , workspaces         = myWorkspaces
-        , startupHook        = do spawnOnce myBarAutostart
+        , startupHook        = do barAutostart' myBar
                                   spawnOnce myAutostart
         }
