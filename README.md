@@ -27,8 +27,9 @@ for more XMonad-specific information!
     dotfiles checkout
     dotfiles config --local status.showUntrackedFiles no
     ```
-    
-3.  [Vim-plug](https://github.com/junegunn/vim-plug) must be installed for the vim configuration to work properly
+
+3.  [Vim-plug](https://github.com/junegunn/vim-plug) must be installed
+    for the vim configuration to work properly
     Vim also needs:
     ```bash
     nnn
@@ -45,7 +46,7 @@ for more XMonad-specific information!
     stack install xmobar
     stack install status-notifier-item  # For taffybar's system tray
     ```
-    
+
     My xmonad configuration also depends on the following packages:
     * System:           `network-manager nitrogen aur/picom-ibhagwan-git`
     * Default programs: `alacritty nvim qutebrowser redshift rofi spectacle`
@@ -57,6 +58,10 @@ for more XMonad-specific information!
       dzen2  # For the keybinding cheatsheet
       xcape  # For rebinding C-Esc to super
       ```
+
+5. Spotify can be themed and extended using `spicetify-cli`.
+   My [spicetify config](.config/spicetify/config.ini) also requires some files from 
+   https://github.com/3raxton/spicetify-custom-apps-and-extensions .
 
 ## Usage
 
