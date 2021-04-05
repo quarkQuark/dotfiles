@@ -1,6 +1,7 @@
 I (quarkQuark) have changed the css to give a smaller font size for the lyrics.
 In css/lyrics.css, I basically just halved the values on lines 24-27 and 56-58.
 This app comes from https://github.com/khanhas/genius-spicetify .
+Below is the original README.md.
 
 # genius-spicetify
 
