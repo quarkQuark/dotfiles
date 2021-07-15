@@ -25,9 +25,13 @@ title="${titleColour}XMonad Keybindings (with the $super or $hyper key)"\
 "${asideColour}        -    Click to close"
 
 # Screen dimensions, for positioning calculations
-screenXY=`xdpyinfo | awk '/dimensions:/ { print $2 }'`
-screenX=${screenXY%x*}
-screenY=${screenXY#*x}
+# Doesn't work for multi-monitor
+#screenXY=`xdpyinfo | awk '/dimensions:/ { print $2 }'`
+#screenX=${screenXY%x*}
+#screenY=${screenXY#*x}
+# Hardcoded: always shows on left monitor
+screenX=1920
+screenY=1080
 
 # Dimensions
 lineHeight=20
