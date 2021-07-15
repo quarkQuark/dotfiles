@@ -27,6 +27,7 @@ mySpacing = spacingRaw True                -- Only for >1 window
                        (Border 5 5 5 5)    -- Size of window gaps
                        True                -- Enable window gaps
 
+myTabConfig :: Theme
 myTabConfig = def { fontName            = myFont
                   , activeColor         = myTabActiveColour
                   , inactiveColor       = myTabInactiveColour
