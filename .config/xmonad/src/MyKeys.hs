@@ -49,6 +49,7 @@ myKeys conf = let
     subKeys "Core"
     [ ("M-S-q",                   addName "Quit XMonad (logout)"   $ io exitSuccess)
     , ("M-q",                     addName "Recompile & restart"    $ spawn myBuildScript)
+    , ("M-s",                     addName "Suspend"                $ spawn "systemctl suspend")
     , ("C-<Escape>",              addName "Application launcher"   $ spawn "appmenu")
     , ("M-S-c",                   addName "Close window"           $ kill)
     ] ^++^
