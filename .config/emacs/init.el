@@ -7,7 +7,16 @@
 (set-fringe-mode 10)  ; Add breathing room
 
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 100)
-(load-theme 'leuven)
+
+(column-number-mode)
+(global-display-line-numbers-mode t)
+
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+		term-mode-hook
+		shell-mode-hook
+		eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 
 ;; Keys
@@ -35,7 +44,7 @@
 (setq use-package-always-ensure t)
 
 
-;; Packages
+;; Completion
 
 (use-package ivy
   :diminish
@@ -55,6 +64,42 @@
   :config
   (ivy-mode 1))
 
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package counsel
+  :config
+  (counsel-mode 1))
+
+
+;; Miscellaneous
+
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.3))
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-comand] . helpful-command)
+  ([remap describe-key] . helpful-key))
+
+;; Liked dark themes:
+;;; doom-vibrant, doom-nord, doom-palenight
+;; Liked light themes:
+;;; doom-one-light
+(use-package doom-themes
+  :config
+  (load-theme 'doom-one-light t)
+  (doom-themes-org-config))
+
 (use-package doom-modeline
-  :ensure t
   :init (doom-modeline-mode 1))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
