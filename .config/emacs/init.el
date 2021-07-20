@@ -98,8 +98,48 @@
   (load-theme 'doom-one-light t)
   (doom-themes-org-config))
 
+(use-package solaire-mode
+  :config (solaire-global-mode 1))
+
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+;(use-package general
+;  :config
+;  (general-create-definer quark/leader-keys
+;    :keymaps '(normal insert visual emacs)
+;    :prefix "SPC"
+;    :global-prefix "C-SPC")
+;  (quark/leader-keys
+;   ))
+
+(use-package evil
+  :init
+  ;; Do not load extra evil keybindings for other modes
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(general evil-collection which-key use-package solaire-mode rainbow-delimiters ivy-rich helpful evil doom-themes doom-modeline counsel)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
