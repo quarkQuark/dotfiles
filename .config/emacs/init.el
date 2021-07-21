@@ -9,13 +9,6 @@
 
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 101)
 
-;; Disable line numbers for some modes
-(dolist (mode '(org-mode-hook
-		term-mode-hook
-		shell-mode-hook
-		eshell-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
 
 ;; Package Management
 
@@ -86,10 +79,14 @@
 	     (find-file "~/.config/emacs/init.el"))
 	     :which-key "emacs"))
 
+(use-package undo-tree
+  :init (global-undo-tree-mode 1))
+
 (use-package evil
   :init
   (setq evil-want-keybinding nil) ;; Do not load extra evil keybindings for other modes
   (setq evil-want-Y-yank-to-eol 1)
+  (setq evil-undo-system 'undo-tree)
   :config
   (evil-mode 1)
   (general-def evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -113,16 +110,18 @@
 
 ;; Toggle line numbers format by state
 
-(setq-default display-line-numbers 'visual
-              display-line-numbers-current-absolute t)
+(defun my-display-line-numbers ()
+  (setq-local display-line-numbers 'visual
+	      display-line-numbers-current-absolute t))
 
-(add-hook 'evil-insert-state-entry-hook
-	  '(lambda () (interactive)
-	     (setq-local display-line-numbers 'visual)))
+(defun display-line-numbers-visual ()
+  (setq-local display-line-numbers 'visual))
+(defun display-line-numbers-absolute ()
+  (setq-local display-line-numbers 1))
 
-(add-hook 'evil-insert-state-exit-hook
-	  '(lambda () (interactive)
-	     (setq-local display-line-numbers t)))
+(add-hook 'prog-mode-hook 'my-display-line-numbers)
+(add-hook 'evil-insert-state-entry-hook 'display-line-numbers-absolute)
+(add-hook 'evil-insert-state-exit-hook 'display-line-numbers-relative)
 
 
 ;; Miscellaneous
@@ -130,8 +129,7 @@
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.3))
+  :config (setq which-key-idle-delay 0.3))
 
 (use-package helpful
   :custom
@@ -163,3 +161,23 @@
   :diminish projectile-mode
   :config (projectile-mode)
   :bind-keymap ("C-c p" . projectile-command-map))
+
+(use-package smartparens
+  :hook (prog-mode . smartparens-mode)
+  :config (smartparens-strict-mode))
+
+(use-package evil-cleverparens
+  :hook (emacs-lisp-mode . evil-cleverparens-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(undo-tree which-key use-package solaire-mode rainbow-delimiters projectile ivy-rich helpful general evil-collection evil-cleverparens doom-themes doom-modeline counsel)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
