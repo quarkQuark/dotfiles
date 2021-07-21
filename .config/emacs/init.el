@@ -84,14 +84,15 @@
 
 (use-package evil
   :init
-  (setq evil-want-keybinding nil) ;; Do not load extra evil keybindings for other modes
-  (setq evil-want-Y-yank-to-eol 1)
-  (setq evil-undo-system 'undo-tree)
+  (setq evil-move-cursor-back nil
+	evil-want-keybinding nil ;; Do not load extra evil keybindings for other modes
+	evil-want-Y-yank-to-eol 1
+	evil-undo-system 'undo-tree)
   :config
   (evil-mode 1)
   (general-def evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (general-def 'motion "j" 'evil-next-visual-line)
-  (general-def 'motion "k" 'evil-previous-visual-line))
+  (general-def 'normal "j" 'evil-next-visual-line)
+  (general-def 'normal "k" 'evil-previous-visual-line))
 
 (use-package evil-collection
   :after evil
@@ -114,14 +115,14 @@
   (setq-local display-line-numbers 'visual
 	      display-line-numbers-current-absolute t))
 
-(defun display-line-numbers-visual ()
-  (setq-local display-line-numbers 'visual))
 (defun display-line-numbers-absolute ()
   (setq-local display-line-numbers 1))
+(defun display-line-numbers-visual ()
+  (setq-local display-line-numbers 'visual))
 
 (add-hook 'prog-mode-hook 'my-display-line-numbers)
 (add-hook 'evil-insert-state-entry-hook 'display-line-numbers-absolute)
-(add-hook 'evil-insert-state-exit-hook 'display-line-numbers-relative)
+(add-hook 'evil-insert-state-exit-hook 'display-line-numbers-visual)
 
 
 ;; Miscellaneous
