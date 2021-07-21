@@ -5,11 +5,9 @@
 (menu-bar-mode -1)    ; Disable menu bar
 (tooltip-mode -1)     ; Disable tooltips
 (set-fringe-mode 10)  ; Add breathing room
-
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 100)
-
 (column-number-mode)
-(global-display-line-numbers-mode t)
+
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 101)
 
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
@@ -17,12 +15,6 @@
 		shell-mode-hook
 		eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-
-;; Keys
-
-;; Make ESC quit prompts
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 
 ;; Package Management
@@ -73,6 +65,66 @@
   (counsel-mode 1))
 
 
+;; Keybindings
+
+(use-package general
+  :config
+  (general-evil-setup)
+  (general-create-definer my-leader-def
+    :states 'normal
+    :prefix "SPC")
+  (general-create-definer my-local-leader-def
+    :states 'normal
+    :prefix "SPC m")
+  (my-leader-def
+    "e" '(:ignore t :which-key "eval")
+    "eb" 'eval-buffer
+    "ee" 'eval-last-sexp
+    "f" 'find-file
+    "d" '(:ignore t :which-key "dotfiles")
+    "de" '(lambda () (interactive)
+	     (find-file "~/.config/emacs/init.el"))
+	     :which-key "emacs"))
+
+(use-package evil
+  :init
+  (setq evil-want-keybinding nil) ;; Do not load extra evil keybindings for other modes
+  (setq evil-want-Y-yank-to-eol 1)
+  :config
+  (evil-mode 1)
+  (general-def evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (general-def 'motion "j" 'evil-next-visual-line)
+  (general-def 'motion "k" 'evil-previous-visual-line))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+;; Make ESC quit prompts
+(general-def (kbd "<escape>") 'keyboard-escape-quit)
+
+;; Escape insert mode with "jk"
+(general-imap "j"
+	      (general-key-dispatch 'self-insert-command
+		:timeout 0.25
+		"k" 'evil-normal-state))
+
+
+;; Toggle line numbers format by state
+
+(setq-default display-line-numbers 'visual
+              display-line-numbers-current-absolute t)
+
+(add-hook 'evil-insert-state-entry-hook
+	  '(lambda () (interactive)
+	     (setq-local display-line-numbers 'visual)))
+
+(add-hook 'evil-insert-state-exit-hook
+	  '(lambda () (interactive)
+	     (setq-local display-line-numbers t)))
+
+
 ;; Miscellaneous
 
 (use-package which-key
@@ -107,39 +159,7 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;(use-package general
-;  :config
-;  (general-create-definer quark/leader-keys
-;    :keymaps '(normal insert visual emacs)
-;    :prefix "SPC"
-;    :global-prefix "C-SPC")
-;  (quark/leader-keys
-;   ))
-
-(use-package evil
-  :init
-  ;; Do not load extra evil keybindings for other modes
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
-
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(general evil-collection which-key use-package solaire-mode rainbow-delimiters ivy-rich helpful evil doom-themes doom-modeline counsel)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap ("C-c p" . projectile-command-map))
