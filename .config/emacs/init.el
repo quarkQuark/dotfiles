@@ -17,17 +17,23 @@
 		    :font "ETBembo"
 		    :height 120)
 
+(defun my-display-line-numbers ()
+  (setq-local display-line-numbers 'visual
+	      display-line-numbers-current-absolute t))
+
+(add-hook 'prog-mode-hook 'my-display-line-numbers)
+
 
 ;; Package Management
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+(setq package-archives
+      '(("melpa"        . "https://melpa.org/packages/")
+	("melpa-stable" . "https://stable.melpa.org/packages/")
+	("org"          . "https://orgmode.org/elpa/")
+	("elpa"         . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
+(unless package-archive-contents package-refresh-contents)
 
 ;; Make sure use-package is installed
 (unless (package-installed-p 'use-package)
@@ -42,19 +48,20 @@
 
 (use-package ivy
   :diminish
-  :bind (("C-s" . swiper)
-	 :map ivy-minibuffer-map
-	 ("TAB" . ivy-alt-done)
-	 ("C-l" . ivy-alt-done)
-	 ("C-j" . ivy-next-line)
-	 ("C-k" . ivy-previous-line)
-	 :map ivy-switch-buffer-map
-	 ("C-k" . ivy-previous-line)
-	 ("C-l" . ivy-done)
-	 ("C-d" . ivy-switch-buffer-kill)
-	 :map ivy-reverse-i-search-map
-	 ("C-k" . ivy-previous-line)
-	 ("C-d" . ivy-reverse-i-search-kill))
+  :bind
+  (("C-s" . swiper)
+   :map ivy-minibuffer-map
+   ("TAB" . ivy-alt-done)
+   ("C-l" . ivy-alt-done)
+   ("C-j" . ivy-next-line)
+   ("C-k" . ivy-previous-line)
+   :map ivy-switch-buffer-map
+   ("C-k" . ivy-previous-line)
+   ("C-l" . ivy-done)
+   ("C-d" . ivy-switch-buffer-kill)
+   :map ivy-reverse-i-search-map
+   ("C-k" . ivy-previous-line)
+   ("C-d" . ivy-reverse-i-search-kill))
   :config (ivy-mode))
 
 (use-package ivy-rich
@@ -69,12 +76,8 @@
 (use-package general
   :config
   (general-evil-setup)
-  (general-create-definer my-leader-def
-    :states 'normal
-    :prefix "SPC")
-  (general-create-definer my-local-leader-def
-    :states 'normal
-    :prefix "SPC m")
+  (general-create-definer my-leader-def       :states 'normal :prefix "SPC")
+  (general-create-definer my-local-leader-def :states 'normal :prefix "SPC m")
   (my-leader-def
     "b" 'counsel-switch-buffer
     "d" '(:ignore t :which-key "dotfiles")
@@ -113,26 +116,9 @@
 (general-def "<escape>" 'keyboard-escape-quit)
 
 ;; Escape insert mode with "jk"
-(general-imap "j"
-	      (general-key-dispatch 'self-insert-command
-		:timeout 0.25
-		"k" 'evil-normal-state))
-
-
-;; Toggle line numbers format by state
-
-(defun my-display-line-numbers ()
-  (setq-local display-line-numbers 'visual
-	      display-line-numbers-current-absolute t))
-
-;(defun display-line-numbers-absolute ()
-;  (setq-local display-line-numbers 1))
-;(defun display-line-numbers-visual ()
-;  (setq-local display-line-numbers 'visual))
-
-(add-hook 'prog-mode-hook 'my-display-line-numbers)
-;(add-hook 'evil-insert-state-entry-hook 'display-line-numbers-absolute)
-;(add-hook 'evil-insert-state-exit-hook 'display-line-numbers-visual)
+(general-imap "j" (general-key-dispatch 'self-insert-command
+		    :timeout 0.25
+		    "k" 'evil-normal-state))
 
 
 ;; Miscellaneous
@@ -140,7 +126,7 @@
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
-  :config (setq which-key-idle-delay 0.3))
+  :custom (which-key-idle-delay 0.3))
 
 (use-package helpful
   :custom
@@ -184,10 +170,11 @@
   "pp" 'projectile-switch-project)
 
 (use-package smartparens
-  :hook (prog-mode . smartparens-mode)
+  :hook
+  (prog-mode . smartparens-mode)
+  (emacs-lisp-mode . smartparens-strict-mode)
   :config
-  (require 'smartparens-config)
-  (add-hook 'emacs-lisp-mode-hook 'smartparens-strict-mode))
+  (require 'smartparens-config))
 
 (use-package evil-cleverparens
   :hook (emacs-lisp-mode . evil-cleverparens-mode))
@@ -235,10 +222,10 @@
 
 (use-package org
   :hook (org-mode . quark/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▾"
-	org-hide-emphasis-markers t
-	org-startup-indented t))
+  :custom
+  (org-ellipsis " ▾")
+  (org-hide-emphasis-markers t)
+  (org-startup-indented t))
 
 (use-package org-superstar
   :after org
