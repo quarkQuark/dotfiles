@@ -47,13 +47,13 @@
 	 :map ivy-reverse-i-search-map
 	 ("C-k" . ivy-previous-line)
 	 ("C-d" . ivy-reverse-i-search-kill))
-  :config (ivy-mode 1))
+  :config (ivy-mode))
 
 (use-package ivy-rich
-  :init (ivy-rich-mode 1))
+  :init (ivy-rich-mode))
 
 (use-package counsel
-  :config (counsel-mode 1))
+  :config (counsel-mode))
 
 
 ;; Keybindings
@@ -68,17 +68,22 @@
     :states 'normal
     :prefix "SPC m")
   (my-leader-def
-    "e" '(:ignore t :which-key "eval")
-    "eb" 'eval-buffer
-    "ee" 'eval-last-sexp
-    "f" 'find-file
+    "b" 'counsel-switch-buffer
     "d" '(:ignore t :which-key "dotfiles")
     "de" '((lambda () (interactive)
 	     (find-file "~/.config/emacs/init.el"))
-	     :which-key "emacs")))
+	     :which-key "emacs")
+    "e" '(:ignore t :which-key "eval")
+    "eb" 'eval-buffer
+    "ee" 'eval-last-sexp
+    "f" 'find-file))
+
+(general-def
+  "C-=" `text-scale-increase
+  "C--" `text-scale-decrease)
 
 (use-package undo-tree
-  :init (global-undo-tree-mode 1))
+  :init (global-undo-tree-mode))
 
 (use-package evil
   :init
@@ -87,7 +92,7 @@
 	evil-want-Y-yank-to-eol 1
 	evil-undo-system 'undo-tree)
   :config
-  (evil-mode 1)
+  (evil-mode)
   (general-def evil-insert-state-map "C-g" 'evil-normal-state)
   (general-def 'normal "j" 'evil-next-visual-line)
   (general-def 'normal "k" 'evil-previous-visual-line))
@@ -147,10 +152,10 @@
   (doom-themes-org-config))
 
 (use-package solaire-mode
-  :config (solaire-global-mode 1))
+  :config (solaire-global-mode))
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -158,12 +163,12 @@
 (use-package projectile
   :pin melpa-stable
   :diminish projectile-mode
-  :init (projectile-mode 1)
+  :init (projectile-mode)
   :bind-keymap ("C-c p" . projectile-command-map))
 
 (use-package counsel-projectile
   :after projectile
-  :init (counsel-projectile-mode 1))
+  :init (counsel-projectile-mode))
 
 (my-leader-def
   "SPC" 'projectile-find-file
