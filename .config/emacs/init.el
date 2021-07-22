@@ -13,6 +13,7 @@
 ;; Package Management
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			 ("melpa-stable" . "https://stable.melpa.org/packages/")
 			 ("org" . "https://orgmode.org/elpa/")
 			 ("elpa" . "https://elpa.gnu.org/packages/")))
 
@@ -155,16 +156,58 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package projectile
+  :pin melpa-stable
   :diminish projectile-mode
-  :config (projectile-mode)
+  :init (projectile-mode 1)
   :bind-keymap ("C-c p" . projectile-command-map))
 
+(use-package counsel-projectile
+  :after projectile
+  :init (counsel-projectile-mode 1))
+
+(my-leader-def
+  "SPC" 'projectile-find-file
+  "p" '(:ignore t :which-key "projects")
+  "pp" 'projectile-switch-project)
+
 (use-package smartparens
-  :hook
-  (prog-mode . smartparens-mode)
+  :hook (prog-mode . smartparens-mode)
   :config
   (require 'smartparens-config)
   (add-hook 'emacs-lisp-mode-hook 'smartparens-strict-mode))
 
 (use-package evil-cleverparens
   :hook (emacs-lisp-mode . evil-cleverparens-mode))
+
+(use-package magit)
+
+
+;; Dotfiles git bare repo
+;; https://emacs.stackexchange.com/questions/30602/use-nonstandard-git-directory-with-magit
+
+(setq dotfiles-git-dir
+      (concat "--git-dir=" (expand-file-name "~/.dotfiles-git")))
+(setq dotfiles-work-tree
+      (concat "--work-tree=" (expand-file-name "~")))
+
+;; Add args when used for dotfiles
+(defun quark/dotfiles-magit-status ()
+  (interactive)
+  (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
+  (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
+  (call-interactively 'magit-status))
+(my-leader-def "dg" '(quark/dotfiles-magit-status
+		     :which-key "dotfiles-magit-status"))
+
+;; Remove args otherwise
+(defun quark/magit-status ()
+  (interactive)
+  (setq magit-git-global-arguments
+	(remove dotfiles-git-dir magit-git-global-arguments))
+  (setq magit-git-global-arguments
+	(remove dotfiles-work-tree magit-git-global-arguments))
+  (call-interactively 'magit-status))
+(general-def "C-x g" 'quark/magit-status)
+(general-def magit-file-mode-map "C-x g" 'quark/magit-status)
+(my-leader-def "g" '(quark/magit-status
+		     :which-key "magit-status"))
