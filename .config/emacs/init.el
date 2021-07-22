@@ -46,16 +46,13 @@
 	 :map ivy-reverse-i-search-map
 	 ("C-k" . ivy-previous-line)
 	 ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
+  :config (ivy-mode 1))
 
 (use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
+  :init (ivy-rich-mode 1))
 
 (use-package counsel
-  :config
-  (counsel-mode 1))
+  :config (counsel-mode 1))
 
 
 ;; Keybindings
@@ -75,9 +72,9 @@
     "ee" 'eval-last-sexp
     "f" 'find-file
     "d" '(:ignore t :which-key "dotfiles")
-    "de" '(lambda () (interactive)
+    "de" '((lambda () (interactive)
 	     (find-file "~/.config/emacs/init.el"))
-	     :which-key "emacs"))
+	     :which-key "emacs")))
 
 (use-package undo-tree
   :init (global-undo-tree-mode 1))
@@ -85,22 +82,21 @@
 (use-package evil
   :init
   (setq evil-move-cursor-back nil
-	evil-want-keybinding nil ;; Do not load extra evil keybindings for other modes
+	evil-want-keybinding nil ;; For evil-collection
 	evil-want-Y-yank-to-eol 1
 	evil-undo-system 'undo-tree)
   :config
   (evil-mode 1)
-  (general-def evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (general-def evil-insert-state-map "C-g" 'evil-normal-state)
   (general-def 'normal "j" 'evil-next-visual-line)
   (general-def 'normal "k" 'evil-previous-visual-line))
 
 (use-package evil-collection
   :after evil
-  :config
-  (evil-collection-init))
+  :config (evil-collection-init))
 
 ;; Make ESC quit prompts
-(general-def (kbd "<escape>") 'keyboard-escape-quit)
+(general-def "<escape>" 'keyboard-escape-quit)
 
 ;; Escape insert mode with "jk"
 (general-imap "j"
