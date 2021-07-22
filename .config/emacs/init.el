@@ -7,7 +7,15 @@
 (set-fringe-mode 10)  ; Add breathing room
 (column-number-mode)
 
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 101)
+(set-face-attribute 'default nil
+		    :font "Fira Code Retina"
+		    :height 101)
+(set-face-attribute 'fixed-pitch nil
+		    :font "Fira Code Retina"
+		    :height 101)
+(set-face-attribute 'variable-pitch nil
+		    :font "ETBembo"
+		    :height 120)
 
 
 ;; Package Management
@@ -216,3 +224,61 @@
 (general-def magit-file-mode-map "C-x g" 'quark/magit-status)
 (my-leader-def "g" '(quark/magit-status
 		     :which-key "magit-status"))
+
+
+;; Org-mode
+
+(defun quark/org-mode-setup ()
+  (variable-pitch-mode)
+  (visual-line-mode)
+  (setq evil-auto-indent nil))
+
+(use-package org
+  :hook (org-mode . quark/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+	org-hide-emphasis-markers t
+	org-startup-indented t))
+
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :custom
+  (org-superstar-remove-leading-stars t)
+  (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
+
+;; Prettify list bullets
+;; Seems to work only sometimes?
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ *\\([-]\\) "
+    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(set-face-attribute 'org-document-title nil :font "ETBembo" :weight 'bold :height 2.0)
+(dolist (face '((org-level-1 . 1.75)
+                (org-level-2 . 1.5)
+                (org-level-3 . 1.25)
+                (org-level-4 . 1.1)
+                (org-level-5 . 1.0)
+                (org-level-6 . 1.0)
+                (org-level-7 . 1.0)
+                (org-level-8 . 1.0)))
+  (set-face-attribute (car face) nil :font "ETBembo" :weight 'medium :height (cdr face)))
+
+;; Display certain regions in a fixed-pitch font
+(set-face-attribute 'org-block nil           :foreground nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-checkbox nil        :inherit 'fixed-pitch)
+(set-face-attribute 'org-code nil            :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-formula nil         :inherit 'fixed-pitch)
+(set-face-attribute 'org-meta-line nil       :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-table nil           :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-verbatim nil        :inherit '(shadow fixed-pitch))
+
+(defun quark/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+	visual-fill-column-center-text t)
+  (visual-fill-column-mode))
+
+(use-package visual-fill-column
+  :hook (org-mode . quark/org-mode-visual-fill))
