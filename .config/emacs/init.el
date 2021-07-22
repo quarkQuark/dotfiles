@@ -117,14 +117,14 @@
   (setq-local display-line-numbers 'visual
 	      display-line-numbers-current-absolute t))
 
-(defun display-line-numbers-absolute ()
-  (setq-local display-line-numbers 1))
-(defun display-line-numbers-visual ()
-  (setq-local display-line-numbers 'visual))
+;(defun display-line-numbers-absolute ()
+;  (setq-local display-line-numbers 1))
+;(defun display-line-numbers-visual ()
+;  (setq-local display-line-numbers 'visual))
 
 (add-hook 'prog-mode-hook 'my-display-line-numbers)
-(add-hook 'evil-insert-state-entry-hook 'display-line-numbers-absolute)
-(add-hook 'evil-insert-state-exit-hook 'display-line-numbers-visual)
+;(add-hook 'evil-insert-state-entry-hook 'display-line-numbers-absolute)
+;(add-hook 'evil-insert-state-exit-hook 'display-line-numbers-visual)
 
 
 ;; Miscellaneous
