@@ -1,0 +1,387 @@
+#+TITLE: Emacs configuration
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+
+* Package Management
+
+#+begin_src emacs-lisp
+
+  (setq package-archives
+        '(("melpa"        . "https://melpa.org/packages/")
+          ("melpa-stable" . "https://stable.melpa.org/packages/")
+          ("org"          . "https://orgmode.org/elpa/")
+          ("elpa"         . "https://elpa.gnu.org/packages/")))
+
+  (package-initialize)
+  (unless package-archive-contents package-refresh-contents)
+
+  ;; Make sure use-package is installed
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+
+  ;; Make sure packages are downloaded before they are run
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+
+#+end_src
+
+* User Interface
+
+#+begin_src emacs-lisp
+
+  (scroll-bar-mode -1)  ; Disable scrollbar
+  (tool-bar-mode -1)    ; Disable toolbar
+  (menu-bar-mode -1)    ; Disable menu bar
+  (tooltip-mode -1)     ; Disable tooltips
+  (set-fringe-mode 10)  ; Add breathing room
+  (column-number-mode)  ; Show column number in modeline
+
+  (use-package doom-modeline
+    :init (doom-modeline-mode))
+
+  (set-face-attribute 'default nil
+                      :font "Fira Code Retina"
+                      :height 101)
+  (set-face-attribute 'fixed-pitch nil
+                      :font "Fira Code Retina"
+                      :height 101)
+  (set-face-attribute 'variable-pitch nil
+                      :font "ETBembo"
+                      :height 120)
+
+  (defun quark/display-line-numbers ()
+    "My preferences for line numbers where desired."
+    (setq-local display-line-numbers 'visual
+                display-line-numbers-current-absolute t))
+
+  (add-hook 'prog-mode-hook 'quark/display-line-numbers)
+
+  (use-package which-key
+    :init (which-key-mode)
+    :diminish which-key-mode
+    :custom (which-key-idle-delay 0.3))
+
+#+end_src
+
+** Theme
+
+Enabling [[https://github.com/hlissner/emacs-solaire-mode][Solaire mode]] slightly dims the backgrounds of non-editing buffers. This draws the eye to the editing space and gives the window a more refined look. Themes need to be configured to work with this. The package [[https://github.com/hlissner/emacs-doom-themes][doom-themes]] contains many nice preconfigured themes.
+
+#+begin_src emacs-lisp
+
+  (use-package solaire-mode
+    :config (solaire-global-mode))
+
+  (use-package doom-themes
+    :config (doom-themes-org-config))
+
+#+end_src
+
+Liked dark themes:
+- =doom-vibrant= /(default Doom Emacs theme, with slightly more contrast)./
+- =doom-nord= /(Nord. Rather low contrast)./
+- =doom-palenight= /(Used by System Crafters. Elegant and slightly purple)./
+
+Liked light themes:
+- =doom-one-light= /(Default Doom Emacs light theme)./
+
+#+begin_src emacs-lisp
+
+  (load-theme 'doom-one-light t)
+
+#+end_src
+
+* Keybindings and Evil Mode
+
+#+begin_src emacs-lisp
+
+  (use-package general
+    :config
+    (general-evil-setup)
+    (general-create-definer my-leader-def       :states 'normal :prefix "SPC")
+    (general-create-definer my-local-leader-def :states 'normal :prefix "SPC m")
+    (my-leader-def
+      "b" 'counsel-switch-buffer
+      "e" '(:ignore t :which-key "eval")
+      "eb" 'eval-buffer
+      "ee" 'eval-last-sexp
+      "f" '(:ignore t :which-key "files")
+      "ff" 'find-file))
+
+  (general-def
+    "C-=" `text-scale-increase
+    "C--" `text-scale-decrease)
+
+  ;; Required for C-r (evil-mode undo)
+  (use-package undo-tree
+    :init (global-undo-tree-mode))
+
+  (use-package evil
+    :init
+    (setq evil-move-cursor-back nil
+          evil-want-keybinding nil ;; For evil-collection
+          evil-want-Y-yank-to-eol 1
+          evil-undo-system 'undo-tree)
+    :config
+    (evil-mode)
+    (general-def "<escape>" 'keyboard-escape-quit) ; Make ESC quit prompts
+    (general-def evil-insert-state-map "C-g" 'evil-normal-state)
+    (general-def 'normal "j" 'evil-next-visual-line)
+    (general-def 'normal "k" 'evil-previous-visual-line))
+
+  (use-package evil-collection
+    :after evil
+    :config (evil-collection-init))
+
+  ;; Escape insert mode with "jk"
+  (general-imap "j" (general-key-dispatch 'self-insert-command
+                      :timeout 0.25
+                      "k" 'evil-normal-state))
+
+#+end_src
+
+* Completion
+
+#+begin_src emacs-lisp
+
+  (use-package ivy
+    :diminish
+    :bind
+    (("C-s" . swiper)
+     :map ivy-minibuffer-map
+     ("TAB" . ivy-alt-done)
+     ("C-l" . ivy-alt-done)
+     ("C-j" . ivy-next-line)
+     ("C-k" . ivy-previous-line)
+     :map ivy-switch-buffer-map
+     ("C-k" . ivy-previous-line)
+     ("C-l" . ivy-done)
+     ("C-d" . ivy-switch-buffer-kill)
+     :map ivy-reverse-i-search-map
+     ("C-k" . ivy-previous-line)
+     ("C-d" . ivy-reverse-i-search-kill))
+    :config (ivy-mode))
+
+  (use-package ivy-rich
+    :init (ivy-rich-mode))
+
+  (use-package counsel
+    :config (counsel-mode))
+
+#+end_src
+
+** Interactively open dotfiles
+
+#+begin_src emacs-lisp
+
+  (defun quark/ivy-find-file-action (key)
+    "Find dotfile from KEY in quark/dotfile-list."
+    (with-ivy-window (find-file (cdr (assoc key quark/dotfile-list)))))
+
+  (setq quark/dotfile-list
+        '(("README"   . "~/README.md")
+          ("Emacs"    . "~/.config/emacs/init.org")
+          ("XMonad" . "~/.config/xmonad/README.md")))
+
+  (defun quark/ivy-open-dotfile ()
+    "Open configuration file for PROGRAM."
+    (interactive)
+    (ivy-read "Open dotfile: " (mapcar 'car quark/dotfile-list)
+              :action 'quark/ivy-find-file-action))
+
+  (my-leader-def "fd" 'quark/ivy-open-dotfile)
+
+#+end_src
+
+* Programming
+
+#+begin_src emacs-lisp
+
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
+
+  (use-package smartparens
+    :hook
+    (prog-mode . smartparens-mode)
+    (emacs-lisp-mode . smartparens-strict-mode)
+    :config
+    (require 'smartparens-config))
+
+  (use-package evil-cleverparens
+    :hook (emacs-lisp-mode . evil-cleverparens-mode))
+
+#+end_src
+
+* Magit
+
+#+begin_src emacs-lisp
+
+  (use-package magit)
+
+  ;; Add args when used for dotfiles or remove args otherwise
+  ;; https://emacs.stackexchange.com/questions/30602/use-nonstandard-git-directory-with-magit
+  (setq dotfiles-git-dir
+        (concat "--git-dir=" (expand-file-name "~/.dotfiles-git")))
+  (setq dotfiles-work-tree
+        (concat "--work-tree=" (expand-file-name "~")))
+
+  (defun quark/dotfiles-magit-status ()
+    "Open magit to manage my dotfiles git bare repository."
+    (interactive)
+    (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
+    (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
+    (call-interactively 'magit-status))
+
+  (defun quark/magit-status ()
+    "Replacement for `magit-status' for compatibility with quark/dotfiles-magit-status."
+    (interactive)
+    (setq magit-git-global-arguments
+          (remove dotfiles-git-dir magit-git-global-arguments))
+    (setq magit-git-global-arguments
+          (remove dotfiles-work-tree magit-git-global-arguments))
+    (call-interactively 'magit-status))
+  (general-def "C-x g" 'quark/magit-status)
+  (general-def magit-file-mode-map "C-x g" 'quark/magit-status)
+
+  (my-leader-def
+    "g" '(:ignore t :which-key "git")
+    "gd" '(quark/dotfiles-magit-status
+           :which-key "dotfiles-magit-status")
+    "gg" '(quark/magit-status
+           :which-key "magit-status"))
+
+#+end_src
+
+* Org Mode
+
+https://zzamboni.org/post/beautifying-org-mode-in-emacs/
+
+#+begin_src emacs-lisp
+
+  (defun quark/org-mode-setup ()
+    "Function to run on `org-mode' startup."
+    (variable-pitch-mode)
+    (visual-line-mode)
+    (quark/org-font-setup)
+    (setq evil-auto-indent nil))
+
+  (use-package org
+    :hook (org-mode . quark/org-mode-setup)
+    :custom
+    (org-ellipsis " ▾")
+    (org-hide-emphasis-markers t)
+    (org-startup-indented t))
+
+  (use-package org-superstar
+    :after org
+    :hook (org-mode . org-superstar-mode)
+    :custom
+    (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
+
+  (use-package org-appear
+    :hook (org-mode . org-appear-mode))
+
+  (defun quark/org-font-setup ()
+    "Set up my font preferences for `org-mode'."
+
+    ;; Prettify list bullets
+    ;; Seems to work only sometimes?
+    (font-lock-add-keywords
+     'org-mode
+     '(("^ *\\([-]\\) "
+        (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+    ;; Set heading font sizes
+    (set-face-attribute 'org-document-title nil :font "ETBembo" :weight 'bold :height 2.0)
+    (dolist (face '((org-level-1 . 1.75)
+                    (org-level-2 . 1.5)
+                    (org-level-3 . 1.25)
+                    (org-level-4 . 1.1)
+                    (org-level-5 . 1.0)
+                    (org-level-6 . 1.0)
+                    (org-level-7 . 1.0)
+                    (org-level-8 . 1.0)))
+      (set-face-attribute (car face) nil :font "ETBembo" :weight 'medium :height (cdr face)))
+
+    ;; Display certain regions in a fixed-pitch font
+    (set-face-attribute 'org-block nil           :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-checkbox nil        :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil            :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-indent nil          :inherit '(org-hide fixed-pitch))
+    (set-face-attribute 'org-formula nil         :inherit 'fixed-pitch)
+    (set-face-attribute 'org-meta-line nil       :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-table nil           :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil        :inherit '(shadow fixed-pitch)))
+
+  (defun quark/org-mode-visual-fill ()
+    "Configure `visual-fill-column-mode' for `org-mode'."
+    (setq visual-fill-column-width 100
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode))
+
+  (use-package visual-fill-column
+    :hook (org-mode . quark/org-mode-visual-fill))
+
+#+end_src
+
+** Babel
+
+#+begin_src emacs-lisp
+
+  ;; List of languages org-babel can evaluate
+  (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((emacs-lisp . t)
+      (python . t)))
+
+  (setq org-confirm-babel-evaluate nil)
+
+  ;; Enable structure templates
+  (require 'org-tempo)
+
+  (dolist (template
+           '(("el" . "src emacs-lisp")
+             ("sh" . "src shell")
+             ("py" . "python")
+             ("hs" . "haskell")))
+    (add-to-list 'org-structure-template-alist template))
+
+  ;; Recognise unix-style conf files
+  (push '("conf-unix" . conf-unix) org-src-lang-modes)
+
+#+end_src
+
+* Projectile
+
+#+begin_src emacs-lisp
+
+  (use-package projectile
+    :pin melpa-stable
+    :diminish projectile-mode
+    :init (projectile-mode)
+    :bind-keymap ("C-c p" . projectile-command-map))
+
+  (use-package counsel-projectile
+    :after projectile
+    :init (counsel-projectile-mode))
+
+  (my-leader-def
+    "SPC" 'projectile-find-file
+    "p" '(:ignore t :which-key "projects")
+    "pp" 'projectile-switch-project)
+
+#+end_src
+
+* Miscellaneous
+
+#+begin_src emacs-lisp
+
+  (use-package helpful
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-comand] . helpful-command)
+    ([remap describe-key] . helpful-key))
+
+#+end_src
