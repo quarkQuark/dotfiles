@@ -80,14 +80,12 @@
   (general-create-definer my-local-leader-def :states 'normal :prefix "SPC m")
   (my-leader-def
     "b" 'counsel-switch-buffer
-    "d" '(:ignore t :which-key "dotfiles")
-    "de" '((lambda () (interactive)
-	     (find-file "~/.config/emacs/init.el"))
-	     :which-key "emacs")
     "e" '(:ignore t :which-key "eval")
     "eb" 'eval-buffer
     "ee" 'eval-last-sexp
-    "f" 'find-file))
+    "f" '(:ignore t :which-key "files")
+    "ff" 'find-file
+    "fd" 'quark/ivy-open-dotfile))
 
 (general-def
   "C-=" `text-scale-increase
@@ -272,3 +270,20 @@
 
 (use-package visual-fill-column
   :hook (org-mode . quark/org-mode-visual-fill))
+
+
+;; Find dotfiles
+(defun quark/ivy-find-file-action (file)
+  "Find dotfile from name in quark/dotfile-list"
+  (with-ivy-window (find-file (cdr (assoc file quark/dotfile-list)))))
+
+(setq quark/dotfile-list
+      '(("emacs"    . "~/.config/emacs/init.el")
+	("org-test" . "~/.config/emacs/test.org")
+	("README"   . "~/README.md")))
+
+(defun quark/ivy-open-dotfile ()
+  "Open configuration file for PROGRAM."
+  (interactive)
+  (ivy-read "Open dotfile: " (mapcar 'car quark/dotfile-list)
+	    :action 'quark/ivy-find-file-action))
