@@ -17,11 +17,12 @@
 		    :font "ETBembo"
 		    :height 120)
 
-(defun my-display-line-numbers ()
+(defun quark/display-line-numbers ()
+  "My preferences for line numbers where desired."
   (setq-local display-line-numbers 'visual
 	      display-line-numbers-current-absolute t))
 
-(add-hook 'prog-mode-hook 'my-display-line-numbers)
+(add-hook 'prog-mode-hook 'quark/display-line-numbers)
 
 
 ;; Package Management
@@ -177,26 +178,28 @@
 (use-package evil-cleverparens
   :hook (emacs-lisp-mode . evil-cleverparens-mode))
 
+
+
+;; Magit
+
 (use-package magit)
 
-
-;; Dotfiles git bare repo
+;; Add args when used for dotfiles or remove args otherwise
 ;; https://emacs.stackexchange.com/questions/30602/use-nonstandard-git-directory-with-magit
-
 (setq dotfiles-git-dir
       (concat "--git-dir=" (expand-file-name "~/.dotfiles-git")))
 (setq dotfiles-work-tree
       (concat "--work-tree=" (expand-file-name "~")))
 
-;; Add args when used for dotfiles
 (defun quark/dotfiles-magit-status ()
+  "Open magit to manage my dotfiles git bare repository."
   (interactive)
   (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
   (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
   (call-interactively 'magit-status))
 
-;; Remove args otherwise
 (defun quark/magit-status ()
+  "Replacement for magit-status for compatibility with quark/dotfiles-magit-status."
   (interactive)
   (setq magit-git-global-arguments
 	(remove dotfiles-git-dir magit-git-global-arguments))
@@ -217,6 +220,7 @@
 ;; Org-mode
 
 (defun quark/org-mode-setup ()
+  "Function to run on org-mode startup."
   (variable-pitch-mode)
   (visual-line-mode)
   (org-font-setup)
@@ -237,6 +241,7 @@
   (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
 
 (defun quark/org-font-setup ()
+  "Set up my font preferences for org mode."
 
   ;; Prettify list bullets
   ;; Seems to work only sometimes?
@@ -267,6 +272,7 @@
   (set-face-attribute 'org-verbatim nil        :inherit '(shadow fixed-pitch)))
 
 (defun quark/org-mode-visual-fill ()
+  "Configure visual-fill-column-mode for org-mode."
   (setq visual-fill-column-width 100
 	visual-fill-column-center-text t)
   (visual-fill-column-mode))
@@ -277,7 +283,7 @@
 
 ;; Find dotfiles
 (defun quark/ivy-find-file-action (file)
-  "Find dotfile from name in quark/dotfile-list"
+  "Find dotfile from name in quark/dotfile-list."
   (with-ivy-window (find-file (cdr (assoc file quark/dotfile-list)))))
 
 (setq quark/dotfile-list
