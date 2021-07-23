@@ -238,7 +238,6 @@
   :after org
   :hook (org-mode . org-superstar-mode)
   :custom
-  (org-superstar-remove-leading-stars t)
   (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
 
 (use-package org-appear
@@ -270,6 +269,7 @@
   (set-face-attribute 'org-block nil           :foreground nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-checkbox nil        :inherit 'fixed-pitch)
   (set-face-attribute 'org-code nil            :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-indent nil          :inherit '(org-hide fixed-pitch))
   (set-face-attribute 'org-formula nil         :inherit 'fixed-pitch)
   (set-face-attribute 'org-meta-line nil       :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
