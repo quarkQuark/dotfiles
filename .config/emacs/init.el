@@ -223,7 +223,7 @@
   "Function to run on org-mode startup."
   (variable-pitch-mode)
   (visual-line-mode)
-  (org-font-setup)
+  (quark/org-font-setup)
   (setq evil-auto-indent nil))
 
 (use-package org
