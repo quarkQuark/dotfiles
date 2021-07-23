@@ -240,6 +240,9 @@
   (org-superstar-remove-leading-stars t)
   (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
 
+(use-package org-appear
+  :hook (org-mode . org-appear-mode))
+
 (defun quark/org-font-setup ()
   "Set up my font preferences for org mode."
 
