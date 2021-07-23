@@ -287,9 +287,9 @@
   (with-ivy-window (find-file (cdr (assoc file quark/dotfile-list)))))
 
 (setq quark/dotfile-list
-      '(("emacs"    . "~/.config/emacs/init.el")
-	("org-test" . "~/.config/emacs/test.org")
-	("README"   . "~/README.md")))
+      '(("README"   . "~/README.md")
+	("Emacs"    . "~/.config/emacs/init.el")
+	("XMonad" . "~/.config/xmonad/README.md")))
 
 (defun quark/ivy-open-dotfile ()
   "Open configuration file for PROGRAM."
