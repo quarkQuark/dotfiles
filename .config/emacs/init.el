@@ -199,7 +199,7 @@
   (call-interactively 'magit-status))
 
 (defun quark/magit-status ()
-  "Replacement for magit-status for compatibility with quark/dotfiles-magit-status."
+  "Replacement for `magit-status' for compatibility with quark/dotfiles-magit-status."
   (interactive)
   (setq magit-git-global-arguments
 	(remove dotfiles-git-dir magit-git-global-arguments))
@@ -218,9 +218,10 @@
 
 
 ;; Org-mode
+;; https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 (defun quark/org-mode-setup ()
-  "Function to run on org-mode startup."
+  "Function to run on `org-mode' startup."
   (variable-pitch-mode)
   (visual-line-mode)
   (quark/org-font-setup)
@@ -244,7 +245,7 @@
   :hook (org-mode . org-appear-mode))
 
 (defun quark/org-font-setup ()
-  "Set up my font preferences for org mode."
+  "Set up my font preferences for `org-mode'."
 
   ;; Prettify list bullets
   ;; Seems to work only sometimes?
@@ -253,6 +254,7 @@
    '(("^ *\\([-]\\) "
       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
+  ;; Set heading font sizes
   (set-face-attribute 'org-document-title nil :font "ETBembo" :weight 'bold :height 2.0)
   (dolist (face '((org-level-1 . 1.75)
                   (org-level-2 . 1.5)
@@ -275,7 +277,7 @@
   (set-face-attribute 'org-verbatim nil        :inherit '(shadow fixed-pitch)))
 
 (defun quark/org-mode-visual-fill ()
-  "Configure visual-fill-column-mode for org-mode."
+  "Configure `visual-fill-column-mode' for `org-mode'."
   (setq visual-fill-column-width 100
 	visual-fill-column-center-text t)
   (visual-fill-column-mode))
@@ -285,9 +287,9 @@
 
 
 ;; Find dotfiles
-(defun quark/ivy-find-file-action (file)
-  "Find dotfile from name in quark/dotfile-list."
-  (with-ivy-window (find-file (cdr (assoc file quark/dotfile-list)))))
+(defun quark/ivy-find-file-action (key)
+  "Find dotfile from KEY in quark/dotfile-list."
+  (with-ivy-window (find-file (cdr (assoc key quark/dotfile-list)))))
 
 (setq quark/dotfile-list
       '(("README"   . "~/README.md")
