@@ -218,6 +218,7 @@
 (defun quark/org-mode-setup ()
   (variable-pitch-mode)
   (visual-line-mode)
+  (org-font-setup)
   (setq evil-auto-indent nil))
 
 (use-package org
@@ -234,33 +235,35 @@
   (org-superstar-remove-leading-stars t)
   (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
 
-;; Prettify list bullets
-;; Seems to work only sometimes?
-(font-lock-add-keywords
- 'org-mode
- '(("^ *\\([-]\\) "
-    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+(defun quark/org-font-setup ()
 
-(set-face-attribute 'org-document-title nil :font "ETBembo" :weight 'bold :height 2.0)
-(dolist (face '((org-level-1 . 1.75)
-                (org-level-2 . 1.5)
-                (org-level-3 . 1.25)
-                (org-level-4 . 1.1)
-                (org-level-5 . 1.0)
-                (org-level-6 . 1.0)
-                (org-level-7 . 1.0)
-                (org-level-8 . 1.0)))
-  (set-face-attribute (car face) nil :font "ETBembo" :weight 'medium :height (cdr face)))
+  ;; Prettify list bullets
+  ;; Seems to work only sometimes?
+  (font-lock-add-keywords
+   'org-mode
+   '(("^ *\\([-]\\) "
+      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-;; Display certain regions in a fixed-pitch font
-(set-face-attribute 'org-block nil           :foreground nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-checkbox nil        :inherit 'fixed-pitch)
-(set-face-attribute 'org-code nil            :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-formula nil         :inherit 'fixed-pitch)
-(set-face-attribute 'org-meta-line nil       :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-table nil           :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-verbatim nil        :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-document-title nil :font "ETBembo" :weight 'bold :height 2.0)
+  (dolist (face '((org-level-1 . 1.75)
+                  (org-level-2 . 1.5)
+                  (org-level-3 . 1.25)
+                  (org-level-4 . 1.1)
+                  (org-level-5 . 1.0)
+                  (org-level-6 . 1.0)
+                  (org-level-7 . 1.0)
+                  (org-level-8 . 1.0)))
+    (set-face-attribute (car face) nil :font "ETBembo" :weight 'medium :height (cdr face)))
+
+  ;; Display certain regions in a fixed-pitch font
+  (set-face-attribute 'org-block nil           :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-checkbox nil        :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil            :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-formula nil         :inherit 'fixed-pitch)
+  (set-face-attribute 'org-meta-line nil       :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-table nil           :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil        :inherit '(shadow fixed-pitch)))
 
 (defun quark/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
