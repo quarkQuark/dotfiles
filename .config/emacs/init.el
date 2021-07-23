@@ -194,8 +194,6 @@
   (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
   (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
   (call-interactively 'magit-status))
-(my-leader-def "dg" '(quark/dotfiles-magit-status
-		     :which-key "dotfiles-magit-status"))
 
 ;; Remove args otherwise
 (defun quark/magit-status ()
@@ -207,8 +205,13 @@
   (call-interactively 'magit-status))
 (general-def "C-x g" 'quark/magit-status)
 (general-def magit-file-mode-map "C-x g" 'quark/magit-status)
-(my-leader-def "g" '(quark/magit-status
-		     :which-key "magit-status"))
+
+(my-leader-def
+  "g" '(:ignore t :which-key "git")
+  "gd" '(quark/dotfiles-magit-status
+	 :which-key "dotfiles-magit-status")
+  "gg" '(quark/magit-status
+	 :which-key "magit-status"))
 
 
 ;; Org-mode
