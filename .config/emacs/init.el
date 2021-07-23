@@ -301,3 +301,27 @@
   (interactive)
   (ivy-read "Open dotfile: " (mapcar 'car quark/dotfile-list)
 	    :action 'quark/ivy-find-file-action))
+
+
+;; Org-babel
+
+;; List of languages org-babel can evaluate
+(org-babel-do-load-languages
+  'org-babel-load-languages
+  '((emacs-lisp . t)
+    (python . t)))
+
+(setq org-confirm-babel-evaluate nil)
+
+;; Enable structure templates
+(require 'org-tempo)
+
+(dolist (template
+	 '(("el" . "src emacs-lisp")
+	   ("sh" . "src shell")
+	   ("py" . "python")
+	   ("hs" . "haskell")))
+  (add-to-list 'org-structure-template-alist template))
+
+;; Recognise unix-style conf files
+(push '("conf-unix" . conf-unix) org-src-lang-modes)
