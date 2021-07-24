@@ -1,10 +1,32 @@
 #+TITLE: Emacs configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
+Emacs expects to find user configuration in =.config/emacs/init.el=.  This *literate configuration file* must be *tangled* in order to generate that file and apply the configuration. Once Emacs is installed, this can be done from the command line with the following command:
+
+#+begin_src shell
+
+  emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/emacs/README.org")'
+
+#+end_src
+
+Make sure to also download the fonts [[https://github.com/tonsky/FiraCode][Fira Code]] and [[https://edwardtufte.github.io/et-book/][ET Book]] (known to emacs as =ETBembo=):
+
+#+begin_src shell
+
+  sudo pacman -S ttf-fira-code
+  yay -S ttf-et-book
+
+#+end_src
+
+When Emacs is launched for the first time, it will spend some time downloading and installing various packages.
+
 * Package Management
+
+Most of the rest of the configuration depends on Emacs' vast array of extensions. Therefore the first thing that must be configured is the package manager. Emacs' default package manager is simply called =package=. Even though it is built-in, we still have to do a little work to initialise it!
 
 #+begin_src emacs-lisp
 
+  ;; Where to look for packages to download.
   (setq package-archives
         '(("melpa"        . "https://melpa.org/packages/")
           ("melpa-stable" . "https://stable.melpa.org/packages/")
@@ -14,12 +36,25 @@
   (package-initialize)
   (unless package-archive-contents package-refresh-contents)
 
-  ;; Make sure use-package is installed
+#+end_src
+
+Package management can be made much more convenient with [[https://github.com/jwiegley/use-package][use-package]]. We begin by installing it with =package=, but after this all packages will be installed through =use-package=.
+
+#+begin_src emacs-lisp
+
+  ;; Install use-package ...
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
 
-  ;; Make sure packages are downloaded before they are run
+  ;; ... and enable it.
   (require 'use-package)
+
+#+end_src
+
+By default, =use-package= only loads packages which already exist on the system. The following setting tells it to handle downloading packages as well.
+
+#+begin_src emacs-lisp
+
   (setq use-package-always-ensure t)
 
 #+end_src
@@ -28,25 +63,12 @@
 
 #+begin_src emacs-lisp
 
-  (scroll-bar-mode -1)  ; Disable scrollbar
-  (tool-bar-mode -1)    ; Disable toolbar
-  (menu-bar-mode -1)    ; Disable menu bar
-  (tooltip-mode -1)     ; Disable tooltips
-  (set-fringe-mode 10)  ; Add breathing room
-  (column-number-mode)  ; Show column number in modeline
-
-  (use-package doom-modeline
-    :init (doom-modeline-mode))
-
-  (set-face-attribute 'default nil
-                      :font "Fira Code Retina"
-                      :height 101)
-  (set-face-attribute 'fixed-pitch nil
-                      :font "Fira Code Retina"
-                      :height 101)
-  (set-face-attribute 'variable-pitch nil
-                      :font "ETBembo"
-                      :height 120)
+  (scroll-bar-mode -1)  ; Disable scrollbar.
+  (tool-bar-mode -1)    ; Disable toolbar.
+  (menu-bar-mode -1)    ; Disable menu bar.
+  (tooltip-mode -1)     ; Disable tooltips.
+  (set-fringe-mode 10)  ; Add breathing room.
+  (column-number-mode)  ; Show column number in modeline.
 
   (defun quark/display-line-numbers ()
     "My preferences for line numbers where desired."
@@ -55,6 +77,10 @@
 
   (add-hook 'prog-mode-hook 'quark/display-line-numbers)
 
+  (use-package doom-modeline
+    :init (doom-modeline-mode))
+
+  ;; Pop-up to make keybindings discoverable.
   (use-package which-key
     :init (which-key-mode)
     :diminish which-key-mode
@@ -88,6 +114,10 @@ Liked light themes:
 
   (load-theme 'doom-one-light t)
 
+  (set-face-attribute 'default        nil :font "Fira Code Retina" :height 101)
+  (set-face-attribute 'fixed-pitch    nil :font "Fira Code Retina" :height 101)
+  (set-face-attribute 'variable-pitch nil :font "ETBembo"          :height 120)
+
 #+end_src
 
 * Keybindings and Evil Mode
@@ -101,29 +131,37 @@ Liked light themes:
     (general-create-definer my-local-leader-def :states 'normal :prefix "SPC m")
     (my-leader-def
       "b" 'counsel-switch-buffer
-      "e" '(:ignore t :which-key "eval")
-      "eb" 'eval-buffer
-      "ee" 'eval-last-sexp
       "f" '(:ignore t :which-key "files")
       "ff" 'find-file))
+
+  (defun quark/load-dotfile ()
+    "Reload emacs configuration."
+    (interactive)
+    (load-file (expand-file-name "~/.config/emacs/init.el")))
+
+  (my-leader-def
+    "e" '(:ignore t :which-key "eval")
+    "eb" 'eval-buffer
+    "ed" 'quark/load-dotfile
+    "ee" 'eval-last-sexp)
 
   (general-def
     "C-=" `text-scale-increase
     "C--" `text-scale-decrease)
 
-  ;; Required for C-r (evil-mode undo)
+  ;; Required for C-r (evil-mode undo).
   (use-package undo-tree
     :init (global-undo-tree-mode))
 
   (use-package evil
     :init
     (setq evil-move-cursor-back nil
-          evil-want-keybinding nil ;; For evil-collection
+          evil-want-keybinding nil ;; For evil-collection.
           evil-want-Y-yank-to-eol 1
           evil-undo-system 'undo-tree)
     :config
     (evil-mode)
-    (general-def "<escape>" 'keyboard-escape-quit) ; Make ESC quit prompts
+    (general-def "<escape>" 'keyboard-escape-quit) ; Make ESC quit prompts.
     (general-def evil-insert-state-map "C-g" 'evil-normal-state)
     (general-def 'normal "j" 'evil-next-visual-line)
     (general-def 'normal "k" 'evil-previous-visual-line))
@@ -132,7 +170,7 @@ Liked light themes:
     :after evil
     :config (evil-collection-init))
 
-  ;; Escape insert mode with "jk"
+  ;; Escape insert mode with "jk".
   (general-imap "j" (general-key-dispatch 'self-insert-command
                       :timeout 0.25
                       "k" 'evil-normal-state))
@@ -171,16 +209,19 @@ Liked light themes:
 
 ** Interactively open dotfiles
 
+This command (bound to =SPC f d=) allows me to search for and open dotfiles.
+
 #+begin_src emacs-lisp
 
   (defun quark/ivy-find-file-action (key)
     "Find dotfile from KEY in quark/dotfile-list."
     (with-ivy-window (find-file (cdr (assoc key quark/dotfile-list)))))
 
+  ;; A list of dotfiles, each associated with a keyword.
   (setq quark/dotfile-list
-        '(("README"   . "~/README.md")
-          ("Emacs"    . "~/.config/emacs/init.org")
-          ("XMonad" . "~/.config/xmonad/README.md")))
+        '(("Dotfiles README" . "~/README.md")
+          ("Emacs"           . "~/.config/emacs/README.org")
+          ("XMonad"          . "~/.config/xmonad/README.md")))
 
   (defun quark/ivy-open-dotfile ()
     "Open configuration file for PROGRAM."
@@ -196,9 +237,11 @@ Liked light themes:
 
 #+begin_src emacs-lisp
 
+  ;; More easily see how parentheses pair up.
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 
+  ;; Automatically close parentheses.
   (use-package smartparens
     :hook
     (prog-mode . smartparens-mode)
@@ -217,12 +260,15 @@ Liked light themes:
 
   (use-package magit)
 
-  ;; Add args when used for dotfiles or remove args otherwise
-  ;; https://emacs.stackexchange.com/questions/30602/use-nonstandard-git-directory-with-magit
-  (setq dotfiles-git-dir
-        (concat "--git-dir=" (expand-file-name "~/.dotfiles-git")))
-  (setq dotfiles-work-tree
-        (concat "--work-tree=" (expand-file-name "~")))
+#+end_src
+
+I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git bare repository. It is difficult for Emacs to tell automatically whether I want to use magit on my dotfiles repository or some other repository, as they can overlap. Following [[https://emacs.stackexchange.com/questions/30602/use-nonstandard-git-directory-with-magit][this Stackexchange answer]], I set up alternative commands to launch Magit explicitly with the correct settings.
+
+#+begin_src emacs-lisp
+
+  ;; Add args when used for dotfiles or remove args otherwise.
+  (setq dotfiles-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles-git")))
+  (setq dotfiles-work-tree (concat "--work-tree=" (expand-file-name "~")))
 
   (defun quark/dotfiles-magit-status ()
     "Open magit to manage my dotfiles git bare repository."
@@ -234,20 +280,17 @@ Liked light themes:
   (defun quark/magit-status ()
     "Replacement for `magit-status' for compatibility with quark/dotfiles-magit-status."
     (interactive)
-    (setq magit-git-global-arguments
-          (remove dotfiles-git-dir magit-git-global-arguments))
-    (setq magit-git-global-arguments
-          (remove dotfiles-work-tree magit-git-global-arguments))
+    (setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
+    (setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
     (call-interactively 'magit-status))
+
   (general-def "C-x g" 'quark/magit-status)
   (general-def magit-file-mode-map "C-x g" 'quark/magit-status)
 
   (my-leader-def
     "g" '(:ignore t :which-key "git")
-    "gd" '(quark/dotfiles-magit-status
-           :which-key "dotfiles-magit-status")
-    "gg" '(quark/magit-status
-           :which-key "magit-status"))
+    "gd" '(quark/dotfiles-magit-status :which-key "dotfiles-magit-status")
+    "gg" '(quark/magit-status          :which-key "magit-status"))
 
 #+end_src
 
@@ -277,20 +320,21 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     :custom
     (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
 
+  ;; Unhide emphasis markers under cursor.
   (use-package org-appear
     :hook (org-mode . org-appear-mode))
 
   (defun quark/org-font-setup ()
     "Set up my font preferences for `org-mode'."
 
-    ;; Prettify list bullets
+    ;; Prettify list bullets.
     ;; Seems to work only sometimes?
     (font-lock-add-keywords
      'org-mode
      '(("^ *\\([-]\\) "
         (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-    ;; Set heading font sizes
+    ;; Set heading font sizes.
     (set-face-attribute 'org-document-title nil :font "ETBembo" :weight 'bold :height 2.0)
     (dolist (face '((org-level-1 . 1.75)
                     (org-level-2 . 1.5)
@@ -302,7 +346,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
                     (org-level-8 . 1.0)))
       (set-face-attribute (car face) nil :font "ETBembo" :weight 'medium :height (cdr face)))
 
-    ;; Display certain regions in a fixed-pitch font
+    ;; Display certain regions in a fixed-pitch font.
     (set-face-attribute 'org-block nil           :foreground nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-checkbox nil        :inherit 'fixed-pitch)
     (set-face-attribute 'org-code nil            :inherit '(shadow fixed-pitch))
@@ -328,7 +372,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+begin_src emacs-lisp
 
-  ;; List of languages org-babel can evaluate
+  ;; List of languages org-babel can evaluate.
   (org-babel-do-load-languages
     'org-babel-load-languages
     '((emacs-lisp . t)
@@ -336,7 +380,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
   (setq org-confirm-babel-evaluate nil)
 
-  ;; Enable structure templates
+  ;; Enable structure templates.
   (require 'org-tempo)
 
   (dolist (template
@@ -346,7 +390,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
              ("hs" . "haskell")))
     (add-to-list 'org-structure-template-alist template))
 
-  ;; Recognise unix-style conf files
+  ;; Recognise unix-style conf files.
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
 #+end_src
