@@ -324,6 +324,10 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   (use-package org-appear
     :hook (org-mode . org-appear-mode))
 
+  ;; Automatically toggle latex preview under cursor
+  (use-package org-fragtog
+    :hook (org-mode . org-fragtog-mode))
+
   (defun quark/org-font-setup ()
     "Set up my font preferences for `org-mode'."
 
