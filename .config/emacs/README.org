@@ -63,12 +63,13 @@ By default, =use-package= only loads packages which already exist on the system.
 
 #+begin_src emacs-lisp
 
-  (scroll-bar-mode -1)  ; Disable scrollbar.
-  (tool-bar-mode -1)    ; Disable toolbar.
-  (menu-bar-mode -1)    ; Disable menu bar.
-  (tooltip-mode -1)     ; Disable tooltips.
-  (set-fringe-mode 10)  ; Add breathing room.
-  (column-number-mode)  ; Show column number in modeline.
+  (scroll-bar-mode -1)    ; Disable scrollbar.
+  (tool-bar-mode -1)      ; Disable toolbar.
+  (menu-bar-mode -1)      ; Disable menu bar.
+  (tooltip-mode -1)       ; Disable tooltips.
+  (set-fringe-mode 10)    ; Add breathing room.
+  (column-number-mode)    ; Show column number in modeline.
+  (size-indication-mode)  ; Show file size in modeline.
 
   (defun quark/display-line-numbers ()
     "My preferences for line numbers where desired."
@@ -78,12 +79,17 @@ By default, =use-package= only loads packages which already exist on the system.
   (add-hook 'prog-mode-hook 'quark/display-line-numbers)
 
   (use-package doom-modeline
-    :init (doom-modeline-mode))
+    :init (doom-modeline-mode)
+    :custom
+    (doom-modeline-buffer-encoding nil)
+    (doom-modeline-minor-modes t))
+
+  (use-package minions
+    :hook (doom-modeline-mode . minions-mode))
 
   ;; Pop-up to make keybindings discoverable.
   (use-package which-key
     :init (which-key-mode)
-    :diminish which-key-mode
     :custom (which-key-idle-delay 0.3))
 
 #+end_src
@@ -182,7 +188,6 @@ Liked light themes:
 #+begin_src emacs-lisp
 
   (use-package ivy
-    :diminish
     :bind
     (("C-s" . swiper)
      :map ivy-minibuffer-map
@@ -446,7 +451,6 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
   (use-package projectile
     :pin melpa-stable
-    :diminish projectile-mode
     :init (projectile-mode)
     :bind-keymap ("C-c p" . projectile-command-map))
 
