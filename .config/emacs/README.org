@@ -243,14 +243,55 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
   ;; Automatically close parentheses.
   (use-package smartparens
-    :hook
-    (prog-mode . smartparens-mode)
-    (emacs-lisp-mode . smartparens-strict-mode)
-    :config
-    (require 'smartparens-config))
+    :hook (prog-mode . smartparens-mode)
+    :config (require 'smartparens-config))
 
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :custom (lsp-keymap-prefix "C-c l")
+    :config (lsp-enable-which-key-integration t))
+
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui)
+    :custom (lsp-ui-doc-position 'bottom))
+
+  (use-package company
+    :hook (lsp-mode . company-mode)
+    :bind
+    (:map company-active-map ("<tab>" . company-complete-selection))
+    (:map lsp-mode-map ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+
+  ;; Make the ui slightly nicer (I'm not entirely sure if it's worth it).
+  (use-package company-box
+    :hook (company-mode-hook . company-box-mode))
+
+  (use-package evil-nerd-commenter
+    :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+
+#+end_src
+
+** Emacs Lisp
+
+#+begin_src emacs-lisp
+
+  ;; Be strict about parentheses.
+  (add-hook 'emacs-lisp-mode-hook 'smartparens-strict-mode)
   (use-package evil-cleverparens
     :hook (emacs-lisp-mode . evil-cleverparens-mode))
+
+#+end_src
+
+** Haskell
+
+Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to install =haskell-language-server-bin= from the Arch User Repository instead of =haskell-language-server= from the official repositories. The Arch official repositories use dynamic linking for Haskell packages, which leads to many messy dependency problems when installing or upgrading any Haskell package.
+
+#+begin_src emacs-lisp
+
+  (use-package lsp-haskell
+    :hook (haskell-mode . lsp-deferred))
 
 #+end_src
 
