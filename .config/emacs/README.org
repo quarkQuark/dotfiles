@@ -431,8 +431,8 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   (dolist (template
            '(("el" . "src emacs-lisp")
              ("sh" . "src shell")
-             ("py" . "python")
-             ("hs" . "haskell")))
+             ("py" . "src python")
+             ("hs" . "src haskell")))
     (add-to-list 'org-structure-template-alist template))
 
   ;; Recognise unix-style conf files.
