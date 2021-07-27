@@ -80,14 +80,15 @@ By default, =use-package= only loads packages which already exist on the system.
 
   (add-hook 'prog-mode-hook 'quark/display-line-numbers)
 
+  (use-package all-the-icons)
+  (use-package minions)
   (use-package doom-modeline
-    :init (doom-modeline-mode)
+    :init
+    (doom-modeline-mode)
+    (minions-mode)
     :custom
     (doom-modeline-buffer-encoding nil)
     (doom-modeline-minor-modes t))
-
-  (use-package minions
-    :hook (doom-modeline-mode . minions-mode))
 
   ;; Pop-up to make keybindings discoverable.
   (use-package which-key
