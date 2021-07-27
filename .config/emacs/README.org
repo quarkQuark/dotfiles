@@ -80,6 +80,11 @@ By default, =use-package= only loads packages which already exist on the system.
 
   (add-hook 'prog-mode-hook 'quark/display-line-numbers)
 
+  ;; Scrolls way too fast by default.
+  (setq mouse-wheel-scroll-amount '(1 ((control) . 'text-scale))
+        scroll-margin 3
+        scroll-step 1)
+
   (use-package all-the-icons)
   (use-package minions)
   (use-package doom-modeline
