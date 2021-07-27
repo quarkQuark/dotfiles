@@ -308,6 +308,8 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
 #+begin_src emacs-lisp
 
   (use-package magit)
+  (use-package git-gutter
+    :init (global-git-gutter-mode))
 
 #+end_src
 
