@@ -368,7 +368,9 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     :custom
     (org-ellipsis " ▾")
     (org-hide-emphasis-markers t)
-    (org-startup-indented t))
+    (org-startup-indented t)
+    (org-startup-with-latex-preview t)
+    (org-format-latex-options '(plist-put org-format-latex-options :scale 1.2)))
 
   (use-package org-superstar
     :after org
@@ -383,6 +385,9 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   ;; Automatically toggle latex preview under cursor
   (use-package org-fragtog
     :hook (org-mode . org-fragtog-mode))
+
+  (use-package cdlatex
+    :hook (org-mode . org-cdlatex-mode))
 
   (defun quark/org-font-setup ()
     "Set up my font preferences for `org-mode'."
@@ -426,6 +431,17 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   (use-package visual-fill-column
     :hook (org-mode . quark/org-mode-visual-fill))
 
+  (with-eval-after-load 'ox-latex
+    (setq org-latex-compiler "lualatex")
+    (add-to-list 'org-latex-classes
+                 '("my-notes"
+                   "\\documentclass{my-notes}"
+                   ;; Commands for each heading type (further subheadings become lists).
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+    (setq org-latex-default-class "my-notes"))
+
 #+end_src
 
 ** Babel
@@ -450,8 +466,21 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
              ("hs" . "src haskell")))
     (add-to-list 'org-structure-template-alist template))
 
-  ;; Recognise unix-style conf files.
+  ;; Recognise extra languages
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
+  (push '("latex" . latex) org-src-lang-modes)
+
+#+end_src
+
+* LaTeΧ
+
+#+begin_src emacs-lisp
+
+  (use-package tex
+    :ensure auctex)
+
+  ;; Mostly just to enable system fonts.
+  (setq TeX-engine "lualatex")
 
 #+end_src
 
