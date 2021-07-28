@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{my-notes}
 
-\LoadClass[reqno]{article}
+\LoadClass[reqno]{scrartcl}
 \RequirePackage[margin=1in]{geometry}
 \RequirePackage{amsmath, amssymb, amsthm}
 \RequirePackage[most]{tcolorbox}
@@ -9,6 +9,17 @@
 
 \RequirePackage{fontspec}
 \setmainfont{ETbb}
+
+% Match doom-one-light org-mode heading colours.
+\definecolor{titleCol}{HTML}{a626a4}       % magenta
+\definecolor{sectionCol}{HTML}{e45649}     % red
+\definecolor{subsectionCol}{HTML}{da8548}  % orange
+\definecolor{boldCol}{HTML}{15497c}        % my green
+
+\addtokomafont{title}{\color{titleCol}}
+\addtokomafont{section}{\color{sectionCol}}
+\addtokomafont{subsection}{\color{subsectionCol}}
+\DeclareTextFontCommand{\textbf}{\bfseries\color{boldCol}}
 
 \newtheorem{theorem}{Theorem}[subsection]
 \newtheorem{corollary}{Corollary}[theorem]
