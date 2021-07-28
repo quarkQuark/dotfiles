@@ -264,8 +264,7 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
     :custom (lsp-keymap-prefix "C-c l")
     :config (lsp-enable-which-key-integration t))
 
-  (use-package lsp-ui
-    :custom (lsp-ui-doc-position 'bottom))
+  (use-package lsp-ui)
 
   (use-package company
     :hook (lsp-mode . company-mode)
