@@ -101,7 +101,8 @@ myKeys conf = let
     subKeys "Applications"
     [ ("M-S-<Return>",            addName "Terminal emulator"      $ spawn myTerminal)
     , ("M3-<Return>",             addName "Terminal emulator"      $ spawn myTerminal)
-    , ("M3-e",                    addName "Text editor"            $ spawn myEditor)
+    , ("M3-v",                    addName "Vim"                    $ spawn $ myTerminal ++ " -e nvim")
+    , ("M3-e",                    addName "Emacs"                  $ spawn "emacs")
     , ("M3-w",                    addName "Web browser (minimal)"  $ spawn myBrowser)
     , ("M3-S-w",                  addName "Firefox"                $ spawn "firefox")
     , ("M3-f",                    addName "Terminal file manager"  $ spawn myFileManager)
