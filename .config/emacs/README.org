@@ -100,6 +100,10 @@ By default, =use-package= only loads packages which already exist on the system.
     :init (which-key-mode)
     :custom (which-key-idle-delay 0.3))
 
+  ;; Preview colour codes
+  (use-package rainbow-mode
+    :config (rainbow-mode))
+
 #+end_src
 
 ** Theme
