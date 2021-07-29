@@ -10,16 +10,30 @@
 \RequirePackage{fontspec}
 \setmainfont{ETbb}
 
-% Match doom-one-light org-mode heading colours.
-\definecolor{titleCol}{HTML}{a626a4}       % magenta
-\definecolor{sectionCol}{HTML}{e45649}     % red
-\definecolor{subsectionCol}{HTML}{da8548}  % orange
-\definecolor{boldCol}{HTML}{15497c}        % my green
+% Doom-one-light theme.
+\definecolor{myRed}{HTML}{e45649}
+\definecolor{myOrange}{HTML}{da8548}
+\definecolor{myGreen}{HTML}{50a14f}
+\definecolor{myBlue}{HTML}{4078f2}
+\definecolor{myMagenta}{HTML}{a626a4}
+\definecolor{myViolet}{HTML}{b751b6}
+\definecolor{myDarkCyan}{HTML}{005478}
 
-\addtokomafont{title}{\color{titleCol}}
-\addtokomafont{section}{\color{sectionCol}}
-\addtokomafont{subsection}{\color{subsectionCol}}
-\DeclareTextFontCommand{\textbf}{\bfseries\color{boldCol}}
+% Match doom-themes org-mode heading colours.
+\addtokomafont{title}{\color{myMagenta}}
+\addtokomafont{section}{\color{myRed}}
+\addtokomafont{subsection}{\color{myOrange}}
+\addtokomafont{subsubsection}{\color{myViolet}}
+
+% Colours for elements without org-mode parallels.
+\DeclareTextFontCommand{\textbf}{\bfseries\color{myDarkCyan}}
+\colorlet{colProof}{myGreen}
+\colorlet{colExampleTitle}{myBlue}
+\colorlet{colExampleText}{myBlue}
+
+% Doom-one-light colours don't really work for backgrounds.
+\colorlet{colThm}{yellow!10!white}
+\colorlet{colProp}{orange!10!white}
 
 \newtheorem{theorem}{Theorem}[subsection]
 \newtheorem{corollary}{Corollary}[theorem]
@@ -30,7 +44,6 @@
 \theoremstyle{remark} \newtheorem*{remark}{Remark}
 
 % Indents proofs behind a coloured vertical bar.
-\colorlet{colProof}{green!40!black}
 \tcolorboxenvironment{proof}{
     blanker,breakable,left=3mm,top=4pt,bottom=4pt,
     before skip=10pt,
@@ -40,7 +53,6 @@
 }
 
 % Formats theorems in a yellow box
-\colorlet{colThm}{yellow!10!white}
 \tcolorboxenvironment{theorem}{
     breakable,top=4pt,bottom=4pt,
     before skip=10pt,
@@ -50,7 +62,6 @@
 }
 
 % Formats propositions in an orange box
-\colorlet{colProp}{orange!10!white}
 \tcolorboxenvironment{proposition}{
     breakable,top=4pt,bottom=4pt,
     before skip=10pt,
@@ -60,8 +71,6 @@
 }
 
 % Indents examples behind a coloured vertical bar, with a title line.
-\colorlet{colExampleTitle}{blue!60!black}
-\colorlet{colExampleText}{blue!50!gray}
 \newtcolorbox{example}[1][]{
     empty, % Empty default parameters
 	title=Example: #1,
