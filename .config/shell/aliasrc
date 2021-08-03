@@ -42,4 +42,11 @@ alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E 
 alias tmux='tmux -2'                                    # assumes 256 colour
 
 # Use neovim instead of vim if neovim is present
-command -v nvim >/dev/null && alias vim='nvim' vimdiff="nvim -d" || echo "nvim not found"
+command -v nvim >/dev/null \
+    && alias vim='nvim' vimdiff="nvim -d" \
+    && export EDITOR='nvim' VISUAL="nvim" MANPAGER="nvim +Man!" \
+    || echo "nvim not found"
+
+command -v exa >/dev/null \
+    export EDITOR="nvim" \
+    export

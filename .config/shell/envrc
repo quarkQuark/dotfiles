@@ -3,8 +3,6 @@
 export PATH=$PATH:~/.local/bin:~/.scripts
 
 # Default programs
-export EDITOR="nvim"
-export VISUAL="nvim"
 export BROWSER="qutebrowser"
 export READER="zathura"
 
