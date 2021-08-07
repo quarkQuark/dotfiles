@@ -14,8 +14,7 @@ The installation instructions for this config currently live at
 ## Panels
 
 I've configured XMonad to work with three different panels.
-The current panel can be easily changed by changing the `myBar` variable in
-[xmonad.hs](/src/xmonad.hs).
+The current panel can be easily changed by changing the `myBar` variable in [app/Main.hs](/app/Main.hs).
 
 ### Tint2
 
