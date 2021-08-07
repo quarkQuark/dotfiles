@@ -41,8 +41,12 @@ to do anything impressive with it. And I'm pretty sure it doesn't do vertical ba
 
 One of the most unique features of this config is the keybinding cheatsheet that can be
 brought up at any time with `Super+?`, inspired by AwesomeWM.
-This is achieved with `dzen2` and
+This is achieved with
+[XMonad.Util.NamedActions](https://www.stackage.org/haddock/lts-18.5/xmonad-contrib-0.16/XMonad-Util-NamedActions.html)
+and displayed using `dzen2` and
 [a shell script with lots of regex](/.scripts/dzen2-display-cheatsheet).
+*TODO: Replace `dzen2` with `yad`.*
+
 In [src/modifiers.sh](./src/modifiers.sh) I also bind `Caps Lock` to `Hyper`
 and `Space`, when held down, to an additional `Super` (Windows) key.
 The goal of this is to enable more ergonomic keybindings.
