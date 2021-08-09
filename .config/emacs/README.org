@@ -465,7 +465,12 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
            '(("el" . "src emacs-lisp")
              ("sh" . "src shell")
              ("py" . "src python")
-             ("hs" . "src haskell")))
+             ("hs" . "src haskell")
+             ("def" . "definition")
+             ("lem" . "lemma")
+             ("thm" . "theorem")
+             ("cor" . "corollary")
+             ("prf" . "proof")))
     (add-to-list 'org-structure-template-alist template))
 
   ;; Recognise extra languages
