@@ -44,7 +44,7 @@
 \theoremstyle{definition} \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark} \newtheorem*{remark}{Remark}
 
-% Indents proofs behind a coloured vertical bar.
+% Indent proofs behind a coloured vertical bar.
 \tcolorboxenvironment{proof}{
     blanker,breakable,left=3mm,top=4pt,bottom=4pt,
     before skip=10pt,
@@ -53,7 +53,7 @@
     coltext=colProof
 }
 
-% Formats theorems in a yellow box
+% Surround some environments with coloured boxes.
 \tcolorboxenvironment{theorem}{
     breakable,top=4pt,bottom=4pt,
     before skip=10pt,
@@ -61,8 +61,6 @@
     colback=colThm,
     boxrule = 0pt
 }
-
-% Formats propositions in an orange box
 \tcolorboxenvironment{proposition}{
     breakable,top=4pt,bottom=4pt,
     before skip=10pt,
@@ -70,8 +68,6 @@
     colback=colProp,
     boxrule = 0pt
 }
-
-% Formats definitions in a blue box
 \tcolorboxenvironment{definition}{
     breakable,top=4pt,bottom=4pt,
     before skip=10pt,
@@ -80,12 +76,12 @@
     boxrule = 0pt
 }
 
-% Indents examples behind a coloured vertical bar, with a title line.
+% Indent examples behind a coloured vertical bar, with a title line.
 \newtcolorbox{example}[1][]{
     empty, % Empty default parameters
 	title=Example: #1,
 	attach boxed title to top left,
-    minipage boxed title, % Ensures proper line breaking in longer titles
+    minipage boxed title, % Ensure proper line breaking in longer titles
     % (boxed title style requires an overlay)
     boxed title style={empty,size=minimal,toprule=0pt,top=4pt,left=3mm,overlay={}},
     coltitle=colExampleTitle, fonttitle=\bfseries,
