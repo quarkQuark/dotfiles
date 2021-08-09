@@ -35,7 +35,7 @@
 \colorlet{colThm}{yellow!10!white}
 \colorlet{colProp}{orange!10!white}
 
-\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
