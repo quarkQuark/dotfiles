@@ -34,6 +34,7 @@
 % Doom-one-light colours don't really work for backgrounds.
 \colorlet{colThm}{yellow!10!white}
 \colorlet{colProp}{orange!10!white}
+\colorlet{colDef}{cyan!5!white}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
@@ -67,6 +68,15 @@
     before skip=10pt,
     after skip=10pt,
     colback=colProp,
+    boxrule = 0pt
+}
+
+% Formats definitions in a blue box
+\tcolorboxenvironment{definition}{
+    breakable,top=4pt,bottom=4pt,
+    before skip=10pt,
+    after skip=10pt,
+    colback=colDef,
     boxrule = 0pt
 }
 
