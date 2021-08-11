@@ -1,5 +1,6 @@
 #+TITLE: Emacs configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+STARTUP: overview
 
 * Installation
 
@@ -523,6 +524,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+begin_src emacs-lisp
 
+  ;; More helpful help pages.
   (use-package helpful
     :custom
     (counsel-describe-function-function #'helpful-callable)
