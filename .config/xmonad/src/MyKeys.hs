@@ -9,9 +9,10 @@ import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.ResizableTile
 import XMonad.Util.EZConfig     -- Simpler keybinding syntax
 import XMonad.Util.NamedActions -- Allows labelling of keybindings
+import XMonad.Util.NamedScratchpad
 import qualified XMonad.StackSet as W
 
--- Which programs to use as defaults
+import MyScratchpads
 import Options
 
 -- Convert multiword strings to arguments (concatenate with delimiters)
@@ -44,6 +45,9 @@ myKeys conf = let
     brightnessAdjust perc = spawn
         $ "xbacklight " ++ perc ++ " && notify-send \"Brightness `xbacklight -get`%\""
 
+    nsTerminal  = namedScratchpadAction myScratchpads "terminal"
+    nsMusic     = namedScratchpadAction myScratchpads "music"
+
     in
 
     subKeys "Core"
@@ -63,16 +67,14 @@ myKeys conf = let
     ]) ^++^
 
     subKeys "Workspaces" (
-    --[ ("M-u",                     addName "View next"              $ )
-    --, ("M-i,",                    addName "View previous"          $ )
-    --, ("M-S-u",                   addName "Send to next"           $ )
-    --, ("M-S-i",                   addName "Send to previous"       $ )
-    --] ^++^
     [ ("M-"++show key,            addName ("View workspace "++i)    $ windows $ W.greedyView i)
         | (key,i) <- zip [1..9] (XMonad.workspaces conf)
     ] ^++^
     [ ("M-S-"++show key,          addName ("Send to workspace "++i) $ windows $ W.shift i)
         | (key,i) <- zip [1..9] (XMonad.workspaces conf)
+    ] ^++^
+    [ ("M--",                     addName "Terminal scratchpad"    $ nsTerminal)
+    , ("M-=",                     addName "Music scratchpad"       $ nsMusic)
     ]) ^++^
 
     subKeys "Layouts"

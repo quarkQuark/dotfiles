@@ -5,6 +5,8 @@ where
 import Data.List (isInfixOf)
 import XMonad
 import XMonad.Hooks.ManageDocks
+import XMonad.Util.NamedScratchpad
+import MyScratchpads
 
 titleContains :: String -> Query Bool
 titleContains string = fmap (isInfixOf string) title
@@ -26,4 +28,6 @@ manageSpecific = composeAll . concat $
         myZoomFloats   = ["Chat", "Participants", "Rooms"]
 
 myManageHook :: ManageHook
-myManageHook = manageSpecific <+> manageDocks
+myManageHook = manageSpecific
+           <+> manageDocks
+           <+> namedScratchpadManageHook myScratchpads
