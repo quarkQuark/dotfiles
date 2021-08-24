@@ -22,15 +22,18 @@
 \colorlet{colProof}{myGreen!95!black}
 \colorlet{colExampleTitle}{myBlue}
 \colorlet{colExampleText}{myBlue}
+\colorlet{colRemarkFG}{black!80!white}
 
 % Doom-one-light colours don't really work for backgrounds.
 \colorlet{colThm}{yellow!10!white}
 \colorlet{colProp}{orange!10!white}
 \colorlet{colDef}{myBlue!10!white}
+\colorlet{colRemarkBG}{black!2!white}
 
 % Surround some environments with coloured boxes.
 \tcolorboxenvironment{theorem}{
-    breakable,top=4pt,bottom=4pt,
+    %breakable,
+    %top=4pt,bottom=4pt,
     before skip=10pt,
     after skip=10pt,
     colback=colThm,
@@ -38,29 +41,39 @@
     arc = 0.3mm
 }
 \tcolorboxenvironment{definition}{
-    breakable,
-    top=1mm,bottom=1mm,left=0.5mm,right=0.5mm,
+    %breakable,
+    %top=1mm,bottom=1mm,left=0.5mm,right=0.5mm,
     before skip=10pt,
     after skip=10pt,
     colback=colDef,
     boxrule = 0pt,
     arc = 0.3mm
 }
-% Indent proofs behind a coloured vertical bar.
-\tcolorboxenvironment{proof}{
-    blanker,breakable,left=3mm,top=4pt,bottom=4pt,
-    before skip=10pt,
-    after skip=10pt,
-    %borderline west={.5pt}{0pt}{colProof},
-    coltext=colProof
-}
 \tcolorboxenvironment{proposition}{
-    breakable,top=4pt,bottom=4pt,
+    %breakable,
+    %top=4pt,bottom=4pt,
     before skip=10pt,
     after skip=10pt,
     colback=colProp,
     boxrule = 0pt,
     arc = 0.3mm
+}
+\tcolorboxenvironment{remark}{
+    %breakable,
+    before skip=-10pt,
+    coltext=colRemarkFG,
+    colback=colRemarkBG,
+    boxrule = 0pt
+}
+
+% Indent proofs behind a coloured vertical bar.
+\tcolorboxenvironment{proof}{
+    blanker,breakable,
+    %left=3mm,top=4pt,bottom=4pt,
+    before skip=10pt,
+    after skip=10pt,
+    %borderline west={.5pt}{0pt}{colProof},
+    coltext=colProof
 }
 
 % Indent examples behind a coloured vertical bar, with a title line.
