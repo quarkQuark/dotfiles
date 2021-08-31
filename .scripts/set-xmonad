@@ -1,4 +1,19 @@
-#!/usr/bin/sh
+#!/bin/sh
+
+# Monito setup
+
+side=$1  # Currently does nothing
+
+# Monitor on right
+xrandr \
+    --output eDP1 \
+      --mode 1920x1080 --pos 0x434 --rotate normal \
+    --output HDMI1 --primary \
+      --mode 1920x1080 --pos 1920x0 --rotate normal \
+    && nitrogen --restore && xmonad --restart
+
+
+# Keyboard setup
 
 # Alt Gr sends 'mod1' (same as Alt)
 #xmodmap -e 'remove mod5 = ISO_Level3_Shift'
