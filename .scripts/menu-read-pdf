@@ -48,4 +48,4 @@ FILEPATH=`echo $FILES \
 
 # If something is chosen (ESC not pressed), then open it in $PDF_READER.
 [ -z $CHOICE ] && notify-send "$FILE not found" \
-#    || $PDF_READER "$FILEPATH"
+    || $PDF_READER "$FILEPATH"
