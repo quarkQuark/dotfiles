@@ -7,5 +7,4 @@
 
 ;; Set up org-mode.
 (require 'org)
-(require 'htmlize)  ; Should be included in org-mode now.
 (setq org-html-htmlize-output-type 'css)
