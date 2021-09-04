@@ -748,7 +748,7 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+end_src
 
-* LaTeΧ
+** LaTeΧ
 
 #+begin_src emacs-lisp
 
