@@ -1,9 +1,8 @@
 #!/bin/sh
 
 # CSS style
-touch index.org
 SETUPFILE="https://github.com/fniessen/org-html-themes/blob/master/org/theme-readtheorg.setup"
-echo "#+SETUPFILE: ${SETUPFILE}" >> index.org
+echo "#+SETUPFILE: ${SETUPFILE}" > index.org
 cat ../../.config/emacs/README.org >> index.org
 
 #emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/emacs/README.org")'
