@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # CSS style
-SETUPFILE="https://github.com/fniessen/org-html-themes/blob/master/org/theme-readtheorg.setup"
+SETUPFILE="https://raw.githubusercontent.com/fniessen/org-html-themes/master/org/theme-readtheorg.setup"
 echo "#+SETUPFILE: ${SETUPFILE}" > index.org
 cat ../../.config/emacs/README.org >> index.org
 
@@ -13,4 +13,3 @@ emacs index.org --batch -Q \
 # The output directory is uploaded to the GitHub pages repository.
 mkdir -p ../output
 mv index.html ../output
-rm index.org
