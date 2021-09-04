@@ -1,14 +1,17 @@
 #!/bin/sh
 
 # CSS style
-SETUPFILE="https://raw.githubusercontent.com/fneissen/org-html-themes/master/org/theme-readtheorg.setup"
-echo "#+SETUPFILE: ${SETUPFILE}" > index.org
+touch index.org
+#SETUPFILE="https://raw.githubusercontent.com/fneissen/org-html-themes/master/org/theme-readtheorg.setup"
+#echo "#+SETUPFILE: ${SETUPFILE}" >> index.org
+cat ~/.config/emacs/README.org >> index.org
 
-emacs index.org \  # Temporary org file with setup configuration
-      --batch -Q \
-      --load emacs-minimal-html-export-init.el \
+#emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/emacs/README.org")'
+emacs index.org --batch -Q \
+      -l emacs-minimal-html-export-init.el \
       -f org-html-export-to-html --kill
 
 # The output directory is uploaded to the GitHub pages repository.
-mkdir ~/.github/output
+mkdir -p ~/.github/output
 mv index.html ~/.github/output
+rm index.org
