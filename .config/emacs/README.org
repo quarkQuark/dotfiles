@@ -2,6 +2,8 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 #+STARTUP: overview
 
+The best place to read this file is at https://quarkQuark.github.io/literate-config/emacs. The org-mode source is stored at https://github.com/quarkQuark/dotfiles/tree/master/.config/emacs.
+
 * Installation
 
 Emacs expects to find user configuration in =.config/emacs/init.el=.  This *literate configuration file* must be *tangled* in order to generate that file and apply the configuration. Once Emacs is installed, this can be done from the command line with the following command:
