@@ -76,13 +76,6 @@ By default, =use-package= only loads packages which already exist on the system.
   (column-number-mode)    ; Show column number in modeline.
   (size-indication-mode)  ; Show file size in modeline.
 
-  (defun quark/display-line-numbers ()
-    "My preferences for line numbers where desired."
-    (setq-local display-line-numbers 'visual
-                display-line-numbers-current-absolute t))
-
-  (add-hook 'prog-mode-hook 'quark/display-line-numbers)
-
   ;; Scrolls way too fast by default.
   (setq mouse-wheel-scroll-amount '(1 ((control) . 'text-scale))
         scroll-margin 3
@@ -201,7 +194,7 @@ Liked light themes:
 
 #+end_src
 
-* Completion
+* Ivy (completion)
 
 #+begin_src emacs-lisp
 
@@ -259,6 +252,12 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 * Programming
 
 #+begin_src emacs-lisp
+
+  (defun quark/display-line-numbers ()
+    (setq-local display-line-numbers 'visual
+                display-line-numbers-current-absolute t))
+
+  (add-hook 'prog-mode-hook 'quark/display-line-numbers)
 
   ;; More easily see how parentheses pair up.
   (use-package rainbow-delimiters
@@ -383,7 +382,6 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   (defun quark/org-mode-setup ()
     "Function to run on `org-mode' startup."
     (variable-pitch-mode)
-    (visual-line-mode)
     (quark/org-font-setup)
     (setq evil-auto-indent nil))
 
