@@ -2,7 +2,10 @@
 
 # CSS style
 SETUPFILE="https://raw.githubusercontent.com/fniessen/org-html-themes/master/org/theme-readtheorg.setup"
-echo "#+SETUPFILE: ${SETUPFILE}" > emacs.org
+echo "\
+#+SETUPFILE: ${SETUPFILE}
+#+AUTHOR: quarkQuark
+" > emacs.org
 cat ../../.config/emacs/README.org >> emacs.org
 
 #emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/emacs/README.org")'
