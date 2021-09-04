@@ -354,55 +354,13 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
 
 #+end_src
 
-* Magit
-
-#+begin_src emacs-lisp
-
-  (use-package magit)
-  (use-package git-gutter
-    :init (global-git-gutter-mode))
-
-#+end_src
-
-I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git bare repository. It is difficult for Emacs to tell automatically whether I want to use magit on my dotfiles repository or some other repository, as they can overlap. Following [[https://emacs.stackexchange.com/questions/30602/use-nonstandard-git-directory-with-magit][this Stackexchange answer]], I set up alternative commands to launch Magit explicitly with the correct settings.
-
-#+begin_src emacs-lisp
-
-  ;; Add args when used for dotfiles or remove args otherwise.
-  (setq dotfiles-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles-git")))
-  (setq dotfiles-work-tree (concat "--work-tree=" (expand-file-name "~")))
-
-  (defun quark/dotfiles-magit-status ()
-    "Open magit to manage my dotfiles git bare repository."
-    (interactive)
-    (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
-    (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
-    (call-interactively 'magit-status))
-
-  (defun quark/magit-status ()
-    "Replacement for `magit-status' for compatibility with quark/dotfiles-magit-status."
-    (interactive)
-    (setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
-    (setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
-    (call-interactively 'magit-status))
-
-  (general-def "C-x g" 'quark/magit-status)
-  (general-def magit-file-mode-map "C-x g" 'quark/magit-status)
-
-  (my-leader-def
-    "g" '(:ignore t :which-key "git")
-    "gd" '(quark/dotfiles-magit-status :which-key "dotfiles-magit-status")
-    "gg" '(quark/magit-status          :which-key "magit-status"))
-
-#+end_src
-
-* Org Mode
+** Org Mode
 
 https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
-** Setup
+*** Setup
 
-*** Font setup
+**** Font setup
 
 #+begin_src emacs-lisp
 
@@ -442,7 +400,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+end_src
 
-*** Load org-mode
+**** Load org-mode
 
 #+begin_src emacs-lisp
 
@@ -469,7 +427,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+end_src
 
-** Aesthetics
+*** Aesthetics
 
 #+begin_src emacs-lisp
 
@@ -507,7 +465,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+end_src
 
-** Specify font face for certain special blocks
+*** Specify font face for certain special blocks
 
 Org-mode does not expose an option for font-locking of individual special blocks, so we modify the package's source code with [[https://github.com/raxod502/el-patch][el-patch]].
 
@@ -707,7 +665,7 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+end_src
 
-** Maths and LaTeX fragments
+*** Maths and LaTeX fragments
 
 #+begin_src emacs-lisp
 
@@ -720,9 +678,9 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+end_src
 
-** Export
+*** Export
 
-*** LaTeX
+**** LaTeX
 
 #+begin_src emacs-lisp
 
@@ -754,7 +712,7 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+end_src
 
-** Babel
+*** Babel
 
 #+begin_src emacs-lisp
 
@@ -799,6 +757,48 @@ The following source block contains a copy of the (quite long!) full definition 
 
   ;; Mostly just to enable system fonts.
   (setq TeX-engine "lualatex")
+
+#+end_src
+
+* Magit
+
+#+begin_src emacs-lisp
+
+  (use-package magit)
+  (use-package git-gutter
+    :init (global-git-gutter-mode))
+
+#+end_src
+
+I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git bare repository. It is difficult for Emacs to tell automatically whether I want to use magit on my dotfiles repository or some other repository, as they can overlap. Following [[https://emacs.stackexchange.com/questions/30602/use-nonstandard-git-directory-with-magit][this Stackexchange answer]], I set up alternative commands to launch Magit explicitly with the correct settings.
+
+#+begin_src emacs-lisp
+
+  ;; Add args when used for dotfiles or remove args otherwise.
+  (setq dotfiles-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles-git")))
+  (setq dotfiles-work-tree (concat "--work-tree=" (expand-file-name "~")))
+
+  (defun quark/dotfiles-magit-status ()
+    "Open magit to manage my dotfiles git bare repository."
+    (interactive)
+    (add-to-list 'magit-git-global-arguments dotfiles-git-dir)
+    (add-to-list 'magit-git-global-arguments dotfiles-work-tree)
+    (call-interactively 'magit-status))
+
+  (defun quark/magit-status ()
+    "Replacement for `magit-status' for compatibility with quark/dotfiles-magit-status."
+    (interactive)
+    (setq magit-git-global-arguments (remove dotfiles-git-dir magit-git-global-arguments))
+    (setq magit-git-global-arguments (remove dotfiles-work-tree magit-git-global-arguments))
+    (call-interactively 'magit-status))
+
+  (general-def "C-x g" 'quark/magit-status)
+  (general-def magit-file-mode-map "C-x g" 'quark/magit-status)
+
+  (my-leader-def
+    "g" '(:ignore t :which-key "git")
+    "gd" '(quark/dotfiles-magit-status :which-key "dotfiles-magit-status")
+    "gg" '(quark/magit-status          :which-key "magit-status"))
 
 #+end_src
 
