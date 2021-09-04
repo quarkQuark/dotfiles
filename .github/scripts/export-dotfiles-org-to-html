@@ -6,7 +6,7 @@ echo "#+SETUPFILE: ${SETUPFILE}" > emacs.org
 cat ../../.config/emacs/README.org >> emacs.org
 
 #emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/emacs/README.org")'
-emacs index.org --batch -Q \
+emacs emacs.org --batch -Q \
       -l emacs-minimal-html-export-init.el \
       -f org-html-export-to-html --kill
 
