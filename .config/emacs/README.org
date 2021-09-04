@@ -331,6 +331,29 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
 
 #+end_src
 
+* Writing
+
+#+begin_src emacs-lisp
+
+  (add-hook 'text-mode-hook 'visual-line-mode)
+
+  ;(defun quark/visual-fill ()
+  ;  "Configure `visual-fill-column-mode' for `org-mode'."
+  ;  (setq visual-fill-column-width 100
+  ;        visual-fill-column-center-text t)
+  ;  (visual-fill-column-mode))
+
+  (use-package visual-fill-column
+    :custom
+    (visual-fill-column-width 100)
+    (visual-fill-column-center-text t)
+    (visual-fill-column-enable-sensible-window-split t)
+    :hook (text-mode . visual-fill-column-mode)
+    :config
+    (advice-add 'text-scale-adjust :after 'visual-fill-column-adjust))
+
+#+end_src
+
 * Magit
 
 #+begin_src emacs-lisp
