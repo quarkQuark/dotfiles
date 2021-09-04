@@ -2,8 +2,8 @@
 
 # CSS style
 touch index.org
-#SETUPFILE="https://raw.githubusercontent.com/fneissen/org-html-themes/master/org/theme-readtheorg.setup"
-#echo "#+SETUPFILE: ${SETUPFILE}" >> index.org
+SETUPFILE="https://fneissen.github.io/org-html-themes/org/theme-readtheorg.setup"
+echo "#+SETUPFILE: ${SETUPFILE}" >> index.org
 cat ../../.config/emacs/README.org >> index.org
 
 #emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/emacs/README.org")'
