@@ -2,7 +2,7 @@
 
 # CSS style
 touch index.org
-SETUPFILE="https://fneissen.github.io/org-html-themes/org/theme-readtheorg.setup"
+SETUPFILE="https://github.com/fniessen/org-html-themes/blob/master/org/theme-readtheorg.setup"
 echo "#+SETUPFILE: ${SETUPFILE}" >> index.org
 cat ../../.config/emacs/README.org >> index.org
 
