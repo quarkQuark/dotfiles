@@ -522,6 +522,43 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+end_src
 
+* File management
+
+** Dired
+
+#+begin_src emacs-lisp
+
+  (use-package dired
+    :ensure nil ;; Preinstalled - don't try to find on MELPA.
+    :commands (dired dired-jump)
+    :bind ("C-x C-j" . dired-jump)
+    :custom (dired-listing-switches "-Agho --group-directories-first"))
+
+  ;; Stop dired from making a new buffer for each directory.
+  (use-package dired-single
+    :config
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "h" 'dired-single-up-directory
+      "l" 'dired-single-buffer))
+
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
+
+  ;; Font lock rules for dired.
+  (use-package diredfl
+    :hook (dired-mode . diredfl-mode))
+
+  (use-package dired-hide-dotfiles
+    :hook (dired-mode . dired-hide-dotfiles-mode)
+    :config
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "H" 'dired-hide-dotfiles-mode))
+
+  ;; Collapse trivial file hierarchies.
+  (use-package dired-collapse
+    :hook (dired-mode . dired-collapse-mode))
+#+end_src
+
 * Projectile
 
 #+begin_src emacs-lisp
