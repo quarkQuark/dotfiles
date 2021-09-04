@@ -105,6 +105,9 @@ By default, =use-package= only loads packages which already exist on the system.
 
   ;; Preview colour codes
   (use-package rainbow-mode
+    :hook
+    (tex-mode . rainbow-mode)
+    (html-mode . rainbow-mode)
     :config (rainbow-mode))
 
 #+end_src
@@ -291,6 +294,22 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
 #+end_src
 
+=Origami= enables code-folding.
+
+#+begin_src emacs-lisp
+
+  (use-package origami
+    :hook
+    (prog-mode . origami-mode)
+    ;(css-mode  . origami-close-all-nodes)
+    :general
+    (:keymaps 'evil-normal-state-map
+              "TAB" 'origami-recursively-toggle-node)
+    :config
+    (add-to-list 'origami-parser-alist '(css-mode . origami-c-style-parser)))
+
+#+end_src
+
 ** Emacs Lisp
 
 #+begin_src emacs-lisp
@@ -473,16 +492,18 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   (require 'org-tempo)
 
   (dolist (template
-           '(("el" . "src emacs-lisp")
-             ("sh" . "src shell")
-             ("py" . "src python")
-             ("hs" . "src haskell")
-             ("def" . "definition")
-             ("rem" . "remark")
-             ("lem" . "lemma")
-             ("thm" . "theorem")
-             ("cor" . "corollary")
-             ("prf" . "proof")))
+           '(("el"   . "src emacs-lisp")
+             ("sh"   . "src shell")
+             ("py"   . "src python")
+             ("hs"   . "src haskell")
+             ("css"  . "src css")
+             ("html" . "export html")
+             ("def"  . "definition")
+             ("rem"  . "remark")
+             ("lem"  . "lemma")
+             ("thm"  . "theorem")
+             ("cor"  . "corollary")
+             ("prf"  . "proof")))
     (add-to-list 'org-structure-template-alist template))
 
   ;; Recognise extra languages
