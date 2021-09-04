@@ -4,8 +4,9 @@
 name: CI
 
 on:
+touch index.org
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build-literate-config-html:
