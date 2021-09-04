@@ -4,7 +4,6 @@
 name: CI
 
 on:
-touch index.org
   push:
     branches: [ main ]
 
