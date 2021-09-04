@@ -2,8 +2,8 @@
 
 # CSS style
 SETUPFILE="https://raw.githubusercontent.com/fniessen/org-html-themes/master/org/theme-readtheorg.setup"
-echo "#+SETUPFILE: ${SETUPFILE}" > index.org
-cat ../../.config/emacs/README.org >> index.org
+echo "#+SETUPFILE: ${SETUPFILE}" > emacs.org
+cat ../../.config/emacs/README.org >> emacs.org
 
 #emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/emacs/README.org")'
 emacs index.org --batch -Q \
@@ -12,4 +12,4 @@ emacs index.org --batch -Q \
 
 # The output directory is uploaded to the GitHub pages repository.
 mkdir -p ../output
-mv index.html ../output
+mv emacs.html ../output
