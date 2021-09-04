@@ -388,11 +388,23 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   (use-package org
     :hook (org-mode . quark/org-mode-setup)
     :custom
-    (org-ellipsis " ▾")
+    ;(org-ellipsis " ▾")
     (org-hide-emphasis-markers t)
     (org-startup-indented t)
     (org-startup-with-latex-preview t)
-    (org-format-latex-options '(plist-put org-format-latex-options :scale 1.2)))
+    (org-export-with-smart-quotes t)
+    (user-full-name "quarkQuark")
+    :config
+    ;; Error =Invalid face= on 'default face.
+    ;(plist-put org-format-latex-options :foreground 'auto)
+    ;(plist-put org-format-latex-options :background 'auto)
+    (plist-put org-format-latex-options :scale 1.2))
+
+#+end_src
+
+** Aesthetics
+
+#+begin_src emacs-lisp
 
   (use-package org-superstar
     :after org
