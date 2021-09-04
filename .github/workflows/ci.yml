@@ -13,7 +13,7 @@ jobs:
     container: alpine:3.13.4
     steps:
       - uses: actions/checkout@v2
-      - name: Install emacs
+      - name: Install emacs-nox
         run: apk --update add emacs
       - name: Export literate configuration to HTML
         run: cd .github/scripts && sh export-dotfiles-org-to-html
