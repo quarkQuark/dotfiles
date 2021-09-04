@@ -4,7 +4,9 @@
 (require 'package)
 (package-initialize)
 (package-refresh-contents)
+(package-install htmlize)
 
 ;; Set up org-mode.
 (require 'org)
+(require 'htmlize)
 (setq org-html-htmlize-output-type 'css)
