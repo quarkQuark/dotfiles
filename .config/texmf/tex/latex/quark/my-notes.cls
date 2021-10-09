@@ -10,7 +10,7 @@
 \RequirePackage{xparse}
 
 % My custom colours for headings and environments.
-\RequirePackage{my-colours}
+\RequirePackage[all]{my-colours}
 
 % Requires LuaTeX or XeTeX.
 \RequirePackage{fontspec}

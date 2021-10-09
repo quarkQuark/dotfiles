@@ -502,9 +502,16 @@ We want to add the following rules for fontifying special blocks:
 
   (defface org-custom-special-block-proof
     '((((class color) (background light))
-       (:foreground "#4c984b" :extend t :inherit 'fixed-pitch))
+       (:foreground "#50a14f" :extend t :inherit 'fixed-pitch))
       (((class color) (background dark))
-       (:foreground "#70b16f" :extend t :inherit 'fixed-pitch)))
+       (:foreground "#7bc275" :extend t :inherit 'fixed-pitch)))
+    "Face for proof blocks in org-mode.")
+
+  (defface org-custom-special-block-eg
+    '((((class color) (background light))
+       (:foreground "#4078f2" :extend t))
+      (((class color) (background dark))
+       (:foreground "#51afef" :extend t)))
     "Face for proof blocks in org-mode.")
 
   (setq quark/org-fontify-custom-special-block-alist
@@ -512,7 +519,8 @@ We want to add the following rules for fontifying special blocks:
           ("lemma"      . 'org-custom-special-block-lemma)
           ("theorem"    . 'org-custom-special-block-theorem)
           ("corollary"  . 'org-custom-special-block-lemma)
-          ("proof"      . 'org-custom-special-block-proof)))
+          ("proof"      . 'org-custom-special-block-proof)
+          ("eg"      . 'org-custom-special-block-eg)))
 
   (defun quark/org-fontify-custom-special-block-face (block-type)
     (cdr (assoc block-type quark/org-fontify-custom-special-block-alist)))
@@ -739,7 +747,8 @@ The following source block contains a copy of the (quite long!) full definition 
              ("lem"  . "lemma")
              ("thm"  . "theorem")
              ("cor"  . "corollary")
-             ("prf"  . "proof")))
+             ("prf"  . "proof")
+             ("eg"   . "eg")))
     (add-to-list 'org-structure-template-alist template))
 
   ;; Recognise extra languages

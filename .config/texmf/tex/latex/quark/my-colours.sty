@@ -1,6 +1,11 @@
-\usepackage{amsmath, amssymb, amsthm}
-\usepackage{xcolor}
-\usepackage[most]{tcolorbox}
+\RequirePackage{amsmath, amssymb, amsthm}
+\RequirePackage{xcolor}
+\RequirePackage[most]{tcolorbox}
+
+% Allow font size to change.
+\newif\ifall
+\DeclareOption{all}{\alltrue}
+\ProcessOptions\relax
 
 % Doom-one-light theme.
 \definecolor{myRed}{HTML}{e45649}
@@ -77,7 +82,7 @@
 }
 
 % Indent examples behind a coloured vertical bar, with a title line.
-\newtcolorbox{example}[1][]{
+\newtcolorbox{eg}[1][]{
     empty, % Empty default parameters
 	title=Example: #1,
 	attach boxed title to top left,
@@ -103,5 +108,9 @@
     },
     overlay last={\draw[colExampleTitle,line width=.5pt]
         ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west);
-    }
+    },
+    fontupper=\ifall \small \else \normalsize \fi
 }
+
+% Pre-org-mode compatibility
+\newenvironment{example}{\eg}{\endeg}
