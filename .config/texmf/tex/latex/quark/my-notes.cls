@@ -16,6 +16,8 @@
 \RequirePackage{fontspec}
 \setmainfont{ETbb}
 
+\newfontfamily\symbolsfont{Symbola}
+
 % See https//www.khirevich.com/latex/microtype/
 \RequirePackage[
     %, stretch  = 10, shrink = 10         % Variation of character width (default 20)
@@ -43,5 +45,6 @@
 \theoremstyle{definition} \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark} \newtheorem*{remark}{Remark}
 
-\newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
+\newcommand{\dd}{\,\mathrm{d}}
+\DeclareDocumentCommand{\pder}{ O{} O{} m }{\frac{\partial^{#2}#1}{\partial#3^{#2}}}
