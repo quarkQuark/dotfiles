@@ -1,19 +1,9 @@
 #!/bin/sh
 
-# Monito setup
+# On which side of the primary display is the laptop?
+side="${1:-r}"
 
-side=$1  # Currently does nothing
-
-# Monitor on right
-xrandr \
-    --output eDP1 \
-      --mode 1920x1080 --pos 0x434 --rotate normal \
-    --output HDMI1 --primary \
-      --mode 1920x1080 --pos 1920x0 --rotate normal \
-    && nitrogen --restore && xmonad --restart
-
-
-# Keyboard setup
+# Keyboard
 
 # Alt Gr sends 'mod1' (same as Alt)
 #xmodmap -e 'remove mod5 = ISO_Level3_Shift'
@@ -38,3 +28,43 @@ xmodmap -e "keycode 65 = Super_L" # Space (65) generates Super
 xmodmap -e "keycode any = space"
 # Tapping space works properly
 xcape -e "Super_L=space" # Space works normally when tapped
+
+[ $side = "0" ] \
+    && xrandr \
+        --output eDP-1 --primary \
+          --mode 1920x1080 --scale 1x1 \
+    && nitrogen --restore && xmonad --restart \
+    && exit
+
+
+# Monitor setup
+
+offset=540
+pos0=""
+pos1=""
+
+case $side in
+    l)  pos0=960x0
+        pos1=0x$offset
+        ;;
+    r)  pos0=1920x0
+        pos1=3840x$offset
+        ;;
+    *)  pos0=1920x0
+        pos1=3840x$offset
+        ;;
+esac
+
+# Monitor on right
+xrandr \
+    --output HDMI-1 --primary \
+      --mode 1920x1080 --pos $pos0 \
+    --output eDP-1 \
+      --mode 960x540 --pos $pos1 --scale 1x1 \
+    && nitrogen --restore && xmonad --restart
+#xrandr \
+#    --output HDMI1 --primary \
+#      --mode 1920x1080 --pos 1920x0 \
+#    --output eDP1 \
+#      --mode 1920x1080 --pos $pos \
+#    && nitrogen --restore && xmonad --restart
