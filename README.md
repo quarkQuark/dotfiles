@@ -51,7 +51,7 @@ I have also made some shell scripts to automate some common tasks, which can be 
 3.  Follow the README instructions to install [Vim-plug](https://github.com/junegunn/vim-plug).
     My configuration also needs the packages `nnn`, `fzy` and `ripgrep`
 
-4.  Xmonad is installed via `stack-static` from the AUR.
+4.  Xmonad is built via `stack-static` from the AUR.
     Arch has packages available from the standard repositories,
 	but these are prone to breakage due to dynamic linking.
 
