@@ -25,7 +25,8 @@ The two most important programs I use are the window manager and text editor.
   **Emacs** is much, much more extensible than Vim, and readily emulates Vim keybindings.
   One particular benefit is the incredible **Org Mode** which, amongst many other things,
   allows me to automatically export a literate version of my config to
-  [this webpage](https://quarkQuark.github.io/literate-config/emacs).
+  [this webpage](https://quarkQuark.github.io/literate-config/emacs)
+  with the help of GitHub actions.
 
 I have also made some shell scripts to automate some common tasks, which can be found
 [here](.scripts).
