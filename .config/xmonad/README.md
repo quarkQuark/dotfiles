@@ -13,6 +13,21 @@ The installation instructions for this config currently live at
 [the root README file](/../../README.md)
 for this repository.
 
+## Keybindings
+
+One of the most unique features of this config is the keybinding cheatsheet that can be
+brought up at any time with `Super+?`, inspired by AwesomeWM.
+This is achieved with
+[XMonad.Util.NamedActions](https://www.stackage.org/haddock/lts-18.5/xmonad-contrib-0.16/XMonad-Util-NamedActions.html)
+and displayed using `dzen2` and
+[a shell script with lots of regex](/.scripts/dzen2-display-cheatsheet).
+
+In [src/modifiers.sh](./src/modifiers.sh) I also bind `Caps Lock` to `Hyper`
+and `Space`, when held down, to an additional `Super` (Windows) key.
+The goal of this is to enable more ergonomic keybindings.
+Eventually I will include a list of keybindings in this README,
+but until then refer to the screenshot at the top of this page.
+
 ## Panels
 
 I've configured XMonad to work with three different panels.
@@ -37,18 +52,3 @@ The current panel can be easily changed by changing the `myBar` variable in [app
 
   Truly the XMonad of status bars, in that it is really a library to build your own.
   However, it has very little documentation.
-
-## Keybindings
-
-One of the most unique features of this config is the keybinding cheatsheet that can be
-brought up at any time with `Super+?`, inspired by AwesomeWM.
-This is achieved with
-[XMonad.Util.NamedActions](https://www.stackage.org/haddock/lts-18.5/xmonad-contrib-0.16/XMonad-Util-NamedActions.html)
-and displayed using `dzen2` and
-[a shell script with lots of regex](/.scripts/dzen2-display-cheatsheet).
-
-In [src/modifiers.sh](./src/modifiers.sh) I also bind `Caps Lock` to `Hyper`
-and `Space`, when held down, to an additional `Super` (Windows) key.
-The goal of this is to enable more ergonomic keybindings.
-Eventually I will include a list of keybindings in this README,
-but until then refer to the screenshot at the top of this page.
