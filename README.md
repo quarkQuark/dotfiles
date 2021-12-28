@@ -17,7 +17,7 @@ The two most important programs I use are the window manager and text editor.
   XMonad is really more of a library for configuring your own window manager
   using the Haskell programming language.
   Further information, and my XMonad configuration, can be found
-  [here](.config/xmonad/README.md).
+  [here](.config/xmonad).
 
 * I used to use **Neovim** as my text editor (config [here](.config/nvim)),
   which is based on Vim and treats keyboard shortcuts almost as their own language.
@@ -26,6 +26,9 @@ The two most important programs I use are the window manager and text editor.
   One particular benefit is the incredible **Org Mode** which, amongst many other things,
   allows me to automatically export a literate version of my config to
   [this webpage](https://quarkQuark.github.io/literate-config/emacs).
+
+I have also made some shell scripts to automate some common tasks, which can be found
+[here](.scripts).
 
 ## Setup on fresh Arch Linux install
 
