@@ -22,8 +22,14 @@ Here is a small collection of shell scripts which I have written to automate som
 
 Many of these scripts are based around menus. I can hit a certain key combination to run a script, which gives me a menu and an action based on the option I select. The program used to display the menu depends on an argument. I usually use =rofi=, and therefore pass =rofi -dmenu -i -p= as the argument.
 
-- =menu-change-colourscheme=: selects and applies a systemwide (alacritty and neovim) colourscheme using the =colourscheme= script.
-- =menu-edit-config=: opens the selected config file in a text editor specified by the second argument.
+- =menu-change-colourscheme=
+
+  Selects and applies a systemwide (currently only alacritty and neovim) colourscheme using the =colourscheme= script.
+
+- =menu-edit-config=
+
+  Opens the selected config file in a text editor specified by the second argument.
+
 - =menu-edit-script=
 
   Displays a list of all files in my =.scripts= directory. The selected file is opened in the text editor specified by the second argument.
