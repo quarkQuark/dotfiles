@@ -2,14 +2,13 @@ Config { position = Top
        , font     = "xft:Source Code Pro:size=12:bold:antialias=true"
        , fgColor = "#ffffff"
        , bgColor = "#000000"
-       , alpha = 50  -- 0 transparent, 255 opaque
+       , alpha = 70  -- 0 transparent, 255 opaque
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% } %time% { %date% | %coretemp% | %battery%            "
-
+       , template = " %StdinReader% } %time% { %music% | %battery%            "
        , commands = [ Run StdinReader
                     , Run Date "%_I:%M" "time" 300 -- every 30s
-                    , Run Date "%A %_d %B" "date" 18000 -- every 30min
+                    --, Run Date "%A %_d %B" "date" 18000 -- every 30min
                     -- CPU core temperature
                     , Run CoreTemp [ "--template" , "<core0>/<core1>°C"
                                    , "--Low"      , "70"
@@ -28,7 +27,8 @@ Config { position = Top
                                    , "--"
                                    , "-o" , "<left>% (<timeleft> left)"      -- discharging
                                    , "-O" , "<fc=#DDDD00>+<left>%+</fc>" -- charging
-                                   , "-i" , "<fc=#008800>Full</fc>"  -- fully charged
+                                   , "-i" , "<fc=#00FF00></fc>"  -- fully charged
                                    ] 50 -- every 5s
+                    , Run Com "/bin/sh" ["-c","~/.scripts/get-spotify"] "music" 1000
                     ]
        }
