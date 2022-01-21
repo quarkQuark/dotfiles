@@ -345,7 +345,7 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
 
   (use-package visual-fill-column
     :custom
-    (visual-fill-column-width 100)
+    (visual-fill-column-width 110)
     (visual-fill-column-center-text t)
     (visual-fill-column-enable-sensible-window-split t)
     :hook (text-mode . visual-fill-column-mode)
