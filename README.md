@@ -36,7 +36,7 @@ I have also made some shell scripts to automate some common tasks, which can be 
 1.  Dependencies
 
     * Required: `nerd-fonts-ubuntu-mono` from the Arch User Repository (AUR)
-    * Optional: `exa neofetch nvim`
+    * Optional: `exa neofetch neovim`
 
 2.  Clone this repository
 
