@@ -31,7 +31,7 @@ xcape -e "Super_L=space" # Space works normally when tapped
 
 [ $side = "0" ] \
     && xrandr \
-        --output eDP-1 --primary \
+        --output eDP1 --primary \
           --mode 1920x1080 --scale 1x1 \
     && nitrogen --restore && xmonad --restart \
     && exit
@@ -57,9 +57,9 @@ esac
 
 # Monitor on right
 xrandr \
-    --output HDMI-1 --primary \
+    --output HDMI1 --primary \
       --mode 1920x1080 --pos $pos0 \
-    --output eDP-1 \
+    --output eDP1 \
       --mode 960x540 --pos $pos1 --scale 1x1 \
     && nitrogen --restore && xmonad --restart
 #xrandr \
