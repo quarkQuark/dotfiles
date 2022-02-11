@@ -46,7 +46,7 @@ myKeys conf = let
         $ "xbacklight " ++ perc ++ " && notify-send \"Brightness `xbacklight -get`%\""
 
     nsTerminal  = namedScratchpadAction myScratchpads "terminal"
-    nsMusic     = namedScratchpadAction myScratchpads "music"
+    --nsMusic     = namedScratchpadAction myScratchpads "music"
 
     in
 
@@ -74,7 +74,7 @@ myKeys conf = let
         | (key,i) <- zip [1..9] (XMonad.workspaces conf)
     ] ^++^
     [ ("M--",                     addName "Terminal scratchpad"    $ nsTerminal)
-    , ("M-=",                     addName "Music scratchpad"       $ nsMusic)
+    --, ("M-=",                     addName "Music scratchpad"       $ nsMusic)
     ]) ^++^
 
     subKeys "Layouts"
