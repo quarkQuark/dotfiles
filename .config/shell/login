@@ -13,6 +13,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 # Config locations
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export GOPATH="$XDG_CONFIG_HOME/go"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
@@ -41,3 +42,5 @@ export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 export GPG_AGENT_INFO=""
 export GPG_TTY=$(tty)
+export LESS='-R --use-color -Dd+r$Du+b'
+export MANPAGER='less -R --use-color -Dd+r -Du+b'

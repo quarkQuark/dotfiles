@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Warn before overwriting with > operator
+set -o noclobber
+
 # Verbosity and interactivity (prompts) for common commands
 alias \
     cp='cp -iv' \
@@ -18,19 +21,22 @@ alias \
     ll='ls -lA --color=auto --group-directories-first --human-readable'
 command -v exa >/dev/null \
     && alias \
-        ls='exa     --group-directories-first' \
-        la='exa -a  --group-directories-first' \
-        ll='exa -la --group-directories-first --grid --git' \
-        lt='exa -Ta --group-directories-first --level 2' \
-        ltt='exa -Ta --group-directories-first --level 3' \
+        ls='exa       --group-directories-first' \
+        la='exa   -a  --group-directories-first' \
+        ll='exa   -la --group-directories-first --grid --git' \
+        lt='exa   -Ta --group-directories-first --level 2' \
+        ltt='exa  -Ta --group-directories-first --level 3' \
         lttt='exa -Ta --group-directories-first --level 4' \
-        lT='exa -Ta --group-directories-first' \
+        lT='exa   -Ta --group-directories-first' \
     || echo "exa not found"
         
-# Grep
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+# Colours
+alias \
+    grep='grep   --color=auto' \
+    fgrep='fgrep --color=auto' \
+    egrep='egrep --color=auto'
+alias diff='diff --color=auto'
+alias ip='ip     --color=auto'
 
 # Set up dotfiles syncing
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
@@ -46,7 +52,3 @@ command -v nvim >/dev/null \
     && alias vim='nvim' vimdiff="nvim -d" \
     && export EDITOR='nvim' VISUAL="nvim" MANPAGER="nvim +Man!" \
     || echo "nvim not found"
-
-command -v exa >/dev/null \
-    export EDITOR="nvim" \
-    export

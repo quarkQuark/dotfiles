@@ -1,3 +1,4 @@
-#!/bin/sh
+# See https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html
 
-[[ -f ~/.config/shell/envrc ]] && source ~/.config/shell/envrc
+. ~/.config/sh/env
+. ~/.config/sh/login
