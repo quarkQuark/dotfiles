@@ -1,3 +1,8 @@
+# From https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html
+
+# Functions to safely manipulate $PATH
+# PATH=$PATH:foo can also include the current directory
+#
 # Usage: indirect_expand PATH -> $PATH
 indirect_expand () {
     env |sed -n "s/^$1=//p"

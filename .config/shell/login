@@ -1,9 +1,16 @@
 #!/bin/sh
 
-export PATH=$PATH:~/.local/bin:~/.scripts
+# PATH
+# Uses env_functions to make sure the current directory is never in PATH
+pathprepend ~/.local/bin PATH
+pathprepend ~/.scripts   PATH
+pathremove  .  PATH
+pathremove  "" PATH
 
 # Default programs
 export BROWSER="qutebrowser"
+export EDITOR="nvim"
+export VISUAL=$EDITOR
 export READER="zathura"
 
 # XDG standard directories
