@@ -7,4 +7,4 @@ export BASH_ENV=~/.config/bash/env
 
 . ~/.config/shell/env_functions
 
-source ~/.config/shell/env_local
+#source ~/.config/shell/env_local
