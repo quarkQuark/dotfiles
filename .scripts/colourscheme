@@ -3,7 +3,7 @@
 colourscheme=$1
 
 alacritty_base=~/.config/alacritty/base.yml
-alacritty_colours=~/.config/alacritty/${colourscheme}.yml
+alacritty_colours=~/.config/alacritty/themes/${colourscheme}.yml
 alacritty_config=~/.config/alacritty/alacritty.yml
 
 colour_list="dracula
