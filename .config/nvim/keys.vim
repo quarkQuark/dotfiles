@@ -7,6 +7,11 @@ inoremap jk <esc>
 nnoremap j gj
 nnoremap k gk
 
+" Swap lines (like org-mode)
+" Uses a different register to keep previous clipboard entry
+nnoremap <silent><M-j> :let save_a=@a<CR>"add"ap:let @a=save_a<CR>
+nnoremap <silent><M-k> :let save_a=@a<CR><Up>"add"ap<Up>:let @a=save_a<CR>
+
 " Matches behaviour of C and D (by default, Y is yy)
 nnoremap Y y$
 
