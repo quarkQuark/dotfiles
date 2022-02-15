@@ -4,7 +4,6 @@ live_config_reload: true
 
 window:
   opacity: 0.9
-  decorations: none  # defaukt: full
   padding:
     x: 3
     y: 3
