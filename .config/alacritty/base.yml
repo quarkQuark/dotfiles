@@ -38,12 +38,6 @@ mouse:
   triple_click: { threshold: 300 }
   hide_when_typing: true
 
-  url:
-    launcher:
-      program: qutebrowser
-      args: []
-    modifiers: None  # Require modifier for clicking to open URLs
-
 hints:
   enabled:
     - regex: "(ipfs:|ipns:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
