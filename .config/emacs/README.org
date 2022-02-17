@@ -35,7 +35,8 @@ Most of the rest of the configuration depends on Emacs' vast array of extensions
   (setq package-archives
         '(("melpa"        . "https://melpa.org/packages/")
           ("melpa-stable" . "https://stable.melpa.org/packages/")
-          ("org"          . "https://orgmode.org/elpa/")
+          ;; Deprecated for Org 9.6
+          ;;("org"          . "https://orgmode.org/elpa/")
           ("elpa"         . "https://elpa.gnu.org/packages/")))
 
   (package-initialize)
