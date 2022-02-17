@@ -40,7 +40,8 @@ Most of the rest of the configuration depends on Emacs' vast array of extensions
           ("elpa"         . "https://elpa.gnu.org/packages/")))
 
   (package-initialize)
-  (unless package-archive-contents package-refresh-contents)
+  (unless package-archive-contents
+    (package-refresh-contents))
 
 #+end_src
 
