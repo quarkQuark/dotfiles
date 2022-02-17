@@ -48,7 +48,8 @@ I have also made some shell scripts to automate some common tasks, which can be 
     dotfiles config --local status.showUntrackedFiles no
     ```
 
-3.  Follow the README instructions to install [Vim-plug](https://github.com/junegunn/vim-plug).
+3.  Install `go` and `python-pynvim`,
+    then install [Vim-plug](https://github.com/junegunn/vim-plug) following the README instructions.
     My configuration also needs the packages `nnn`, `fzy` and `ripgrep`
 
 4.  Xmonad is built via `stack-static` from the AUR.
