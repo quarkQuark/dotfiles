@@ -63,6 +63,21 @@ I have also made some shell scripts to automate some common tasks, which can be 
     stack install status-notifier-item  # For taffybar's system tray
     ```
 
+    Then create the file `/usr/share/xsessions/xmonad.desktop` with the following contents:
+
+    ```desktop
+    [Desktop Entry]
+    Encoding=UTF-8
+    Type=Application
+    Name=XMonad
+    Comment=Lightweight X11 tiling window manager written in Haskell
+    Exec=xmonad
+    Icon=xmonad
+    Terminal=false
+    StartupNotify=false
+    Categories=Application
+    ```
+
 5. My XMonad configuration also depends on the following packages:
 
     * System:           `network-manager nitrogen xorg-xrandr xorg-xmodmap aur/picom-ibhagwan-git`
