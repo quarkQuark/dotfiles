@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Set correct cursor
+xsetroot -cursor_name left_ptr
+
 # On which side of the primary display is the laptop?
 side="${1:-r}"
 
@@ -29,10 +32,21 @@ xmodmap -e "keycode any = space"
 # Tapping space works properly
 xcape -e "Super_L=space" # Space works normally when tapped
 
+# Different names on different laptops
+screen0="eDP-1"
+screen1="HDMI-1"
+ratio="1920x1200"
+ratiosmall="960x600"
+xrandr | grep -q "eDP-1" \
+    || screen0="eDP1" \
+    || screen1="HDMI1" \
+    || ratio="1920x1080" \
+    || ratiosmall="960x540"
+
 [ $side = "0" ] \
     && xrandr \
-        --output eDP1 --primary \
-          --mode 1920x1080 --scale 1x1 \
+        --output $screen0 --primary \
+          --mode $ratio --scale 1x1 \
     && nitrogen --restore && xmonad --restart \
     && exit
 
@@ -57,10 +71,10 @@ esac
 
 # Monitor on right
 xrandr \
-    --output HDMI1 --primary \
+    --output $screen1 --primary \
       --mode 1920x1080 --pos $pos0 \
-    --output eDP1 \
-      --mode 960x540 --pos $pos1 --scale 1x1 \
+    --output $screen0 \
+      --mode $ratiosmall --pos $pos1 --scale 1x1 \
     && nitrogen --restore && xmonad --restart
 #xrandr \
 #    --output HDMI1 --primary \
