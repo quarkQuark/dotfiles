@@ -694,34 +694,38 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+begin_src emacs-lisp
 
-    (defvar quark/org-latex-classes-list
-          '("my-notes"
-            "uonmathreport-colour")
-          "List of custom LaTeX classes")
+  (defvar quark/org-latex-classes-list
+        '("my-notes"
+          "uonmathreport-colour"
+          "uonmathreport22")
+        "List of custom LaTeX classes")
 
-    ;; Further subheadings become lists.
-    (defvar quark/org-latex-classes-sectioning
-          '(("\\section{%s}" . "\\section*{%s}")
-            ("\\subsection{%s}" . "\\subsection*{%s}")
-            ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-          "Commands for exporting org-mode headings to LaTeX.")
+  ;; Further subheadings become lists.
+  (defvar quark/org-latex-classes-sectioning
+        '(("\\section{%s}" . "\\section*{%s}")
+          ("\\subsection{%s}" . "\\subsection*{%s}")
+          ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+        "Commands for exporting org-mode headings to LaTeX.")
 
-    (defun quark/org-latex-classes-add-to-list ()
-      "Enable custom LaTeX classes for org-mode LaTeX export"
-      (dolist (class quark/org-latex-classes-list)
-        (let ((documentclass (format "\\documentclass{%s}" class)))
-          (add-to-list 'org-latex-classes
-                       (cons class (cons documentclass
-                                         quark/org-latex-classes-sectioning)))))
-      (add-to-list 'org-latex-classes
-                   (append '("article-12pt" "\\documentclass[a4paper,12pt]{article}")
-                           quark/org-latex-classes-sectioning)))
+  (defun quark/org-latex-classes-add-to-list ()
+    "Enable custom LaTeX classes for org-mode LaTeX export"
+    (dolist (class quark/org-latex-classes-list)
+      (let ((documentclass (format "\\documentclass{%s}" class)))
+        (add-to-list 'org-latex-classes
+                     (cons class (cons documentclass
+                                       quark/org-latex-classes-sectioning)))))
+    (add-to-list 'org-latex-classes
+                 (append '("article-12pt" "\\documentclass[a4paper,12pt]{article}")
+                         quark/org-latex-classes-sectioning)))
 
-    (with-eval-after-load 'ox-latex
-      (setq org-latex-compiler "lualatex")
-      (setq org-latex-pdf-process '("latexmk -%latex -pvc -view=none %f"))
-      (quark/org-latex-classes-add-to-list)
-      (setq org-latex-default-class "my-notes"))
+  (with-eval-after-load 'ox-latex
+    (setq org-latex-compiler "lualatex")
+    (setq org-latex-pdf-process '("latexmk -%latex -pvc -view=none %f"))
+    (quark/org-latex-classes-add-to-list)
+    (setq org-latex-default-class "my-notes")
+    (require 'oc-natbib)
+    (setq org-cite-export-processors '((latex natbib)
+                                       (t basic))))
 
 #+end_src
 
