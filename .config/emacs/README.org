@@ -724,7 +724,7 @@ The following source block contains a copy of the (quite long!) full definition 
     (quark/org-latex-classes-add-to-list)
     (setq org-latex-default-class "my-notes")
     (require 'oc-natbib)
-    (setq org-cite-export-processors '((latex natbib)
+    (setq org-cite-export-processors '((latex natbib "plain" "numeric")
                                        (t basic))))
 
 #+end_src
