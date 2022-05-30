@@ -734,14 +734,24 @@ The following source block contains a copy of the (quite long!) full definition 
                  (append '("article-12pt" "\\documentclass[a4paper,12pt]{article}")
                          quark/org-latex-classes-sectioning)))
 
+  (defun quark/org-latex-filter-ignoreheading (headline backend info)
+    "Do not export headings tagged :ignoreheading:, but keep the contents."
+    (when (and (org-export-derived-backend-p backend 'latex)
+               (string-match "\\`.*ignoreheading.*\n" headline))
+      (replace-match "" nil nil headline)))
+
   (with-eval-after-load 'ox-latex
     (setq org-latex-compiler "lualatex")
     (setq org-latex-pdf-process '("latexmk -%latex -pvc -view=none %f"))
     (quark/org-latex-classes-add-to-list)
     (setq org-latex-default-class "my-notes")
+    (add-to-list 'org-export-filter-headline-functions 'quark/org-latex-filter-ignoreheading)
     (require 'oc-natbib)
-    (setq org-cite-export-processors '((latex natbib "plain" "numeric")
-                                       (t basic))))
+    (require 'oc-biblatex)
+    (setq org-cite-export-processors
+          '((latex biblatex)
+            ;(latex natbib "plain" "numeric")
+            (t basic))))
 
 #+end_src
 
@@ -773,6 +783,7 @@ The following source block contains a copy of the (quite long!) full definition 
              ("thm"  . "theorem")
              ("cor"  . "corollary")
              ("prf"  . "proof")
+             ("com"  . "comment")
              ("eg"   . "eg")))
     (add-to-list 'org-structure-template-alist template))
 
