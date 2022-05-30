@@ -429,6 +429,22 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+end_src
 
+**** Locations
+
+#+begin_src emacs-lisp
+  (setq org-directory "~/Org"
+        org-default-notes-file (concat org-directory "/notes.org"))
+#+end_src
+
+**** Keybindings
+
+#+begin_src emacs-lisp
+  (general-def :prefix "C-c"
+    "l" 'org-store-link
+    "a" 'org-agenda
+    "c" 'org-capture)
+#+end_src
+
 *** Aesthetics
 
 #+begin_src emacs-lisp
@@ -764,6 +780,25 @@ The following source block contains a copy of the (quite long!) full definition 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
   (push '("latex" . latex) org-src-lang-modes)
 
+#+end_src
+
+*** Capture templates
+
+#+begin_src emacs-lisp
+  (use-package org-cliplink)
+  (add-hook 'org-capture-mode-hook 'evil-insert-state)
+
+  (setq quark/org-capture-bookmark
+        '("b" "Bookmark"
+          entry
+          (file+headline "bookmarks.org" "Inbox")
+          "** %(org-cliplink-capture)%?
+  :PROPERTIES:
+  :CAPTURED: %U
+  :END:"
+          :unnarrowed t))
+
+  (setq org-capture-templates `(,quark/org-capture-bookmark))
 #+end_src
 
 ** LaTeΧ
