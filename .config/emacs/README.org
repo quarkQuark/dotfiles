@@ -1,5 +1,5 @@
 #+TITLE: Emacs configuration
-#+PROPERTY: header-args: emacs-lisp :tangle ./init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 #+STARTUP: overview
 
 The best place to read this file is at https://quarkQuark.github.io/literate-config/emacs. The org-mode source is stored at https://github.com/quarkQuark/dotfiles/tree/master/.config/emacs.
@@ -25,7 +25,80 @@ Make sure to also download the fonts [[https://github.com/tonsky/FiraCode][Fira 
 
 When Emacs is launched for the first time, it will spend some time downloading and installing various packages.
 
-* Package Management
+* Set-up
+** Early Init
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle ./early-init.el
+:END:
+
+Avoid garbage collection at startup (the threshold must be raised back to a reasonable level afterwards).
+
+#+begin_src emacs-lisp
+
+  (setq gc-cons-threshold most-positive-fixnum
+        gc-cons-percentage 0.6)
+
+#+end_src
+
+Set XDG directory locations
+
+#+begin_src emacs-lisp
+
+  ;; Macro to give fallback if no environment variables.
+  ;; From http://technical-hobbyist.blogspot.com/2014/01/xdg-directories-for-emacs.html
+
+  (defvar user-emacs-config-directory nil
+    "Directory containing emacs user configuration files.")
+  (defvar user-emacs-data-directory nil
+    "Directory containing emacs user data and lisp files. This also sets \\[user-emacs-directory].")
+  (defvar user-emacs-cache-directory nil
+    "Directory containing emacs cache files which can be deleted without loss of information.")
+
+  (require 'cl-lib)
+  (cl-macrolet ((setq-if-null (variable value)
+                           `(if (null ,variable)
+                                (setf ,variable ,value)))
+             (getdir (variable fallback)
+                     `(expand-file-name "emacs/" (or (getenv ,variable) ,fallback))))
+    (setq-if-null user-emacs-config-directory (getdir "XDG_CONFIG_HOME" "~/.config/"))
+    (setq-if-null user-emacs-data-directory (getdir "XDG_DATA_HOME" "~/.local/share/"))
+    (setq-if-null user-emacs-cache-directory (getdir "XDG_CACHE_HOME" "~/.cache/")))
+
+  (setf user-emacs-directory user-emacs-data-directory)
+  (setq package-user-dir (expand-file-name "packages" user-emacs-data-directory))
+
+#+end_src
+
+If possible (version >= 29), store native compiltion binaries in XDG location.
+
+#+begin_src emacs-lisp
+
+  (when (fboundp 'startup-redirect-eln-cache)
+    (startup-redirect-eln-cache
+     (convert-standard-filename
+      (expand-file-name  "var/eln-cache/" user-emacs-directory))))
+
+#+end_src
+
+Stop unwanted UI elements from loading
+
+#+begin_src emacs-lisp
+
+  (setq-default frame-inhibit-implied-resize t
+                ;inhibit-startup-screen t
+                initial-scratch-message nil)
+
+  ;; See https://github.com/mclear-tools/dotemacs/blob/master/early-init.el
+  (push '(tool-bar-lines . 0)   default-frame-alist)
+  (push '(vertical-scroll-bars) default-frame-alist)
+  ;(push '(undecorated . t)      default-frame-alist)
+  (customize-set-variable 'tool-bar-mode nil)
+  (customize-set-variable 'scroll-bar-mode nil)
+  (defun display-startup-echo-area-message () (message ""))
+
+#+end_src
+
+** Package Management
 
 Most of the rest of the configuration depends on Emacs' vast array of extensions. Therefore the first thing that must be configured is the package manager. Emacs' default package manager is simply called =package=. Even though it is built-in, we still have to do a little work to initialise it!
 
@@ -55,6 +128,7 @@ Package management can be made much more convenient with [[https://github.com/jw
 
   ;; ... and enable it.
   (require 'use-package)
+  (setq use-package-verbose t)
 
 #+end_src
 
@@ -78,6 +152,7 @@ By default, =use-package= only loads packages which already exist on the system.
           custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 #+end_src
+
 * User Interface
 
 #+begin_src emacs-lisp
@@ -230,6 +305,7 @@ Liked light themes:
     :config (ivy-mode))
 
   (use-package ivy-rich
+    :after ivy
     :init (ivy-rich-mode))
 
   (use-package counsel
@@ -287,7 +363,8 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
     :custom (lsp-keymap-prefix "C-c l")
     :config (lsp-enable-which-key-integration t))
 
-  (use-package lsp-ui)
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode))
 
   (use-package company
     :hook (lsp-mode . company-mode)
@@ -307,19 +384,19 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
 #+end_src
 
-=Origami= enables code-folding.
+=Origami= enables code-folding. This package is currently disabled as it throws a warning for using the deprecated =cl=.
 
 #+begin_src emacs-lisp
 
-  (use-package origami
-    :hook
-    (prog-mode . origami-mode)
-    ;(css-mode  . origami-close-all-nodes)
-    :general
-    (:keymaps 'evil-normal-state-map
-              "TAB" 'origami-recursively-toggle-node)
-    :config
-    (add-to-list 'origami-parser-alist '(css-mode . origami-c-style-parser)))
+  ;(use-package origami
+    ;:hook
+    ;(prog-mode . origami-mode)
+    ;;(css-mode  . origami-close-all-nodes)
+    ;:general
+    ;(:keymaps 'evil-normal-state-map
+              ;"TAB" 'origami-recursively-toggle-node)
+    ;:config
+    ;(add-to-list 'origami-parser-alist '(css-mode . origami-c-style-parser)))
 
 #+end_src
 
@@ -425,6 +502,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     (setq evil-auto-indent nil))
 
   (use-package org
+    :commands (org-capture org-agenda)
     :hook (org-mode . quark/org-mode-setup)
     :custom
     ;(org-ellipsis " ▾")
@@ -771,39 +849,40 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+begin_src emacs-lisp
 
-  ;; List of languages org-babel can evaluate.
-  (org-babel-do-load-languages
-    'org-babel-load-languages
-    '((emacs-lisp . t)
-      (python . t)
-      (latex . t)))
+  (with-eval-after-load 'org
 
-  (setq org-confirm-babel-evaluate nil)
+    ;; List of languages org-babel can evaluate.
+    (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (python . t)
+        (latex . t)))
 
-  ;; Enable structure templates.
-  (require 'org-tempo)
+    (setq org-confirm-babel-evaluate nil)
 
-  (dolist (template
-           '(("el"   . "src emacs-lisp")
-             ("sh"   . "src shell")
-             ("py"   . "src python")
-             ("hs"   . "src haskell")
-             ("css"  . "src css")
-             ("html" . "export html")
-             ("def"  . "definition")
-             ("rem"  . "remark")
-             ("lem"  . "lemma")
-             ("thm"  . "theorem")
-             ("cor"  . "corollary")
-             ("prf"  . "proof")
-             ("com"  . "comment")
-             ("eg"   . "eg")))
-    (add-to-list 'org-structure-template-alist template))
+    ;; Enable structure templates.
+    (require 'org-tempo)
 
-  ;; Recognise extra languages
-  (push '("conf-unix" . conf-unix) org-src-lang-modes)
-  (push '("latex" . latex) org-src-lang-modes)
+    (dolist (template
+             '(("el"   . "src emacs-lisp")
+               ("sh"   . "src shell")
+               ("py"   . "src python")
+               ("hs"   . "src haskell")
+               ("css"  . "src css")
+               ("html" . "export html")
+               ("def"  . "definition")
+               ("rem"  . "remark")
+               ("lem"  . "lemma")
+               ("thm"  . "theorem")
+               ("cor"  . "corollary")
+               ("prf"  . "proof")
+               ("com"  . "comment")
+               ("eg"   . "eg")))
+      (add-to-list 'org-structure-template-alist template))
 
+    ;; Recognise extra languages
+    (push '("conf-unix" . conf-unix) org-src-lang-modes)
+    (push '("latex" . latex) org-src-lang-modes))
 #+end_src
 
 *** Capture templates
@@ -841,7 +920,9 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+begin_src emacs-lisp
 
-  (use-package magit)
+  (use-package magit
+    :commands (magit-status quark/dotfiles-magit-status))
+
   (use-package git-gutter
     :init (global-git-gutter-mode))
 
@@ -893,6 +974,7 @@ I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git
 
   ;; Stop dired from making a new buffer for each directory.
   (use-package dired-single
+    :after dired
     :config
     (evil-collection-define-key 'normal 'dired-mode-map
       "h" 'dired-single-up-directory
@@ -950,6 +1032,30 @@ I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git
     ([remap describe-key] . helpful-key))
 
   ;; Manage .pacnew and .pacsave files on Arch Linux.
-  (use-package pacfiles-mode)
+  (use-package pacfiles-mode
+    :commands pacfiles-start)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+  (defun quark/display-startup-time ()
+    (message "Emacs loaded in %s with %d garbage collections."
+             (format "%.2f seconds"
+                     (float-time
+                      (time-subtract after-init-time before-init-time)))
+             gcs-done))
+  (add-hook 'emacs-startup-hook #'quark/display-startup-time)
+
+#+end_src
+
+Must return garbage collection back to a reasonable value after startup to prevent stuttering. The package =gcmh= also reduced garbage collection when not idling.
+
+#+begin_src emacs-lisp
+
+  (setq gc-cons-threshold 2000000
+        gc-cons-percentage 0.1)
+  (use-package gcmh
+    :config (gcmh-mode 1))
 
 #+end_src
