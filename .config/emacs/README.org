@@ -1,5 +1,5 @@
 #+TITLE: Emacs configuration
-#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+PROPERTY: header-args: emacs-lisp :tangle ./init.el :mkdirp yes
 #+STARTUP: overview
 
 The best place to read this file is at https://quarkQuark.github.io/literate-config/emacs. The org-mode source is stored at https://github.com/quarkQuark/dotfiles/tree/master/.config/emacs.
@@ -66,6 +66,18 @@ By default, =use-package= only loads packages which already exist on the system.
 
 #+end_src
 
+** No-littering.el
+
+#+begin_src emacs-lisp
+
+  (use-package no-littering)
+
+  (let ((autosave-dir (no-littering-expand-var-file-name "auto-save/")))
+    (make-directory autosave-dir t)
+    (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
+          custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+#+end_src
 * User Interface
 
 #+begin_src emacs-lisp
