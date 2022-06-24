@@ -31,7 +31,7 @@ When Emacs is launched for the first time, it will spend some time downloading a
 :header-args:emacs-lisp: :tangle ./early-init.el
 :END:
 
-Avoid garbage collection at startup (the threshold must be raised back to a reasonable level afterwards).
+Avoid garbage collection at startup (the threshold must be raised back to a reasonable level afterwards). When I implemented this, the number of garbage collections on startup went down from 39 to 2 and the startup time went down from 1.4 to 0.83 seconds.
 
 #+begin_src emacs-lisp
 
@@ -302,6 +302,8 @@ Liked light themes:
      :map ivy-reverse-i-search-map
      ("C-k" . ivy-previous-line)
      ("C-d" . ivy-reverse-i-search-kill))
+    :custom
+    (ivy-extra-directories nil)
     :config (ivy-mode))
 
   (use-package ivy-rich
