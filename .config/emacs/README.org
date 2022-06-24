@@ -311,6 +311,9 @@ Liked light themes:
     :init (ivy-rich-mode))
 
   (use-package counsel
+    :custom
+    ;; Don't show hidden files unless matched
+    (counsel-find-file-ignore-regexp "\\`\\.")
     :config (counsel-mode))
 
 #+end_src
