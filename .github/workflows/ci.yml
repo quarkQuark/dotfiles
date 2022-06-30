@@ -18,7 +18,7 @@ jobs:
       - name: Export literate configuration to HTML
         run: cd .github/scripts && sh export-dotfiles-org-to-html
       - name: Push to destination repository
-        uses: cpina/github-action-push-to-another-repository@cp_instead_of_deleting
+        uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
