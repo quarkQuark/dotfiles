@@ -936,8 +936,9 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+begin_src emacs-lisp
 
-  (use-package magit
-    :commands (magit-status quark/dotfiles-magit-status))
+  (use-package magit)
+    ;; Doesn't seem to work when deferred
+    ;:commands (magit-status quark/magit-status quark/dotfiles-magit-status))
 
   (use-package git-gutter
     :init (global-git-gutter-mode))
