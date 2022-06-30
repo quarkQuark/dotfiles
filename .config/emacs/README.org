@@ -365,11 +365,14 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
-    :custom (lsp-keymap-prefix "C-c l")
-    :config (lsp-enable-which-key-integration t))
+    :custom (lsp-keymap-prefix "C-l"))
+    ;:config (lsp-enable-which-key-integration t) ; Variable seems to not exist
 
   (use-package lsp-ui
-    :hook (lsp-mode . lsp-ui-mode))
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom
+    (lsp-ui-doc-show-with-cursor t)
+    (lsp-ui-doc-show-with-mouse nil))
 
   (use-package company
     :hook (lsp-mode . company-mode)
@@ -418,10 +421,18 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
 ** Haskell
 
-Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to install =haskell-language-server-bin= from the Arch User Repository instead of =haskell-language-server= from the official repositories. The Arch official repositories use dynamic linking for Haskell packages, which leads to many messy dependency problems when installing or upgrading any Haskell package.
+Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to install =aur/haskell-language-server-static= from instead of =community/haskell-language-server=. The Arch official repositories use dynamic linking for Haskell packages, which leads to many messy dependency problems when installing or upgrading any Haskell package.
 
 #+begin_src emacs-lisp
 
+  (use-package yaml-mode)
+  (use-package haskell-mode
+    :config
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+    :custom
+    (haskell-process-show-debug-tips nil)
+    (haskell-process-log t)
+    (haskell-svg-render-images t))
   (use-package lsp-haskell
     :hook (haskell-mode . lsp-deferred))
 
