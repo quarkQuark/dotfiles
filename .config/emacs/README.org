@@ -224,6 +224,12 @@ Liked light themes:
   (set-face-attribute 'fixed-pitch    nil :font "Fira Code Retina" :height 101)
   (set-face-attribute 'variable-pitch nil :font "ETBembo"          :height 120)
 
+  ;; Contrast with font-lock-comment-face, which is base4 on
+  (set-face-attribute 'font-lock-doc-face nil :inherit 'font-lock-comment-face
+                      :background (doom-color 'bg-alt)
+                      :foreground (doom-darken (doom-color 'base4) 0.3)
+                      :extend t)
+
 #+end_src
 
 * Keybindings and Evil Mode
