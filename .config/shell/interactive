@@ -14,6 +14,9 @@ alias \
 # Common commands
 alias za='zathura'
 
+# Should be able to write a function which returns the newest version in the folder
+alias hoogle="hoogle --colour=true --database=.local/share/hoogle/default-haskell-5.0.18.hoo"
+
 # ls and exa
 alias \
     ls='ls     --color=auto --group-directories-first' \
