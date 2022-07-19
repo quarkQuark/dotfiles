@@ -1,0 +1,97 @@
+* My Configuration
+
+These are my dotfiles, which are text-based configuration files for most of the programs I use on Linux. The two most important programs I use are the window manager and text editor.
+
+- The window manager controls the bulk of the desktop experience by deciding where applications appear on the screen. I prefer to use tiling window managers, as they allow me to control almost everything through keyboard shortcuts.
+
+  I have dabbled in a few, but my current daily driver --- and hence the only one whose configuration files are in any sort of working order --- is *XMonad*. XMonad is really more of a library for configuring your own window manager using the Haskell programming language. Further information, and my XMonad configuration, can be found [[file:.config/xmonad][here]].
+
+- I used to use *Neovim* as my text editor (config [[file:.config/nvim][here]]), which is based on Vim and treats keyboard shortcuts almost as their own language. More recently, I have switched to Emacs. *Emacs* is much, much more extensible than Vim, and readily emulates Vim keybindings. One particular benefit is the incredible *Org Mode* which, amongst many other things, allows me to automatically export a literate version of my config to [[https://quarkQuark.github.io/literate-config/emacs][this webpage]] with the help of GitHub actions.
+
+I have also made some shell scripts to automate some common tasks, which can be found [[file:.scripts][here]].
+
+** Setup on fresh Arch Linux install
+
+1. Dependencies
+
+   - Required :: =nerd-fonts-ubuntu-mono= from the Arch User Repository (AUR)
+   - Optional :: =exa neofetch neovim=
+
+2. Clone this repository
+
+   #+begin_src sh
+   alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+   echo .dotfiles-git >> .gitignore
+   git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dotfiles-git
+   dotfiles checkout
+   dotfiles config --local status.showUntrackedFiles no
+   #+end_src
+
+3. Install =go= and =python-pynvim=, then install [[https://github.com/junegunn/vim-plug][Vim-plug]] following the README instructions. My configuration also needs the packages =nnn=, =fzy= and =ripgrep=
+
+4. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking.
+
+   #+begin_src sh
+   cd ~/.config/xmonad && stack install
+   cd ~/.config/taffybar && stack install
+   stack install xmobar
+   stack install status-notifier-item  # For taffybar's system tray
+   #+end_src
+
+   Then create the file =/usr/share/xsessions/xmonad.desktop= with the following contents:
+
+   #+begin_example conf
+   [Desktop Entry]
+   Encoding=UTF-8
+   Type=Application
+   Name=XMonad
+   Comment=Lightweight X11 tiling window manager written in Haskell
+   Exec=xmonad
+   Icon=xmonad
+   Terminal=false
+   StartupNotify=false
+   Categories=Application
+   #+end_example
+
+5. My XMonad configuration also depends on the following packages:
+
+   - System :: =network-manager nitrogen xorg-xrandr xorg-xmodmap aur/picom-ibhagwan-git=
+   - Default programs :: =alacritty nvim qutebrowser redshift rofi spectacle=
+   - Bar applets :: =network-manager-applet udiskie pasystray=
+   - For xmobar :: =stalonetray xfce4-power-manager=
+   - For taffybar :: =lxqt-power-management=
+   - Other ::
+
+     #+begin_src sh
+     dzen2  # For the keybinding cheatsheet
+     xcape  # For rebinding C-Esc to the Super for extra keyboard shortcuts
+     #+end_src
+
+6. Spotify can be themed and extended using [[https://github.com/spicetify/spicetify-cli][Spicetify]]. I use the [[https://github.com/RandomRuskiy/Themes/tree/master/Tree-Green][Tree-Green]] theme, and extensions can be downloaded from [[https://github.com/3raxton/spicetify-custom-apps-and-extensions][here]]. Spicetify configuration doesn't lend itself well to source control as it hardcodes the version number, but it can be set up quite quickly.
+
+** Initial repositary setup
+
+I store my dotfiles using a *git bare repository*. This allows me to store files from anywhere in my home directory without messing with existing git repositories. After setup, I can interact using ordinary git commands, simply replacing the word =git= with the alias =dotfiles=.
+
+1. Initialise =.dotfiles-git= as a local bare repository
+
+   #+begin_src sh
+   mkdir $HOME/.dotfiles-git
+   git init --bare $HOME/.dotfiles-git
+   alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+   dotfiles config --local status.showUntrackedFiles no
+   #+end_src
+
+2. Add some config files to back up (=.bashrc= used as an example)
+
+   #+begin_src sh
+   git add .bashrc
+   git commit -m "Add .bashrc"
+   #+end_src
+
+3. Create a new GitHub repository called =dotfiles= and push
+
+   #+begin_src sh
+   dotfiles remote add origin git@github.com:quarkQuark/dotfiles.git
+   dotfiles push -u origin master
+   #+end_src
