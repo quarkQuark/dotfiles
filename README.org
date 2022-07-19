@@ -4,7 +4,7 @@ These are my dotfiles, which are text-based configuration files for most of the 
 
 - The window manager controls the bulk of the desktop experience by deciding where applications appear on the screen. I prefer to use tiling window managers, as they allow me to control almost everything through keyboard shortcuts.
 
-  I have dabbled in a few, but my current daily driver --- and hence the only one whose configuration files are in any sort of working order --- is *XMonad*. XMonad is really more of a library for configuring your own window manager using the Haskell programming language. Further information, and my XMonad configuration, can be found [[file:.config/xmonad][here]].
+  I have dabbled in a few, but my current daily driver --- and hence the only one whose configuration files are in any sort of working order --- is *XMonad*. XMonad is really more of a library for configuring your own window manager using the Haskell programming language. Further information, and my XMonad configuration, can be found at https://github.com/quarkQuark/xmonad-quark.
 
 - I used to use *Neovim* as my text editor (config [[file:.config/nvim][here]]), which is based on Vim and treats keyboard shortcuts almost as their own language. More recently, I have switched to Emacs. *Emacs* is much, much more extensible than Vim, and readily emulates Vim keybindings. One particular benefit is the incredible *Org Mode* which, amongst many other things, allows me to automatically export a literate version of my config to [[https://quarkQuark.github.io/literate-config/emacs][this webpage]] with the help of GitHub actions.
 

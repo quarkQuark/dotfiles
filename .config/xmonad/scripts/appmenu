@@ -1,4 +1,0 @@
-#!/usr/bin/sh
-
-theme=$1
-rofi -show drun # -theme ~/.config/rofi/themes/blurry-icons-centre.rasi
