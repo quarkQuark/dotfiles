@@ -1,0 +1,17 @@
+#!/usr/bin/sh
+
+brightness=`echo "100 * \`brightnessctl g\` / \`brightnessctl m\`" | bc`
+
+notify_brightness() {
+    notify-send.py "Brightness ${brightness}%" \
+      --hint string:image-path:video-display \
+             boolean:transient:true \
+             int:has-percentage:$brightness \
+      --replaces-process "brightness-popup"
+}
+
+case $1 in
+    "+") brightnessctl s +${2} && notify_brightness ;;
+    "-") brightnessctl s ${2}- && notify_brightness ;;
+    *) notify-send "Error:" "Invalid argument $1 (expected + or -)" ;;
+esac
