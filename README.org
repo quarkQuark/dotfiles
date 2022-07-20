@@ -26,47 +26,11 @@ These are my dotfiles, which are text-based configuration files for most of the 
    git clone git@github.com:quarkQuark/scripts $HOME/.scripts/repo
    #+end_src
 
-3. Install =go= and =python-pynvim=, then install [[https://github.com/junegunn/vim-plug][Vim-plug]] following the README instructions. My configuration also needs the packages =nnn=, =fzy= and =ripgrep=
+3. To install the plugins for =neovim=, install =go= and =python-pynvim=, then follow the README for [[https://github.com/junegunn/vim-plug][Vim-plug]]. My neovim configuration also needs the packages =nnn=, =fzy= and =ripgrep=
 
-4. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking.
+4. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking. See https://github.com/quarkQuark/xmonad for further instructions.
 
-   #+begin_src sh
-   cd ~/.config/xmonad && stack install
-   cd ~/.config/taffybar && stack install
-   stack install xmobar
-   stack install status-notifier-item  # For taffybar's system tray
-   #+end_src
-
-   Then create the file =/usr/share/xsessions/xmonad.desktop= with the following contents:
-
-   #+begin_example conf
-   [Desktop Entry]
-   Encoding=UTF-8
-   Type=Application
-   Name=XMonad
-   Comment=Lightweight X11 tiling window manager written in Haskell
-   Exec=xmonad
-   Icon=xmonad
-   Terminal=false
-   StartupNotify=false
-   Categories=Application
-   #+end_example
-
-5. My XMonad configuration also depends on the following packages:
-
-   - System :: =network-manager nitrogen xorg-xrandr xorg-xmodmap aur/picom-ibhagwan-git=
-   - Default programs :: =alacritty nvim qutebrowser redshift rofi spectacle=
-   - Bar applets :: =network-manager-applet udiskie pasystray=
-   - For xmobar :: =stalonetray xfce4-power-manager=
-   - For taffybar :: =lxqt-power-management=
-   - Other ::
-
-     #+begin_src sh
-     dzen2  # For the keybinding cheatsheet
-     xcape  # For rebinding C-Esc to the Super for extra keyboard shortcuts
-     #+end_src
-
-6. Spotify can be themed and extended using [[https://github.com/spicetify/spicetify-cli][Spicetify]]. I use the [[https://github.com/RandomRuskiy/Themes/tree/master/Tree-Green][Tree-Green]] theme, and extensions can be downloaded from [[https://github.com/3raxton/spicetify-custom-apps-and-extensions][here]]. Spicetify configuration doesn't lend itself well to source control as it hardcodes the version number, but it can be set up quite quickly.
+5. Spotify can be themed and extended using [[https://github.com/spicetify/spicetify-cli][Spicetify]]. I use the [[https://github.com/RandomRuskiy/Themes/tree/master/Tree-Green][Tree-Green]] theme, and extensions can be downloaded from [[https://github.com/3raxton/spicetify-custom-apps-and-extensions][here]]. Spicetify configuration doesn't lend itself well to source control as it hardcodes the version number, but it can be set up quite quickly.
 
 ** Initial repositary setup
 
