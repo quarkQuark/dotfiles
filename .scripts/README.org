@@ -5,10 +5,9 @@ Here is a small collection of shell scripts which I have written to automate som
 
 * System
 
-- =adjust-volume=
+- =adjust=
 
-  This is called by XMonad whenever I want, but can also be used to control the speakers from the command line.
-  I can use =adjust-volume toggle= to toggle mute, and =adjust-volume +n= or =adjust-volume -n= to increase or decrease the volume by a certain amount =n=.
+  Use =adjust toggle= to toggle mute, and =adjust + n= or =adjust - n= to increase or decrease the volume by a certain amount =n=. Similarly, =adjust brightness + n= and =adjust brightness - n= manages the brightness.
 
 * Menus
 

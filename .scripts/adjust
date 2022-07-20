@@ -1,0 +1,41 @@
+#!/usr/bin/sh
+
+notify() {
+    notify-send.py $1 $2 \
+      --hint boolean:transient:true \
+      --replaces-process "${1}-popup"
+      #--hint string:image-path:video-display \
+             #int:has-percentage:`$2` \
+}
+
+get_brightness() {
+    echo "100 * `brightnessctl g` / `brightnessctl m`" | bc
+}
+
+adjust_brightness() {
+    case $1 in
+        "+") brightnessctl s +${2} && notify Brightness `get_brightness` ;;
+        "-") brightnessctl s ${2}- && notify Brightness `get_brightness` ;;
+        *) notify-send.py "Error:" "Invalid argument $1 (expected + or -)" ;;
+    esac
+}
+
+adjust_volume() {
+    case $1 in
+        "toggle") \
+	    pactl -- set-sink-mute 0 toggle \
+	    && notify "Mute" `pactl -- get-sink-mute 0 | awk '{ print $2 }'` ;;
+        "+" | "-") \
+	    pactl -- set-sink-mute 0 0 \
+	    && pactl -- set-sink-volume 0 $1$2 \
+	    && notify Volume `pactl -- get-sink-volume 0 | awk '{ print $5 }'` ;;
+        *) notify-send.py "Error:" "Invalid argument $1 (expected \"toggle\", \"+\" or \"-\")" ;;
+    esac
+}
+
+case $1 in
+    "brightness") adjust_brightness $2 $3 ;;
+    "volume") adjust_volume $2 $3 ;;
+    *) notify-send.py "Error:" "Invalid argument $1 (expected \"brightness\" or \"volume\")" ;;
+esac
+		     
