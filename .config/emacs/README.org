@@ -913,25 +913,41 @@ The following source block contains a copy of the (quite long!) full definition 
   (use-package org-cliplink)
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
 
+  (setq quark/properties-date-string
+        ":PROPERTIES:\n:CAPTURED: %U\n:END:")
+
   (setq quark/org-capture-bookmark
-        '("b" "Bookmark"
-          entry
-          (file+headline "bookmarks.org" "Inbox")
-          "** %(org-cliplink-capture)%?
-  :PROPERTIES:
-  :CAPTURED: %U
-  :END:"
+        `("b" "Bookmark"
+          entry (file+olp "" "Bookmarks" "Inbox")
+          ,(concat "** %(org-cliplink-capture)%?\n" quark/properties-date-string)
           :unnarrowed t))
 
-  (setq org-capture-templates `(,quark/org-capture-bookmark))
+  (setq quark/org-capture-musician
+        `("m" "Musician to look up"
+          entry (file+olp "" "Musicians" "Inbox")
+          ,(concat "** %?\n" quark/properties-date-string)
+          :unnarrowed t))
+
+  (setq quark/org-capture-general
+        `("g" "General"
+          entry (file+olp "" "General Inbox")
+          ,(concat "** %^{Note} %^g%?\n" quark/properties-date-string)
+          :unnarrowed t))
+
+  (setq org-capture-templates
+        `(,quark/org-capture-bookmark
+          ,quark/org-capture-musician
+          ,quark/org-capture-general))
 #+end_src
+
+#+RESULTS:
+| b | Bookmark | entry | (file+olp  Bookmarks Inbox) | ** %(org-cliplink-capture)%? |
 
 ** LaTeΧ
 
 #+begin_src emacs-lisp
 
-  (use-package tex
-    :ensure auctex)
+  (use-package tex :ensure auctex)
 
   ;; Mostly just to enable system fonts.
   (setq TeX-engine "lualatex")

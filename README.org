@@ -8,8 +8,6 @@ These are my dotfiles, which are text-based configuration files for most of the 
 
 - I used to use *Neovim* as my text editor (config [[file:.config/nvim][here]]), which is based on Vim and treats keyboard shortcuts almost as their own language. More recently, I have switched to Emacs. *Emacs* is much, much more extensible than Vim, and readily emulates Vim keybindings. One particular benefit is the incredible *Org Mode* which, amongst many other things, allows me to automatically export a literate version of my config to [[https://quarkQuark.github.io/literate-config/emacs][this webpage]] with the help of GitHub actions.
 
-I have also made some shell scripts to automate some common tasks, which can be found [[file:.scripts][here]].
-
 ** Setup on fresh Arch Linux install
 
 1. Dependencies
@@ -17,14 +15,15 @@ I have also made some shell scripts to automate some common tasks, which can be 
    - Required :: =nerd-fonts-ubuntu-mono= from the Arch User Repository (AUR)
    - Optional :: =exa neofetch neovim=
 
-2. Clone this repository
+2. Clone this repository as well as my [[https://github.com/quarkQuark/scripts][shell scripts]].
 
    #+begin_src sh
    alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
    echo .dotfiles-git >> .gitignore
-   git clone --bare https://github.com/quarkQuark/dotfiles.git $HOME/.dotfiles-git
+   git clone --bare git@github.com:quarkQuark/dotfiles $HOME/.dotfiles-git
    dotfiles checkout
    dotfiles config --local status.showUntrackedFiles no
+   git clone git@github.com:quarkQuark/scripts $HOME/.scripts/repo
    #+end_src
 
 3. Install =go= and =python-pynvim=, then install [[https://github.com/junegunn/vim-plug][Vim-plug]] following the README instructions. My configuration also needs the packages =nnn=, =fzy= and =ripgrep=
