@@ -1,6 +1,28 @@
 configuration {
-    /*theme: "~/.config/rofi/themes/theme.rasi";*/
-    show-icons: true;
-    icon-theme: "Papirus";
-    matching: "fuzzy";
+/*	modi: "window,run,ssh";*/
+/*	combi-modi: "window,run";*/
+	show-icons: true;
+	icon-theme: "Papirus";
+	matching: "fuzzy";
+        /* Vim keys */
+	kb-remove-char-back: "BackSpace";
+	kb-mode-previous: "Control+h,Shift+Left,Control+ISO_Left_Tab";
+	kb-accept-entry: "Control+m,Return,KP_Enter";
+	kb-row-down: "Control+j,Down,Control+n";
+	kb-mode-next: "Shift+Right,Control+Tab";
+	kb-row-up: "Control+k,Up,Control+p,ISO_Left_Tab";
+	kb-remove-to-eol: "Control+Shift+e";
+	kb-mode-complete: "Control+l";
+  timeout {
+      action: "kb-cancel";
+      delay:  0;
+  }
+  filebrowser {
+      directories-first: true;
+      sorting-method:    "name";
+  }
 }
+
+/*
+@theme "themes/blurry-icons-centre.rasi"
+*/
