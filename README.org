@@ -1,21 +1,14 @@
-* My Configuration
+#+TITLE: Dotfiles
 
-These are my dotfiles, which are text-based configuration files for most of the programs I use on Linux. The two most important programs I use are the window manager and text editor.
+* Programs
 
-- The window manager controls the bulk of the desktop experience by deciding where applications appear on the screen. I prefer to use tiling window managers, as they allow me to control almost everything through keyboard shortcuts.
+Since my emacs configuration is exported from a literate org-mode file, it can be built as a webpage. Therefore the best way to view it is at https://quarkQuark.github.io/literate-config/emacs]. My XMonad configuration is structured as a Haskell project, and has therefore been split into [[https://github.com/quarkQuark/xmonad-quark][a separate repository]]. Similarly, there is also a separate repository containing some of my [[https://github.com/quarkQuark/scripts][shell scripts]].
 
-  I have dabbled in a few, but my current daily driver --- and hence the only one whose configuration files are in any sort of working order --- is *XMonad*. XMonad is really more of a library for configuring your own window manager using the Haskell programming language. Further information, and my XMonad configuration, can be found at https://github.com/quarkQuark/xmonad-quark.
+* Setup with XMonad on a fresh Arch Linux install
 
-- I used to use *Neovim* as my text editor (config [[file:.config/nvim][here]]), which is based on Vim and treats keyboard shortcuts almost as their own language. More recently, I have switched to Emacs. *Emacs* is much, much more extensible than Vim, and readily emulates Vim keybindings. One particular benefit is the incredible *Org Mode* which, amongst many other things, allows me to automatically export a literate version of my config to [[https://quarkQuark.github.io/literate-config/emacs][this webpage]] with the help of GitHub actions.
+1. Install optional CLI dependencies: =exa neofetch neovim=
 
-** Setup on fresh Arch Linux install
-
-1. Dependencies
-
-   - Required :: =nerd-fonts-ubuntu-mono= from the Arch User Repository (AUR)
-   - Optional :: =exa neofetch neovim=
-
-2. Clone this repository as well as my [[https://github.com/quarkQuark/scripts][shell scripts]].
+2. Clone this repository as well as my [[https://github.com/quarkQuark/scripts][shell script repository]].
 
    #+begin_src sh
    alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
@@ -26,15 +19,15 @@ These are my dotfiles, which are text-based configuration files for most of the 
    git clone git@github.com:quarkQuark/scripts $HOME/.scripts/repo
    #+end_src
 
-3. To install the plugins for =neovim=, install =go= and =python-pynvim=, then follow the README for [[https://github.com/junegunn/vim-plug][Vim-plug]]. My neovim configuration also needs the packages =nnn=, =fzy= and =ripgrep=
+3. To install the plugins for =neovim=, install =go= and =python-pynvim= then follow the README for [[https://github.com/junegunn/vim-plug][Vim-plug]]. My neovim configuration also needs the packages =nnn=, =fzy= and =ripgrep=.
 
-4. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking. See https://github.com/quarkQuark/xmonad for further instructions.
+4. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking. See https://github.com/quarkQuark/xmonad for installation instructions.
 
-5. Spotify can be themed and extended using [[https://github.com/spicetify/spicetify-cli][Spicetify]]. I use the [[https://github.com/RandomRuskiy/Themes/tree/master/Tree-Green][Tree-Green]] theme, and extensions can be downloaded from [[https://github.com/3raxton/spicetify-custom-apps-and-extensions][here]]. Spicetify configuration doesn't lend itself well to source control as it hardcodes the version number, but it can be set up quite quickly.
+5. Spotify can be themed and extended using [[https://github.com/spicetify/spicetify-cli][Spicetify]]. I use the [[https://github.com/RandomRuskiy/Themes/tree/master/Tree-Green][Tree-Green]] theme, and extensions can be downloaded from [[https://github.com/3raxton/spicetify-custom-apps-and-extensions][here]]. The Spicetify configuration file doesn't lend itself well to source control as it hardcodes the version number, but it can be set up quite quickly.
 
-** Initial repositary setup
+* Initial repositary setup
 
-I store my dotfiles using a *git bare repository*. This allows me to store files from anywhere in my home directory without messing with existing git repositories. After setup, I can interact using ordinary git commands, simply replacing the word =git= with the alias =dotfiles=.
+I store my dotfiles using a *git bare repository*. This allows me to store files from anywhere in my home directory without messing with existing git repositories. The repository is managed using ordinary git commands, simply replacing the word =git= with the alias =dotfiles=.
 
 1. Initialise =.dotfiles-git= as a local bare repository
 
