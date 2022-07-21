@@ -1,8 +1,10 @@
 #+TITLE: Dotfiles
 
-* Programs
+* Notable programs
 
-Since my emacs configuration is exported from a literate org-mode file, it can be built as a webpage. Therefore the best way to view it is at https://quarkQuark.github.io/literate-config/emacs]. My XMonad configuration is structured as a Haskell project, and has therefore been split into [[https://github.com/quarkQuark/xmonad-quark][a separate repository]]. Similarly, there is also a separate repository containing some of my [[https://github.com/quarkQuark/scripts][shell scripts]].
+Since my emacs configuration is exported from a literate org-mode file, it can be built as a webpage. Therefore the best way to view it is at https://quarkQuark.github.io/literate-config/emacs.
+
+My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a separate repository because it is structured as a Haskell project. Similarly, there is also a separate repository containing some of my [[https://github.com/quarkQuark/scripts][shell scripts]].
 
 * Setup with XMonad on a fresh Arch Linux install
 
