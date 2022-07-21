@@ -2,8 +2,9 @@
 
 # PATH
 # Uses env_functions to make sure the current directory is never in PATH
-pathprepend ~/.local/bin PATH
-pathprepend ~/.scripts   PATH
+pathprepend ~/.local/bin    PATH
+pathprepend ~/.scripts/     PATH
+pathprepend ~/.scripts/repo PATH
 pathremove  .  PATH
 pathremove  "" PATH
 
