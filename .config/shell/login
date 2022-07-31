@@ -27,6 +27,7 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export STACK_ROOT="$XDG_CONFIG_HOME/stack"
 
 # Create gnupg directory if not found (errors otherwise)
 [ ! -d $GNUPGHOME ] && mkdir -m700 $GNUPGHOME
@@ -38,7 +39,6 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export HISTFILE="$XDG_DATA_HOME/bash/history"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
 export SSB_HOME="$XDG_DATA_HOME/zoom"
-export STACK_ROOT="$XDG_DATA_HOME/stack"
 
 # Cache locations
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
@@ -52,6 +52,7 @@ export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
 
 # Program settings
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+export GHCUP_USE_XDG_DIRS=True
 export GPG_AGENT_INFO=""
 export GPG_TTY=$(tty)
 export LESS='-R --use-color -Dd+r$Du+b'
