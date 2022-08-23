@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # PATH
 # Uses env_functions to make sure the current directory is never in PATH

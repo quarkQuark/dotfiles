@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # Set $ENV so that the startup scripts will run correctly if sh is started as a
 # non-login interactive shell under a different login shell
 export ENV=~/.config/sh/interactive

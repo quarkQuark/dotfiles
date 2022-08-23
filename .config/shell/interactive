@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Warn before overwriting with > operator
 set -o noclobber

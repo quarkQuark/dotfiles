@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 . ~/.config/shell/interactive
 
 # Avoid duplicate prompt

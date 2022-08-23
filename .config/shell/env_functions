@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # From https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html
 
 # Functions to safely manipulate $PATH

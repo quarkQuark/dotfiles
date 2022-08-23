@@ -444,19 +444,6 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
 
 #+end_src
 
-** Shell
-
-Recognise zsh config files (starting with =zsh= or =.zsh=) as zsh scripts.
-
-#+begin_src emacs-lisp
-
-  (add-hook 'sh-mode-hook
-            (lambda ()
-              (if (string-match "/\\.?zsh" buffer-file-name)
-                  (sh-set-shell "zsh"))))
-
-#+end_src
-
 * Writing
 
 #+begin_src emacs-lisp
