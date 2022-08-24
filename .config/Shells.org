@@ -28,11 +28,268 @@ generates the following file structure:
   └── .profile                        
 #+end_src
 
-Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information.
+Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information. In particular, I have copied some [[#utility][utility functions]] which are used for setting the PATH variable.
 
 Syntax highlighting of shell source blocks in emacs is broken by noweb references, so I use https://github.com/TobiasZawada/org-src-emph/ to fix it, adding the =:emph= header option.
 
-* Setup
+* Shell-agnostic
+
+** Env
+:PROPERTIES:
+:header-args: :noweb-ref env
+:END:
+
+#+begin_src shell
+
+  # PATH
+  # Uses the utility functions to make sure the current directory is never in PATH
+  pathprepend ~/.local/bin    PATH
+  pathprepend ~/.scripts/     PATH
+  pathprepend ~/.scripts/repo PATH
+  pathremove  .  PATH
+  pathremove  "" PATH
+
+  # Default programs
+  export BROWSER="qutebrowser"
+  export EDITOR="nvim"
+  export VISUAL=$EDITOR
+  export READER="zathura"
+
+  # XDG standard directories
+  export XDG_CONFIG_HOME="$HOME/.config"
+  export XDG_DATA_HOME="$HOME/.local/share"
+  export XDG_CACHE_HOME="$HOME/.cache"
+  export XDG_STATE_HOME="$HOME/.local/state"
+
+  # Config locations
+  export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+  export GOPATH="$XDG_CONFIG_HOME/go"
+  export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+  export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+  export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
+  export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+  export STACK_ROOT="$XDG_CONFIG_HOME/stack"
+
+  # Create gnupg directory if not found (errors otherwise)
+  [ ! -d $GNUPGHOME ] && mkdir -m700 $GNUPGHOME
+
+  # Data locations
+  export GEM_HOME="$XDG_DATA_HOME/gem"
+  export CRAWL_DIR="$XDG_DATA_HOME/crawl/" # DCSS (trailing slash required)
+  export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+  export HISTFILE="$XDG_DATA_HOME/bash/history"
+  export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
+  export SSB_HOME="$XDG_DATA_HOME/zoom"
+
+  # Cache locations
+  export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
+  export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+  export LESSHISTFILE=-
+  export OCTAVE_HISTFILE="$XDG_CACHE_HOME/octave_hist"
+  export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+
+  # Runtime locations (in /run/user/1000)
+  export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
+
+  # Program settings
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+  export GHCUP_USE_XDG_DIRS=True
+  export GPG_AGENT_INFO=""
+  export GPG_TTY=$(tty)
+  export LESS='-R --use-color -Dd+r$Du+b'
+  export MANPAGER='less -R --use-color -Dd+r -Du+b'
+  
+#+end_src
+
+** Login
+:PROPERTIES:
+:header-args: :noweb-ref login
+:END:
+
+** Logout
+:PROPERTIES:
+:header-args: :noweb-ref logout
+:END:
+
+** Interactive
+:PROPERTIES:
+:header-args: :noweb-ref interactive
+:END:
+
+#+begin_src shell
+
+  # Warn before overwriting with > operator
+  set -o noclobber
+
+  # Verbosity and interactivity (prompts) for common commands
+  alias \
+      cp='cp -iv' \
+      mv='mv -iv' \
+      rm='rm -Iv' \
+      mkdir='mkdir -v' \
+      rmdir='rmdir -v'
+
+  # Common commands
+  alias za='zathura'
+
+  # Should be able to write a function which returns the newest version in the folder
+  alias hoogle="hoogle --colour=true --database=.local/share/hoogle/default-haskell-5.0.18.hoo"
+
+  # ls and exa
+  alias \
+      ls='ls     --color=auto --group-directories-first' \
+      la='ls -A  --color=auto --group-directories-first' \
+      ll='ls -lA --color=auto --group-directories-first --human-readable'
+  command -v exa >/dev/null \
+      && alias \
+          ls='exa       --group-directories-first' \
+          la='exa   -a  --group-directories-first' \
+          ll='exa   -la --group-directories-first --grid --git' \
+          lt='exa   -Ta --group-directories-first --level 2' \
+          ltt='exa  -Ta --group-directories-first --level 3' \
+          lttt='exa -Ta --group-directories-first --level 4' \
+          lT='exa   -Ta --group-directories-first' \
+      || echo "exa not found"
+        
+  # Colours
+  alias \
+      grep='grep   --color=auto' \
+      fgrep='fgrep --color=auto' \
+      egrep='egrep --color=auto'
+  alias diff='diff --color=auto'
+  alias ip='ip     --color=auto'
+
+  # Set up dotfiles syncing
+  alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+
+  # Check battery
+  alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"'
+
+  # Other
+  alias tmux='tmux -2'                                    # assumes 256 colour
+
+  # Use neovim instead of vim if neovim is present
+  command -v nvim >/dev/null \
+      && alias vim='nvim' vimdiff="nvim -d" \
+      && export EDITOR='nvim' VISUAL="nvim" MANPAGER="nvim +Man!" \
+      || echo "nvim not found"
+  
+#+end_src
+
+* Bash
+
+** Environment variables
+:PROPERTIES:
+:header-args: :noweb-ref bash-env
+:END:
+
+** Login
+:PROPERTIES:
+:header-args: :noweb-ref bash-login
+:END:
+
+** Interactive
+:PROPERTIES:
+:header-args: :noweb-ref bash-interactive
+:END:
+
+#+begin_src shell
+
+  # Avoid duplicate prompt
+  PROMPT_COMMAND=
+
+  # Prompt colour escape sequences
+  PROMPT_BLACK="\[\033[30m\]"
+  PROMPT_RED="\[\033[31m\]"
+  PROMPT_GREEN="\[\033[32m\]"
+  PROMPT_YELLOW="\[\033[33m\]"
+  PROMPT_BLUE="\[\033[34m\]"
+  PROMPT_PURPLE="\[\033[35m\]"
+  PROMPT_CYAN="\[\033[36m\]"
+  PROMPT_WHITE="\[\033[37m\]"
+  PROMPT_UNCOLOUR="\[\033[m\]"
+
+  # Print colour-coded battery percentage
+  battery_prompt () {
+      BATTERY_POWER=`cat /sys/class/power_supply/BAT0/capacity`
+      [ $BATTERY_POWER -ge 60 ] \
+          && echo "$PROMPT_GREEN$BATTERY_POWER"
+      [ $BATTERY_POWER -lt 60 ] && [ $BATTERY_POWER -ge 20 ] \
+          && echo "$PROMPT_YELLOW$BATTERY_POWER"
+      [ $BATTERY_POWER -lt 20 ] \
+          && echo "$PROMPT_RED$BATTERY_POWER"
+  }
+
+  # Prompt template: <battery[time]pwd$ >
+  PS1="\
+  `battery_prompt`\
+  $PROMPT_CYAN[\T]\
+  $PROMPT_BLUE\w\
+  $PROMPT_WHITE\$\
+  $PROMPT_UNCOLOUR "
+
+  # Set up bash history
+  BASH_DATA_DIR=$XDG_DATA_HOME/bash
+  [ ! -f $BASH_DATA_DIR/history ] && mkdir -p $BASH_DATA_DIR && touch $BASH_DATA_DIR/history
+  HISTCONTROL=ignoredups:ignorespace # Don't put duplicate lines in history
+  shopt -s histappend # Append rather than overwriting
+  HISTSIZE=1000
+  HISTFILESIZE=2000
+  export HISTTIMEFORMAT="%d/%m/%y %T "
+
+  # Check window size after each command
+  shopt -s checkwinsize
+
+  # Make less more friendly for non-plain text files
+  #[ -x /usr/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe)"
+  LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
+
+  ## Check and update neofetch cache
+  #NEOFETCH_CACHE=$XDG_CACHE_HOME/neofetch.txt
+  #command -v neofetch >/dev/null \
+  #    && [[ ! `find $NEOFETCH_CACHE -mtime -1 >/dev/null` ]] \
+  #    && neofetch > $NEOFETCH_CACHE
+  ## Print out neofetch cache
+  #[ -f $NEOFETCH_CACHE ] \
+  #    && cat $NEOFETCH_CACHE \
+  #    || echo "neofetch not found"
+  neofetch
+
+  # Exa configuration and colours (ls alternative)
+  EXA_CONFIG_FILE=$XDG_CONFIG_HOME/exa/exa-config.sh
+  [ -f $EXA_CONFIG_FILE ] && source $EXA_CONFIG_FILE
+
+#+end_src
+
+** Logout
+:PROPERTIES:
+:header-args: :noweb-ref bash-logout
+:END:
+
+* Zsh
+
+** Environment variables
+:PROPERTIES:
+:header-args: :noweb-ref zsh-env
+:END:
+
+** Login
+:PROPERTIES:
+:header-args: :noweb-ref zsh-login
+:END:
+
+** Interactive
+:PROPERTIES:
+:header-args: :noweb-ref zsh-interactive
+:END:
+
+** Logout
+:PROPERTIES:
+:header-args: :noweb-ref zsh-logout
+:END:
+
+
+* Implementation details
 
 Every generated file will be prefixed with the following information:
 
@@ -40,8 +297,6 @@ Every generated file will be prefixed with the following information:
 #+begin_src shell
   # Do not edit! This file was generated by .config/Shells.org
 #+end_src
-
-[[#Shell-agnostic][Skip setup details]]
 
 ** Env
 
@@ -53,7 +308,7 @@ When invoked as an interactive shell with the name =sh=, Bash looks for the vari
 
 We therefore point this variable to the script we want to run for interactive POSIX shells, which we will call the [[#shrc][shrc]].
 
-#+begin_src shell :noweb-ref env
+#+begin_src shell :noweb-ref env-setup
 
   # Setup script location for interactive POSIX shells
   export ENV=~/.local/share/shrc
@@ -62,7 +317,7 @@ We therefore point this variable to the script we want to run for interactive PO
 
 Similarly, when Bash is used non-interactively to run a script, it looks for a startup file from =BASH_ENV=.
 
-#+begin_src shell :noweb-ref env
+#+begin_src shell :noweb-ref env-setup
 
   # Setup script for non-interactive bash shells
   export BASH_ENV=~/.local/share/bash/env
@@ -74,20 +329,22 @@ We point it to the file at =.local/share/bash/env=, which will follow the struct
 #+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.local/share/bash/env
 
   <<intro>>
-  <<env>>
+  <<env-setup>>
   <<bash-env>>
 
 #+end_src
 
-This variable is cleared as part of  [[#bash-login-setup][the setup for a Bash login shell]] so that these scripts are not called too many times. Code blocks containing the form =<<env>>= will expand to include the exports in this section. The next snippet ensures that my personal shell-agnostic environment variables will also be exported.
+This variable is cleared as part of  [[#bash-login-setup][the setup for a Bash login shell]] so that these scripts are not called too many times. Code blocks containing the form =<<env-setup>>= will expand to include the exports in this section. The next snippet ensures that my personal shell-agnostic environment variables will also be exported, as well as some [[#utility][utility functions]].
 
-#+begin_src shell :noweb-ref env
-  <<environment-variables>>
+#+begin_src shell :noweb-ref env-setup
+  <<utility-functions>>
+  <<env>>
 #+end_src
 
 ** Utility functions
 :PROPERTIES:
-:header-args: :noweb-ref env-functions
+:custom_id: utility
+:header-args: :noweb-ref utility-functions
 :END:
 
 Taken wholesale from https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html.
@@ -148,19 +405,20 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 #+begin_src shell :shebang "#!/bin/env sh" :tangle TEST/.profile
 
   <<intro>>
-  <<env>>
+  <<env-setup>>
   <<login>>
 
 #+end_src
 
 **** Interactive
 :PROPERTIES:
-:CUSTOM_ID: shrc
+:custom_id: shrc
 :END:
 
 #+begin_src shell :shebang "#!/bin/env sh" :tangle TEST/.local/share/shrc
 
   <<intro>>
+  <<env-setup>>
   <<interactive>>
 
 #+end_src
@@ -169,13 +427,13 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 **** Login
 :PROPERTIES:
-:CUSTOM_ID: bash-login-setup
+:custom_id: bash-login-setup
 :END:
 
 #+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.bash_profile
   
   <<intro>>
-  <<env>>
+  <<env-setup>>
   <<bash-env>>
 
   # Prevent env and bash-env from being run later, since BASH_ENV is used for
@@ -198,7 +456,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 #+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.bashrc
 
   <<intro>>
-  <<env>>
+  <<env-setup>>
   <<bash-env>>
 
   <<interactive>>
@@ -223,7 +481,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 #+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zshenv
 
   <<intro>>
-  <<env>>
+  <<env-setup>>
   <<zsh-env>>
 
 #+end_src
@@ -257,69 +515,3 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
   <<zsh-logout>>
   
 #+end_src
-
-* Shell-agnostic
-
-** Environment variables
-:PROPERTIES:
-:header-args: :noweb-ref environment-variables
-:END:
-
-** Login
-:PROPERTIES:
-:header-args: :noweb-ref login
-:END:
-
-** Logout
-:PROPERTIES:
-:header-args: :noweb-ref logout
-:END:
-
-** Interactive
-:PROPERTIES:
-:header-args: :noweb-ref interactive
-:END:
-
-* Bash
-
-** Environment variables
-:PROPERTIES:
-:header-args: :noweb-ref bash-env
-:END:
-
-** Login
-:PROPERTIES:
-:header-args: :noweb-ref bash-login
-:END:
-
-** Interactive
-:PROPERTIES:
-:header-args: :noweb-ref bash-interactive
-:END:
-
-** Logout
-:PROPERTIES:
-:header-args: :noweb-ref bash-logout
-:END:
-
-* Zsh
-
-** Environment variables
-:PROPERTIES:
-:header-args: :noweb-ref zsh-env
-:END:
-
-** Login
-:PROPERTIES:
-:header-args: :noweb-ref zsh-login
-:END:
-
-** Interactive
-:PROPERTIES:
-:header-args: :noweb-ref zsh-interactive
-:END:
-
-** Logout
-:PROPERTIES:
-:header-args: :noweb-ref zsh-logout
-:END:
