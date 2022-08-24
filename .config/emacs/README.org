@@ -560,6 +560,10 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 
 #+end_src
 
+#+begin_src emacs-lisp
+  (use-package org-make-toc)
+#+end_src
+
 **** Locations
 
 #+begin_src emacs-lisp
