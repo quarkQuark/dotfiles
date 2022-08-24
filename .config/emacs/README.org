@@ -96,66 +96,40 @@ Stop unwanted UI elements from loading
   (customize-set-variable 'scroll-bar-mode nil)
   (defun display-startup-echo-area-message () (message ""))
 
-#+end_src
-
-** Package Management
-
-Most of the rest of the configuration depends on Emacs' vast array of extensions. Therefore the first thing that must be configured is the package manager. Emacs' default package manager is simply called =package=. Even though it is built-in, we still have to do a little work to initialise it!
-
-#+begin_src emacs-lisp
-
-  ;; Where to look for packages to download.
-  (setq package-archives
-        '(("melpa"        . "https://melpa.org/packages/")
-          ("melpa-stable" . "https://stable.melpa.org/packages/")
-          ;; Deprecated for Org 9.6
-          ;;("org"          . "https://orgmode.org/elpa/")
-          ("elpa"         . "https://elpa.gnu.org/packages/")))
-
-  (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
+  ;; Stop a split from appearing on nativecomp warnings
+  (setq warning-minimum-level :error)
 
 #+end_src
 
-Package management can be made much more convenient with [[https://github.com/jwiegley/use-package][use-package]]. We begin by installing it with =package=, but after this all packages will be installed through =use-package=.
+** Package management
 
-#+begin_src emacs-lisp
+Do not use package.el, because I use straight.el instead
 
-  ;; Install use-package ...
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-
-  ;; ... and enable it.
-  (require 'use-package)
-  (setq use-package-verbose t)
-
+#+begin_src emacs-lisp :tangle ./early-init.el
+  (setq package-enable-at-startup nil)
 #+end_src
 
-By default, =use-package= only loads packages which already exist on the system. The following setting tells it to handle downloading packages as well.
+Update with =(straight-pull-all)= and apply changes by restarting emacs. View installed with =M-x straight-pull-package= and available recipes with =M-x straight-use-package=. Delete unused packages with =(straight-remove-unused-repos)=.
 
 #+begin_src emacs-lisp
 
-  (setq use-package-always-ensure t)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
 
-#+end_src
-
-*** Installing packages from GitHub
-
-Using [[https://github.com/quelpa/quelpa][quelpa]], we can install emacs packages straight from GitHub. See https://github.com/jwiegley/use-package/issues/410 - I might eventually switch to straight.el for package management, which can deal with this itself.
-
-Currently, the only package I install with quelpa is https://github.com/TobiasZawada/org-src-emph, since it is not available in MELPA. It provides a way to stop noweb from breaking the syntax highlighting of shell scripts in org source blocks, by setting the header property =:emph '(("<<" ">>"))=.
-
-#+begin_src emacs-lisp
-
-  (unless (package-installed-p 'quelpa)
-    (with-temp-buffer
-      (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-      (eval-buffer)
-      (quelpa-self-upgrade)))
-
-  (quelpa '(org-src-emph :fetcher git :url "https://github.com/TobiasZawada/org-src-emph.git"))
-  (require 'org-src-emph)
+  (straight-use-package '(org-src-emph :host github
+                                       :repo "TobiasZawada/org-src-emph"))
 
 #+end_src
 
@@ -971,7 +945,7 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+begin_src emacs-lisp
 
-  (use-package tex :ensure auctex)
+  (use-package tex :straight auctex)
 
   ;; Mostly just to enable system fonts.
   (setq TeX-engine "lualatex")
@@ -1030,7 +1004,7 @@ I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git
 #+begin_src emacs-lisp
 
   (use-package dired
-    :ensure nil ;; Preinstalled - don't try to find on MELPA.
+    :straight nil ;; Preinstalled - don't try to find on MELPA.
     :commands (dired dired-jump)
     :bind ("C-x C-j" . dired-jump)
     :custom (dired-listing-switches "-Agho --group-directories-first"))
@@ -1066,7 +1040,7 @@ I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git
 #+begin_src emacs-lisp
 
   (use-package projectile
-    :pin melpa-stable
+    ;:pin melpa-stable
     :init (projectile-mode)
     :bind-keymap ("C-c p" . projectile-command-map))
 
