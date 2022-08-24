@@ -62,16 +62,16 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   - [[#file-initialisation][File initialisation]]
     - [[#posix-shell][POSIX Shell]]
       - [[#login-profile][Login (.profile)]]
-      - [[#interactive][Interactive]]
+      - [[#interactive-shrc][Interactive (shrc)]]
     - [[#bash][Bash]]
-      - [[#login][Login]]
-      - [[#interactive][Interactive]]
-      - [[#logout][Logout]]
+      - [[#login-bash_profile][Login (.bash_profile)]]
+      - [[#interactive-bashrc][Interactive (.bashrc)]]
+      - [[#logout-bash_logout][Logout (.bash_logout)]]
     - [[#zsh][Zsh]]
-      - [[#env][Env]]
-      - [[#login][Login]]
-      - [[#interactive][Interactive]]
-      - [[#logout][Logout]]
+      - [[#env-zshenv][Env (.zshenv)]]
+      - [[#login-zprofile][Login (.zprofile)]]
+      - [[#interactive-zshrc][Interactive (.zshrc)]]
+      - [[#logout-zlogout][Logout (.zlogout)]]
 :END:
 
 * Shell-agnostic
@@ -451,7 +451,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 #+end_src
 
-**** Interactive
+**** Interactive (shrc)
 :PROPERTIES:
 :custom_id: shrc
 :END:
@@ -466,7 +466,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 *** Bash
 
-**** Login
+**** Login (.bash_profile)
 :PROPERTIES:
 :custom_id: bash-login-setup
 :END:
@@ -492,7 +492,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 #+end_src
 
-**** Interactive
+**** Interactive (.bashrc)
 
 #+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.bashrc
 
@@ -505,7 +505,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
   
 #+end_src
 
-**** Logout
+**** Logout (.bash_logout)
 
 #+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.bash_logout
 
@@ -517,7 +517,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 *** Zsh
 
-**** Env
+**** Env (.zshenv)
 
 #+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zshenv
 
@@ -527,7 +527,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 #+end_src
 
-**** Login
+**** Login (.zprofile)
 
 #+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zprofile
 
@@ -537,7 +537,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 #+end_src
 
-**** Interactive
+**** Interactive (.zshrc)
 
 #+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zshrc
 
@@ -547,7 +547,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
   
 #+end_src
 
-**** Logout
+**** Logout (.zlogout)
 
 #+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zlogout
 
