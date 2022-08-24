@@ -6,20 +6,23 @@
 
 This file provides the source for all my shell startup scripts. Running =emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'= generates the following file structure:
 
-| .local        |       |           |
-| └──           | share |           |
-| ├──           | bash  |           |
-| │             | └──   | env       |
-| ├──           | zsh   |           |
-| │             | ├──   | .zlogout  |
-| │             | ├──   | .zprofile |
-| │             | ├──   | .zshenv   |
-| │             | └──   | .zshrc    |
-| └──           | shrc  |           |
-| .bash_logout  |       |           |
-| .bash_profile |       |           |
-| .bashrc       |       |           |
-| .profile      |       |           |
+#+begin_src
+  ~
+  ├─ .local                          
+  │  └── share            
+  │     ├── bash             
+  │     │  └── env       
+  │     ├── zsh              
+  │     │  ├── .zlogout  
+  │     │  ├── .zprofile 
+  │     │  ├── .zshenv   
+  │     │  └── .zshrc    
+  │     └── shrc             
+  ├── .bash_logout                    
+  ├── .bash_profile                   
+  ├── .bashrc                         
+  └── .profile                        
+#+end_src
 
 Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information.
 
