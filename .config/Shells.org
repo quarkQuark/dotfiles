@@ -1,3 +1,4 @@
+# -*- eval: (add-hook 'before-save-hook (lambda () (org-make-toc)) nil 't) -*-
 #+TITLE: Shell configuration files
 #+PROPERTY: header-args:shell :tangle-mode (identity #o444) :mkdirp yes :noweb yes :emph '(("<<" ">>"))
 #+STARTUP: overview
@@ -31,6 +32,47 @@ generates the following file structure:
 Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information. In particular, I have copied some [[#utility][utility functions]] which are used for setting the PATH variable.
 
 Syntax highlighting of shell source blocks in emacs is broken by noweb references, so I use https://github.com/TobiasZawada/org-src-emph/ to fix it, adding the =:emph= header option.
+
+* Contents
+:PROPERTIES:
+:TOC: :include all
+:VISIBILITY: folded
+:END:
+
+:CONTENTS:
+- [[#contents][Contents]]
+- [[#shell-agnostic][Shell-agnostic]]
+  - [[#env][Env]]
+  - [[#login][Login]]
+  - [[#logout][Logout]]
+  - [[#interactive][Interactive]]
+- [[#bash][Bash]]
+  - [[#environment-variables][Environment variables]]
+  - [[#login][Login]]
+  - [[#interactive][Interactive]]
+  - [[#logout][Logout]]
+- [[#zsh][Zsh]]
+  - [[#environment-variables][Environment variables]]
+  - [[#login][Login]]
+  - [[#interactive][Interactive]]
+  - [[#logout][Logout]]
+- [[#implementation-details][Implementation details]]
+  - [[#env][Env]]
+  - [[#utility-functions][Utility functions]]
+  - [[#file-initialisation][File initialisation]]
+    - [[#posix-shell][POSIX Shell]]
+      - [[#login-profile][Login (.profile)]]
+      - [[#interactive][Interactive]]
+    - [[#bash][Bash]]
+      - [[#login][Login]]
+      - [[#interactive][Interactive]]
+      - [[#logout][Logout]]
+    - [[#zsh][Zsh]]
+      - [[#env][Env]]
+      - [[#login][Login]]
+      - [[#interactive][Interactive]]
+      - [[#logout][Logout]]
+:END:
 
 * Shell-agnostic
 
@@ -287,7 +329,6 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
 :PROPERTIES:
 :header-args: :noweb-ref zsh-logout
 :END:
-
 
 * Implementation details
 
