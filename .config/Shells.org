@@ -97,7 +97,6 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
   export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
   export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
-  export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
   export STACK_ROOT="$XDG_CONFIG_HOME/stack"
 
   # Create gnupg directory if not found (errors otherwise)
@@ -110,6 +109,7 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   export HISTFILE="$XDG_DATA_HOME/bash/history"
   export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
   export SSB_HOME="$XDG_DATA_HOME/zoom"
+  export ZDOTDIR="$XDG_DATA_HOME/zsh"
 
   # Cache locations
   export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
@@ -355,7 +355,7 @@ Similarly, when Bash is used non-interactively to run a script, it looks for a s
 
 We point it to the file at =.local/share/bash/env=, which will follow the structure
 
-#+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.local/share/bash/env
+#+begin_src shell :shebang "#!/bin/env bash" :tangle ~/.local/share/bash/env
 
   <<intro>>
   <<env-setup>>
@@ -431,7 +431,7 @@ Each of the three functions =pathremove=, =pathprepend= and =pathappend= have th
 
 If =.bash_profile= is missing, then bash will source =.profile= instead.
 
-#+begin_src shell :shebang "#!/bin/env sh" :tangle TEST/.profile
+#+begin_src shell :shebang "#!/bin/env sh" :tangle ~/.profile
 
   <<intro>>
   <<env-setup>>
@@ -444,7 +444,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 :custom_id: shrc
 :END:
 
-#+begin_src shell :shebang "#!/bin/env sh" :tangle TEST/.local/share/shrc
+#+begin_src shell :shebang "#!/bin/env sh" :tangle ~/.local/share/shrc
 
   <<intro>>
   <<env-setup>>
@@ -459,7 +459,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 :custom_id: bash-login-setup
 :END:
 
-#+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.bash_profile
+#+begin_src shell :shebang "#!/bin/env bash" :tangle ~/.bash_profile
   
   <<intro>>
   <<env-setup>>
@@ -482,7 +482,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 **** Interactive (.bashrc)
 
-#+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.bashrc
+#+begin_src shell :shebang "#!/bin/env bash" :tangle ~/.bashrc
 
   <<intro>>
   <<env-setup>>
@@ -495,7 +495,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 **** Logout (.bash_logout)
 
-#+begin_src shell :shebang "#!/bin/env bash" :tangle TEST/.bash_logout
+#+begin_src shell :shebang "#!/bin/env bash" :tangle ~/.bash_logout
 
   <<intro>>
   <<logout>>
@@ -507,7 +507,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 **** Env (.zshenv)
 
-#+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zshenv
+#+begin_src shell :shebang "#!/bin/env zsh" :tangle ~/.local/share/zsh/.zshenv
 
   <<intro>>
   <<env-setup>>
@@ -517,7 +517,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 **** Login (.zprofile)
 
-#+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zprofile
+#+begin_src shell :shebang "#!/bin/env zsh" :tangle ~/.local/share/zsh/.zprofile
 
   <<intro>>
   <<login>>
@@ -527,7 +527,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 **** Interactive (.zshrc)
 
-#+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zshrc
+#+begin_src shell :shebang "#!/bin/env zsh" :tangle ~/.local/share/zsh/.zshrc
 
   <<intro>>
   <<interactive>>
@@ -537,7 +537,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
 **** Logout (.zlogout)
 
-#+begin_src shell :shebang "#!/bin/env zsh" :tangle TEST/.local/share/zsh/.zlogout
+#+begin_src shell :shebang "#!/bin/env zsh" :tangle ~/.local/share/zsh/.zlogout
 
   <<intro>>
   <<logout>>
