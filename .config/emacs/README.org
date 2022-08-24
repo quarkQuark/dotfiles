@@ -897,6 +897,7 @@ The following source block contains a copy of the (quite long!) full definition 
       'org-babel-load-languages
       '((emacs-lisp . t)
         (python . t)
+        (shell . t)
         (latex . t)))
 
     (setq org-confirm-babel-evaluate nil)
