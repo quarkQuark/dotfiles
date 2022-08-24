@@ -12,19 +12,19 @@ My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a 
 
 2. Clone this repository as well as my [[https://github.com/quarkQuark/scripts][shell script repository]].
 
-   #+begin_src sh
-   alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
-   echo .dotfiles-git >> .gitignore
-   git clone --bare git@github.com:quarkQuark/dotfiles $HOME/.dotfiles-git
-   dotfiles checkout
-   dotfiles config --local status.showUntrackedFiles no
-   git clone git@github.com:quarkQuark/scripts $HOME/.scripts/repo
+   #+begin_src shell
+     alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+     echo .dotfiles-git >> .gitignore
+     git clone --bare git@github.com:quarkQuark/dotfiles $HOME/.dotfiles-git
+     dotfiles checkout
+     dotfiles config --local status.showUntrackedFiles no
+     git clone git@github.com:quarkQuark/scripts $HOME/.scripts/repo
    #+end_src
 
 3. Install =emacs= and generate the shell configuration files from [[./.config/Shells.org]] by running 
 
    #+begin_src shell
-   emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
+     emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
    #+end_src
 
 4. To install the plugins for =neovim=, install =go= and =python-pynvim= then follow the README for [[https://github.com/junegunn/vim-plug][Vim-plug]]. My neovim configuration also needs the packages =nnn=, =fzy= and =ripgrep=.
@@ -39,23 +39,23 @@ I store my dotfiles using a *git bare repository*. This allows me to store files
 
 1. Initialise =.dotfiles-git= as a local bare repository
 
-   #+begin_src sh
-   mkdir $HOME/.dotfiles-git
-   git init --bare $HOME/.dotfiles-git
-   alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
-   dotfiles config --local status.showUntrackedFiles no
+   #+begin_src shell
+     mkdir $HOME/.dotfiles-git
+     git init --bare $HOME/.dotfiles-git
+     alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+     dotfiles config --local status.showUntrackedFiles no
    #+end_src
 
 2. Add some config files to back up (=.bashrc= used as an example)
 
-   #+begin_src sh
-   git add .bashrc
-   git commit -m "Add .bashrc"
+   #+begin_src shell
+     git add .bashrc
+     git commit -m "Add .bashrc"
    #+end_src
 
 3. Create a new GitHub repository called =dotfiles= and push
 
-   #+begin_src sh
-   dotfiles remote add origin git@github.com:quarkQuark/dotfiles.git
-   dotfiles push -u origin master
+   #+begin_src shell
+     dotfiles remote add origin git@github.com:quarkQuark/dotfiles.git
+     dotfiles push -u origin master
    #+end_src
