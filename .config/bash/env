@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# WARNING: This sets $BASH_ENV to get a correct startup sequence
-. ~/.config/shell/env
