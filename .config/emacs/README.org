@@ -140,6 +140,25 @@ By default, =use-package= only loads packages which already exist on the system.
 
 #+end_src
 
+*** Installing packages from GitHub
+
+Using [[https://github.com/quelpa/quelpa][quelpa]], we can install emacs packages straight from GitHub. See https://github.com/jwiegley/use-package/issues/410 - I might eventually switch to straight.el for package management, which can deal with this itself.
+
+Currently, the only package I install with quelpa is https://github.com/TobiasZawada/org-src-emph, since it is not available in MELPA. It provides a way to stop noweb from breaking the syntax highlighting of shell scripts in org source blocks, by setting the header property =:emph '(("<<" ">>"))=.
+
+#+begin_src emacs-lisp
+
+  (unless (package-installed-p 'quelpa)
+    (with-temp-buffer
+      (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+      (eval-buffer)
+      (quelpa-self-upgrade)))
+
+  (quelpa '(org-src-emph :fetcher git :url "https://github.com/TobiasZawada/org-src-emph.git"))
+  (require 'org-src-emph)
+
+#+end_src
+
 ** No-littering.el
 
 #+begin_src emacs-lisp
