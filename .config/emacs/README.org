@@ -128,9 +128,6 @@ Update with =(straight-pull-all)= and apply changes by restarting emacs. View in
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
 
-  (straight-use-package '(org-src-emph :host github
-                                       :repo "TobiasZawada/org-src-emph"))
-
 #+end_src
 
 ** No-littering.el
@@ -864,7 +861,7 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+end_src
 
-*** Babel
+*** Source blocks and babel
 
 #+begin_src emacs-lisp
 
@@ -903,6 +900,14 @@ The following source block contains a copy of the (quite long!) full definition 
     ;; Recognise extra languages
     (push '("conf-unix" . conf-unix) org-src-lang-modes)
     (push '("latex" . latex) org-src-lang-modes))
+
+#+end_src
+
+The package =org-src-emph= adds a =:emph= header argument which can be used to fix the syntax highlighting of shell source blocks containing noweb references, by setting =:emph '(("<<" ">>"))=.
+
+#+begin_src emacs-lisp
+  (straight-use-package '(org-src-emph :host github
+                                       :repo "TobiasZawada/org-src-emph"))
 #+end_src
 
 *** Capture templates
