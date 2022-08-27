@@ -212,7 +212,7 @@ Colours used by exa (ls replacement)
           ltt='exa  -Ta --group-directories-first --level 3' \
           lttt='exa -Ta --group-directories-first --level 4' \
           lT='exa   -Ta --group-directories-first' \
-      || echo "exa not found"
+      || echo "Install exa for a better ls"
         
   # Colours
   alias \
@@ -235,7 +235,7 @@ Colours used by exa (ls replacement)
   command -v nvim >/dev/null \
       && alias vim='nvim' vimdiff="nvim -d" \
       && export EDITOR='nvim' VISUAL="nvim" MANPAGER="nvim +Man!" \
-      || echo "nvim not found"
+      || echo "Install nvim for a better vim experience"
 
 #+end_src
 
@@ -429,7 +429,7 @@ The starship prompt should be at the end of =.bashrc=.
   export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/bash.toml"
   command -v starship >/dev/null \
       && eval "$(starship init bash)" \
-      || echo "starship not found"
+      || echo "Install starship for better shell prompts"
 
 #+end_src
 
@@ -551,7 +551,7 @@ The starship prompt should be at the end of =.zshrc=.
   export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/zsh.toml"
   command -v starship >/dev/null \
       && eval "$(starship init zsh)" \
-      || echo "starship not found"
+      || echo "Install starship for better shell prompts"
 
 #+end_src
 
