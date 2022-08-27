@@ -50,7 +50,8 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   - [[#logout][Logout]]
   - [[#interactive][Interactive]]
 - [[#starship-prompt][Starship Prompt]]
-  - [[#general][General]]
+  - [[#prompt-format][Prompt format]]
+  - [[#widgets][Widgets]]
   - [[#bash][Bash]]
   - [[#zsh][Zsh]]
 - [[#bash][Bash]]
@@ -243,84 +244,174 @@ Colours used by exa (ls replacement)
 
 Defined on a shell-by-shell basis since =right_format= is not supported by Bash.
 
-** General
+** Prompt format
+
+#+begin_src sh :noweb-ref prompt-format
+
+  $username$hostname$localip$docker_context$kubernetes$singularity$openstack$container\
+  [](fg:#1C668D bg:none)\
+  [$directory](fg:white bg:#1C668D)\
+  [](fg:#1C668D bg:#0F9C65)\
+  [$git_branch$hg_branch$package](fg:white bg:#0F9C65)\
+  [](fg:#0F9C65 bg:#B09811)\
+  [$c$cmake$cobol$crystal$daml$dart$deno$dotnet$elixir$elm$erlang$golang$haskell$helm\
+   $java$julia$kotlin$lua$nim$nodejs$ocaml$perl$php$pulumi$purescript$python$raku\
+   $rlang$red$ruby$rust$scala$swift$terraform$vlang$vagrant$zig](bg:#B09811)\
+  $conda$spack$nix_shell\
+  [](fg:#B09811 bg:none)\
+  $memory_usage$jobs\
+
+#+end_src
+
+** Widgets
 :PROPERTIES:
-:header-args: :noweb-ref prompt-format
+:header-args: :noweb-ref prompt-settings
 :END:
 
+Note that suboptions such as =battery.display= must be surrounded by double square brackets. Annoyingly, emacs hides the brackets and displays them as hyperlinks.
+
 #+begin_src toml
-$username\
-$hostname\
-$localip\
-$shlvl\
-$singularity\
-$kubernetes\
-$directory\
-$vcsh\
-$git_branch\
-$git_commit\
-$git_state\
-$git_metrics\
-$git_status\
-$hg_branch\
-$docker_context\
-$package\
-$c\
-$cmake\
-$cobol\
-$daml\
-$dart\
-$deno\
-$dotnet\
-$elixir\
-$elm\
-$erlang\
-$golang\
-$haskell\
-$helm\
-$java\
-$julia\
-$kotlin\
-$lua\
-$nim\
-$nodejs\
-$ocaml\
-$perl\
-$php\
-$pulumi\
-$purescript\
-$python\
-$raku\
-$rlang\
-$red\
-$ruby\
-$rust\
-$scala\
-$swift\
-$terraform\
-$vlang\
-$vagrant\
-$zig\
-$buf\
-$nix_shell\
-$conda\
-$spack\
-$memory_usage\
-$aws\
-$gcloud\
-$openstack\
-$azure\
-$env_var\
-$crystal\
-$custom\
-$sudo\
-$cmd_duration\
-$jobs\
-$battery\
-$time\
-$status\
-$container\
-$shell
+
+  [line_break]
+  disabled = true
+
+  # Useful for vim modes and signalling errors, but requires effort to use
+  # powerline symbols
+  [character]
+  disabled = true
+
+  [time]
+  disabled    = false
+  use_12hr    = true
+  time_format = "%-l:%M"
+  format      = "\\[[$time]($style)\\]"
+
+  [memory_usage]
+  symbol = " "
+
+  [cmd_duration]
+  format = " took [$duration]($style)"
+
+#+end_src
+
+*** Battery
+
+#+begin_src toml
+
+  [battery]
+  format = "$symbol"
+
+  [[battery.display]]
+  threshold = 20
+  discharging_symbol = "[ $percentage ](bold red)"
+  charging_symbol    = "[ $percentage ](bold red)"
+  style = ""
+
+  [[battery.display]]
+  threshold = 50
+  discharging_symbol = "[ $percentage](bold yellow)"
+  charging_symbol    = "[ $percentage](bold yellow)"
+  style = ""
+
+  [[battery.display]]
+  threshold = 99
+  discharging_symbol = "[ $percentage](dimmed bold green)"
+  charging_symbol    = "[ $percentage](dimmed bold green)"
+  style = ""
+
+#+end_src
+
+*** Directory
+
+#+begin_src toml
+
+  [directory]
+  format    = "$path$readonly "
+  read_only = " "
+  truncation_length = 3
+  fish_style_pwd_dir_length = 1
+
+  [directory.substitutions]
+  "Documents" = " "
+  "Downloads" = " "
+  "Music" = " "
+  "Pictures" = " "
+
+#+end_src
+
+*** Version control and containers
+
+#+begin_src toml
+
+  [git_branch]
+  ignore_branches = ["main", "master"]
+  format = " $symbol$branch(:$remote_branch) "
+  symbol = " "
+
+  [package]
+  format = "is $symbol$version "
+  symbol = " "
+
+  [conda]
+  symbol = " "
+
+  [docker_context]
+  symbol = " "
+
+  [hg_branch]
+  symbol = " "
+
+  [nix_shell]
+  symbol = " "
+
+  [nodejs]
+  symbol = " "
+
+  [spack]
+  symbol = "🅢 "
+
+#+end_src
+
+*** Languages
+
+Not all of these have the correct colours; I will set each up when I encounter it.
+
+#+begin_src toml
+
+  [c]
+  symbol = " "
+
+  [dart]
+  symbol = " "
+
+  [elixir]
+  symbol = " "
+
+  [elm]
+  symbol = " "
+
+  [golang]
+  symbol = " "
+
+  [haskell]
+  format = " $symbol($version) "
+  symbol = " "
+
+  [java]
+  symbol = " "
+
+  [julia]
+  symbol = " "
+
+  [nim]
+  symbol = " "
+
+  [python]
+  symbol = " "
+
+  [rust]
+  symbol = " "
+
 #+end_src
 
 ** Bash
@@ -328,8 +419,10 @@ $shell
 #+begin_src toml :tangle ~/.config/starship/bash.toml :noweb yes
 
   #add_newline = false  # Don't print an empty line before each prompt
-  format = """\
-  <<prompt-format>>$character"""
+  format = """$time $battery \
+  <<prompt-format>>$cmd_duration$sudo$character """
+
+  <<prompt-settings>>
 
 #+end_src
 
@@ -338,9 +431,11 @@ $shell
 #+begin_src toml :tangle ~/.config/starship/zsh.toml :noweb yes
 
   #add_newline = false  # Don't print an empty line before each prompt
-  format = """$character"""
-  right_format = """\
-  <<prompt-format>>"""
+  format = """\
+  <<prompt-format>>$cmd_duration$sudo$character """
+  right_format = """$time $battery"""
+
+  <<prompt-settings>>
 
 #+end_src
 
