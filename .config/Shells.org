@@ -1,4 +1,3 @@
-# -*- eval: (add-hook 'before-save-hook 'org-make-toc nil 't) -*-
 #+TITLE: Shell configuration files
 #+PROPERTY: header-args:shell :tangle-mode (identity #o444) :mkdirp yes :noweb yes :emph '(("<<" ">>"))
 #+STARTUP: overview
