@@ -336,6 +336,17 @@ Colours used by exa (ls replacement)
 
 #+begin_src zsh
 
+  bindkey -e  # Use emacs mode
+
+  autoload -Uz compinit && compinit  # Initialise tab completion
+
+  setopt AUTO_CD      # Automatically cd when command is a directory name
+  setopt CDABLE_VARS  # If cd can't find a directory, check in HOME
+  setopt CD_SILENT    # Never pwd after cd (default does this for cd -)
+  setopt CORRECT      # Suggest corrections for mistyped commands
+  setopt CORRECT_ALL  # Suggest corrections for mistyped arguments
+  setopt INTERACTIVE_COMMENTS  # Allow comments in interactive shells
+
   # History
   export_and_create_file HISTFILE "$XDG_STATE_HOME/zsh/history"
   setopt INC_APPEND_HISTORY  # Add commands to history immediately, not on exit
@@ -343,6 +354,64 @@ Colours used by exa (ls replacement)
   setopt HIST_IGNORE_DUPS    # Do not record duplicate commands
   setopt HIST_REDUCE_BLANKS  # Do not record blank lines
   setopt HIST_VERIFY         # Confirm before executing with !! etc
+
+#+end_src
+
+*** Keybindings
+
+#+begin_src zsh :no-expand
+
+  typeset -g -A key  # Initialise
+
+  # Aliases for some special keys
+  key[Home]="${terminfo[khome]}"
+  key[End]="${terminfo[kend]}"
+  key[Insert]="${terminfo[kich1]}"
+  key[Backspace]="${terminfo[kbs]}"
+  key[Delete]="${terminfo[kdch1]}"
+  key[Up]="${terminfo[kcuu1]}"
+  key[Down]="${terminfo[kcud1]}"
+  key[Left]="${terminfo[kcub1]}"
+  key[Right]="${terminfo[kcuf1]}"
+  key[PageUp]="${terminfo[kpp]}"
+  key[PageDown]="${terminfo[knp]}"
+  key[Shift-Tab]="${terminfo[kcbt]}"
+
+  [ -n "${key[Home]}"      ] && bindkey -- "${key[Home]}"       beginning-of-line
+  [ -n "${key[End]}"       ] && bindkey -- "${key[End]}"        end-of-line
+  [ -n "${key[Insert]}"    ] && bindkey -- "${key[Insert]}"     overwrite-mode
+  [ -n "${key[Backspace]}" ] && bindkey -- "${key[Backspace]}"  backward-delete-char
+  [ -n "${key[Delete]}"    ] && bindkey -- "${key[Delete]}"     delete-char
+  [ -n "${key[Left]}"      ] && bindkey -- "${key[Left]}"       backward-char
+  [ -n "${key[Right]}"     ] && bindkey -- "${key[Right]}"      forward-char
+  [ -n "${key[Shift-Tab]}" ] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
+
+  # Make sure the terminal is in application mode when using zle
+  if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+          autoload -Uz add-zle-hook-widget
+          function zle_application_mode_start { echoti smkx }
+          function zle_application_mode_stop { echoti rmkx }
+          add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+          add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+  fi
+
+  # Arrows only give previous commands which complete the current line
+
+  autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+  zle -N up-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+
+  # Arrows
+  [ -n "${key[Up]}"   ] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
+  [ -n "${key[Down]}" ] && bindkey -- "${key[Down]}" down-line-or-beginning-search
+
+  # Emacs
+  [ -n "^P" ] && bindkey -- "^P" up-line-or-beginning-search
+  [ -n "^N" ] && bindkey -- "^N" down-line-or-beginning-search
+
+  # Vi
+  [ -n "^K" ] && bindkey -- "^K" up-line-or-beginning-search
+  [ -n "^J" ] && bindkey -- "^J" down-line-or-beginning-search
 
 #+end_src
 
