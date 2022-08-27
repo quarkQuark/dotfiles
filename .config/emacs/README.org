@@ -909,8 +909,10 @@ The following source block contains a copy of the (quite long!) full definition 
 The package =org-src-emph= adds a =:emph= header argument which can be used to fix the syntax highlighting of shell source blocks containing noweb references, by setting =:emph '(("<<" ">>"))=.
 
 #+begin_src emacs-lisp
-  (straight-use-package '(org-src-emph :host github :repo "TobiasZawada/org-src-emph"))
-  (require 'org-src-emph)
+
+  (use-package org-src-emph
+    :straight (org-src-emph :host github :repo "TobiasZawada/org-src-emph"))
+
 #+end_src
 
 *** Capture templates
