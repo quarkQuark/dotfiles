@@ -14,20 +14,22 @@ generates the following file structure:
 
 #+begin_src
   ~
-  ├─ .local                          
-  │  └── share            
-  │     ├── bash             
-  │     │  └── env       
-  │     ├── zsh              
-  │     │  ├── .zlogout  
-  │     │  ├── .zprofile 
-  │     │  ├── .zshenv   
-  │     │  └── .zshrc    
-  │     └── shrc             
-  ├── .bash_logout                    
-  ├── .bash_profile                   
-  ├── .bashrc                         
-  └── .profile                        
+  ├─ .local
+  │  └── share
+  │     ├── bash
+  │     │  └── env
+  │     ├── zsh
+  │     │  ├── .zlogout
+  │     │  ├── .zprofile
+  │     │  ├── .zshenv
+  │     │  └── .zshrc
+  │     └── shrc
+  ├── .bash_logout
+  ├── .bash_profile
+  ├── .bashrc
+  ├── .profile
+  └── .zshenv
+
 #+end_src
 
 Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information. In particular, I have copied some [[#utility][utility functions]] which are used for setting the PATH variable.
@@ -110,7 +112,6 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   export HISTFILE="$XDG_DATA_HOME/bash/history"
   export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
   export SSB_HOME="$XDG_DATA_HOME/zoom"
-  export ZDOTDIR="$XDG_DATA_HOME/zsh"
 
   # Cache locations
   export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
@@ -385,6 +386,21 @@ This variable is cleared as part of  [[#bash-login-setup][the setup for a Bash l
   <<utility-functions>>
   <<env>>
 #+end_src
+
+Finally, we need to tell Zsh where to look for its own configuration files.
+
+1. If started through another login shell
+
+   #+begin_src sh
+     export ZDOTDIR="$XDG_DATA_HOME/zsh"
+   #+end_src
+
+2. If started through Zsh as a login shell
+
+   #+begin_src zsh :shebang "#!/bin/env sh" :tangle ~/.zshenv :noweb-ref
+     export ZDOTDIR="$XDG_DATA_HOME/zsh"
+     . $ZDOTDIR/.zshenv
+   #+end_src
 
 ** Utility functions
 :PROPERTIES:
