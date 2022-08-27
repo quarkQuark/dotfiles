@@ -6,8 +6,8 @@
 
 This file provides the source for all my shell startup scripts. Running
 
-#+begin_src shell
-emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
+#+begin_src sh
+  emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
 #+end_src
 
 generates the following file structure:
@@ -612,7 +612,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
   # Check if this is an interactive shell
   if [ "$PS1" ]; then
-      <<bash-interactive>>
+      . .bashrc
   fi
 
 #+end_src
