@@ -128,7 +128,22 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   export GPG_TTY=$(tty)
   export LESS='-R --use-color -Dd+r$Du+b'
   export MANPAGER='less -R --use-color -Dd+r -Du+b'
-  
+
+#+end_src
+
+Colours used by exa (ls replacement)
+
+#+begin_src sh
+
+  # Use grey for current user and group
+  export EXA_COLORS="uu=38;5;250:gu=38;5;250"
+
+  # Use bold and a specific shade of blue for directories
+  export EXA_COLORS="$EXA_COLORS:di=1;38;5;39"
+
+  # Use cyan for dates
+  export EXA_COLORS="$EXA_COLORS:da=36"
+
 #+end_src
 
 ** Login
@@ -285,9 +300,6 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   #    || echo "neofetch not found"
   neofetch
 
-  # Exa configuration and colours (ls alternative)
-  EXA_CONFIG_FILE=$XDG_CONFIG_HOME/exa/exa-config.sh
-  [ -f $EXA_CONFIG_FILE ] && source $EXA_CONFIG_FILE
 
 #+end_src
 
