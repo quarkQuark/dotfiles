@@ -885,7 +885,9 @@ The following source block contains a copy of the (quite long!) full definition 
 
     (dolist (template
              '(("el"   . "src emacs-lisp")
-               ("sh"   . "src shell")
+               ("sh"   . "src sh")
+               ("b"    . "src bash")
+               ("z"    . "src zsh")
                ("py"   . "src python")
                ("hs"   . "src haskell")
                ("css"  . "src css")
@@ -902,7 +904,15 @@ The following source block contains a copy of the (quite long!) full definition 
 
     ;; Recognise extra languages
     (push '("conf-unix" . conf-unix) org-src-lang-modes)
-    (push '("latex" . latex) org-src-lang-modes))
+    (push '("latex" . latex) org-src-lang-modes)
+
+    (defun org-babel-sh-mode   () (sh-mode) (sh-set-shell "posix"))
+    (defun org-babel-bash-mode () (sh-mode) (sh-set-shell "bash" ))
+    (defun org-babel-zsh-mode  () (sh-mode) (sh-set-shell "zsh"  ))
+
+    (push '("sh"   . org-babel-sh  ) org-src-lang-modes)
+    (push '("bash" . org-babel-bash) org-src-lang-modes)
+    (push '("zsh"  . org-babel-zsh ) org-src-lang-modes))
 
 #+end_src
 
