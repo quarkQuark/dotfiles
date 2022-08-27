@@ -49,6 +49,10 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   - [[#login][Login]]
   - [[#logout][Logout]]
   - [[#interactive][Interactive]]
+- [[#starship-prompt][Starship Prompt]]
+  - [[#general][General]]
+  - [[#bash][Bash]]
+  - [[#zsh][Zsh]]
 - [[#bash][Bash]]
   - [[#environment-variables][Environment variables]]
   - [[#login][Login]]
@@ -120,6 +124,8 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   # State locations (including logs)
   export LESSHISTFILE=-
   export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
+  export STARSHIP_CACHE="$XDG_STATE_HOME/starship"
+
   # Runtime locations (in /run/user/1000)
   export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
 
@@ -230,7 +236,112 @@ Colours used by exa (ls replacement)
       && alias vim='nvim' vimdiff="nvim -d" \
       && export EDITOR='nvim' VISUAL="nvim" MANPAGER="nvim +Man!" \
       || echo "nvim not found"
-  
+
+#+end_src
+
+* Starship Prompt
+
+Defined on a shell-by-shell basis since =right_format= is not supported by Bash.
+
+** General
+:PROPERTIES:
+:header-args: :noweb-ref prompt-format
+:END:
+
+#+begin_src toml
+$username\
+$hostname\
+$localip\
+$shlvl\
+$singularity\
+$kubernetes\
+$directory\
+$vcsh\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+$hg_branch\
+$docker_context\
+$package\
+$c\
+$cmake\
+$cobol\
+$daml\
+$dart\
+$deno\
+$dotnet\
+$elixir\
+$elm\
+$erlang\
+$golang\
+$haskell\
+$helm\
+$java\
+$julia\
+$kotlin\
+$lua\
+$nim\
+$nodejs\
+$ocaml\
+$perl\
+$php\
+$pulumi\
+$purescript\
+$python\
+$raku\
+$rlang\
+$red\
+$ruby\
+$rust\
+$scala\
+$swift\
+$terraform\
+$vlang\
+$vagrant\
+$zig\
+$buf\
+$nix_shell\
+$conda\
+$spack\
+$memory_usage\
+$aws\
+$gcloud\
+$openstack\
+$azure\
+$env_var\
+$crystal\
+$custom\
+$sudo\
+$cmd_duration\
+$jobs\
+$battery\
+$time\
+$status\
+$container\
+$shell
+#+end_src
+
+** Bash
+
+#+begin_src toml :tangle ~/.config/starship/bash.toml :noweb yes
+
+  #add_newline = false  # Don't print an empty line before each prompt
+  format = """\
+  <<prompt-format>>$character"""
+
+#+end_src
+
+** Zsh
+
+#+begin_src toml :tangle ~/.config/starship/zsh.toml :noweb yes
+
+  #add_newline = false  # Don't print an empty line before each prompt
+  format = """$character"""
+  right_format = """\
+  <<prompt-format>>"""
+
 #+end_src
 
 * Bash
@@ -309,6 +420,16 @@ Colours used by exa (ls replacement)
   #    || echo "neofetch not found"
   neofetch
 
+#+end_src
+
+The starship prompt should be at the end of =.bashrc=.
+
+#+begin_src bash
+
+  export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/bash.toml"
+  command -v starship >/dev/null \
+      && eval "$(starship init bash)" \
+      || echo "starship not found"
 
 #+end_src
 
@@ -412,6 +533,25 @@ Colours used by exa (ls replacement)
   # Vi
   [ -n "^K" ] && bindkey -- "^K" up-line-or-beginning-search
   [ -n "^J" ] && bindkey -- "^J" down-line-or-beginning-search
+
+#+end_src
+
+*** Prompt
+
+#+begin_src zsh
+  # Enable version control access
+  autoload -Uz vcs_info
+  precmd_vcs_info() { vcs_info }
+#+end_src
+
+The starship prompt should be at the end of =.zshrc=.
+
+#+begin_src bash
+
+  export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/zsh.toml"
+  command -v starship >/dev/null \
+      && eval "$(starship init zsh)" \
+      || echo "starship not found"
 
 #+end_src
 

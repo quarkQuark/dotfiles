@@ -8,7 +8,7 @@ My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a 
 
 * Setup with XMonad on a fresh Arch Linux install
 
-1. Install optional CLI dependencies: =exa neofetch neovim=
+1. Install optional CLI dependencies: =exa neofetch neovim starship=
 
 2. Clone this repository as well as my [[https://github.com/quarkQuark/scripts][shell script repository]].
 
