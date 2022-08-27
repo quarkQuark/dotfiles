@@ -109,17 +109,17 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   export GEM_HOME="$XDG_DATA_HOME/gem"
   export CRAWL_DIR="$XDG_DATA_HOME/crawl/" # DCSS (trailing slash required)
   export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-  export HISTFILE="$XDG_DATA_HOME/bash/history"
   export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
   export SSB_HOME="$XDG_DATA_HOME/zoom"
 
   # Cache locations
   export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
   export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
-  export LESSHISTFILE=-
-  export OCTAVE_HISTFILE="$XDG_CACHE_HOME/octave_hist"
   export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 
+  # State locations (including logs)
+  export LESSHISTFILE=-
+  export OCTAVE_HISTFILE="$XDG_STATE_HOME/octave_hist"
   # Runtime locations (in /run/user/1000)
   export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
 
@@ -167,6 +167,16 @@ Colours used by exa (ls replacement)
 
   # Warn before overwriting with > operator
   set -o noclobber
+
+  export HISTSIZE=100000      # Commands to hold in memory
+  export HISTFILESIZE=100000  # Commands to store in Bash HISTFILE
+  export SAVEHIST=100000      # Commands to store in Zsh HISTFILE
+  
+#+end_src
+
+*** Aliases
+
+#+begin_src sh
 
   # Verbosity and interactivity (prompts) for common commands
   alias \
@@ -276,13 +286,10 @@ Colours used by exa (ls replacement)
   $PROMPT_UNCOLOUR "
 
   # Set up bash history
-  BASH_DATA_DIR=$XDG_DATA_HOME/bash
-  [ ! -f $BASH_DATA_DIR/history ] && mkdir -p $BASH_DATA_DIR && touch $BASH_DATA_DIR/history
-  HISTCONTROL=ignoredups:ignorespace # Don't put duplicate lines in history
-  shopt -s histappend # Append rather than overwriting
-  HISTSIZE=1000
-  HISTFILESIZE=2000
+  export_and_create_file HISTFILE "$XDG_STATE_HOME/bash/history"
   export HISTTIMEFORMAT="%d/%m/%y %T "
+  export HISTCONTROL=ignoredups:ignorespace # Don't put duplicate lines in history
+  shopt -s histappend # Append rather than overwriting
 
   # Check window size after each command
   shopt -s checkwinsize
@@ -326,6 +333,18 @@ Colours used by exa (ls replacement)
 :PROPERTIES:
 :header-args: :noweb-ref zsh-interactive
 :END:
+
+#+begin_src zsh
+
+  # History
+  export_and_create_file HISTFILE "$XDG_STATE_HOME/zsh/history"
+  setopt INC_APPEND_HISTORY  # Add commands to history immediately, not on exit
+  setopt EXTENDED_HISTORY    # Record command timestamps
+  setopt HIST_IGNORE_DUPS    # Do not record duplicate commands
+  setopt HIST_REDUCE_BLANKS  # Do not record blank lines
+  setopt HIST_VERIFY         # Confirm before executing with !! etc
+
+#+end_src
 
 ** Logout
 :PROPERTIES:
@@ -407,6 +426,23 @@ Finally, we need to tell Zsh where to look for its own configuration files.
 :custom_id: utility
 :header-args: :noweb-ref utility-functions
 :END:
+
+#+begin_src sh
+
+  # Example usage: export_and_create_dir GNUPG_HOME "$XDG_CONFIG_HOME/gnupg"
+  export_and_create_dir () {
+      [ ! -f "$2" ] && mkdir -p "$2"
+      export $1="$2"
+  }
+
+  export_and_create_file () {
+      [ ! -f "$2" ] && mkdir -p `dirname "$2"` && touch "$2"
+      export $1="$2"
+  }
+
+#+end_src
+
+*** PATH manipulation
 
 Taken wholesale from https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html.
 These functions can be used to more safely manipulate variables such as =PATH=, since the naïve =PATH=$PATH:foo= also includes the current directory if =PATH= was previously empty.
