@@ -4,6 +4,31 @@
 
 The best place to read this file is at https://quarkQuark.github.io/literate-config/emacs. The org-mode source is stored at https://github.com/quarkQuark/dotfiles/tree/master/.config/emacs.
 
+* Contents :TOC:QUOTE:noexport:
+#+BEGIN_QUOTE
+- [[#installation][Installation]]
+- [[#set-up][Set-up]]
+  - [[#early-init][Early Init]]
+  - [[#package-management][Package management]]
+  - [[#no-litteringel][No-littering.el]]
+- [[#user-interface][User Interface]]
+  - [[#theme][Theme]]
+- [[#keybindings-and-evil-mode][Keybindings and Evil Mode]]
+- [[#ivy-completion][Ivy (completion)]]
+  - [[#interactively-open-dotfiles][Interactively open dotfiles]]
+- [[#programming][Programming]]
+  - [[#emacs-lisp][Emacs Lisp]]
+  - [[#haskell][Haskell]]
+- [[#writing][Writing]]
+  - [[#org-mode][Org Mode]]
+  - [[#lateχ][LaTeΧ]]
+- [[#magit][Magit]]
+- [[#file-management][File management]]
+  - [[#dired][Dired]]
+- [[#projectile][Projectile]]
+- [[#miscellaneous][Miscellaneous]]
+#+END_QUOTE
+
 * Installation
 
 Emacs expects to find user configuration in =.config/emacs/init.el=.  This *literate configuration file* must be *tangled* in order to generate that file and apply the configuration. Once Emacs is installed, this can be done from the command line with the following command:
