@@ -326,7 +326,8 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
   ;; A list of dotfiles, each associated with a keyword.
   (setq quark/dotfile-list
-        '(("Dotfiles README" . "~/README.md")
+        '(("Dotfiles README" . "~/README.org")
+          ("Shells"          . "~/.config/Shells.org")
           ("Emacs"           . "~/.config/emacs/README.org")
           ("XMonad"          . "~/.config/xmonad/README.md")))
 
