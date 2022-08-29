@@ -32,18 +32,12 @@ generates the following file structure:
 
 #+end_src
 
-Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information. In particular, I have copied some [[#utility][utility functions]] which are used for setting the PATH variable.
+Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information. In particular, I have copied some [[#utility-functions][utility functions]] which are used for setting the PATH variable.
 
 Syntax highlighting of shell source blocks in emacs is broken by noweb references, so I use https://github.com/TobiasZawada/org-src-emph/ to fix it, adding the =:emph= header option.
 
-* Contents
-:PROPERTIES:
-:TOC: :include all :depth 2
-:VISIBILITY: folded
-:END:
-
-:CONTENTS:
-- [[#contents][Contents]]
+* Contents :TOC:QUOTE:
+#+BEGIN_QUOTE
 - [[#shell-agnostic][Shell-agnostic]]
   - [[#env][Env]]
   - [[#login][Login]]
@@ -54,27 +48,31 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   - [[#widgets][Widgets]]
   - [[#bash][Bash]]
   - [[#zsh][Zsh]]
-- [[#bash][Bash]]
+- [[#bash-1][Bash]]
   - [[#environment-variables][Environment variables]]
-  - [[#login][Login]]
-  - [[#interactive][Interactive]]
-  - [[#logout][Logout]]
-- [[#zsh][Zsh]]
-  - [[#environment-variables][Environment variables]]
-  - [[#login][Login]]
-  - [[#interactive][Interactive]]
-  - [[#logout][Logout]]
+  - [[#login-1][Login]]
+  - [[#interactive-1][Interactive]]
+  - [[#logout-1][Logout]]
+- [[#zsh-1][Zsh]]
+  - [[#environment-variables-1][Environment variables]]
+  - [[#login-2][Login]]
+  - [[#interactive-2][Interactive]]
+  - [[#logout-2][Logout]]
 - [[#implementation-details][Implementation details]]
   - [[#pointing-to-the-correct-files][Pointing to the correct files]]
   - [[#utility-functions][Utility functions]]
   - [[#file-initialisation][File initialisation]]
-:END:
+#+END_QUOTE
 
 * Shell-agnostic
+:PROPERTIES:
+:CUSTOM_ID: shell-agnostic
+:END:
 
 ** Env
 :PROPERTIES:
 :header-args: :noweb-ref env
+:CUSTOM_ID: env
 :END:
 
 #+begin_src sh
@@ -158,16 +156,19 @@ Colours used by exa (ls replacement)
 ** Login
 :PROPERTIES:
 :header-args: :noweb-ref login
+:CUSTOM_ID: login
 :END:
 
 ** Logout
 :PROPERTIES:
 :header-args: :noweb-ref logout
+:CUSTOM_ID: logout
 :END:
 
 ** Interactive
 :PROPERTIES:
 :header-args: :noweb-ref interactive
+:CUSTOM_ID: interactive
 :END:
 
 #+begin_src sh
@@ -241,10 +242,16 @@ Colours used by exa (ls replacement)
 #+end_src
 
 * Starship Prompt
+:PROPERTIES:
+:CUSTOM_ID: starship-prompt
+:END:
 
 Defined on a shell-by-shell basis since =right_format= is not supported by Bash.
 
 ** Prompt format
+:PROPERTIES:
+:CUSTOM_ID: prompt-format
+:END:
 
 #+begin_src sh :noweb-ref prompt-format
 
@@ -266,6 +273,7 @@ Defined on a shell-by-shell basis since =right_format= is not supported by Bash.
 ** Widgets
 :PROPERTIES:
 :header-args: :noweb-ref prompt-settings
+:CUSTOM_ID: widgets
 :END:
 
 Note that suboptions such as =battery.display= must be surrounded by double square brackets. Annoyingly, emacs hides the brackets and displays them as hyperlinks.
@@ -415,6 +423,9 @@ Not all of these have the correct colours; I will set each up when I encounter i
 #+end_src
 
 ** Bash
+:PROPERTIES:
+:CUSTOM_ID: bash
+:END:
 
 #+begin_src toml :tangle ~/.config/starship/bash.toml :noweb yes
 
@@ -427,6 +438,9 @@ Not all of these have the correct colours; I will set each up when I encounter i
 #+end_src
 
 ** Zsh
+:PROPERTIES:
+:CUSTOM_ID: zsh
+:END:
 
 #+begin_src toml :tangle ~/.config/starship/zsh.toml :noweb yes
 
@@ -440,20 +454,26 @@ Not all of these have the correct colours; I will set each up when I encounter i
 #+end_src
 
 * Bash
+:PROPERTIES:
+:CUSTOM_ID: bash
+:END:
 
 ** Environment variables
 :PROPERTIES:
 :header-args: :noweb-ref bash-env
+:CUSTOM_ID: environment-variables
 :END:
 
 ** Login
 :PROPERTIES:
 :header-args: :noweb-ref bash-login
+:CUSTOM_ID: login
 :END:
 
 ** Interactive
 :PROPERTIES:
 :header-args: :noweb-ref bash-interactive
+:CUSTOM_ID: interactive
 :END:
 
 #+begin_src bash
@@ -531,23 +551,30 @@ The starship prompt should be at the end of =.bashrc=.
 ** Logout
 :PROPERTIES:
 :header-args: :noweb-ref bash-logout
+:CUSTOM_ID: logout
 :END:
 
 * Zsh
+:PROPERTIES:
+:CUSTOM_ID: zsh
+:END:
 
 ** Environment variables
 :PROPERTIES:
 :header-args: :noweb-ref zsh-env
+:CUSTOM_ID: environment-variables
 :END:
 
 ** Login
 :PROPERTIES:
 :header-args: :noweb-ref zsh-login
+:CUSTOM_ID: login
 :END:
 
 ** Interactive
 :PROPERTIES:
 :header-args: :noweb-ref zsh-interactive
+:CUSTOM_ID: interactive
 :END:
 
 #+begin_src zsh
@@ -653,9 +680,13 @@ The starship prompt should be at the end of =.zshrc=.
 ** Logout
 :PROPERTIES:
 :header-args: :noweb-ref zsh-logout
+:CUSTOM_ID: logout
 :END:
 
 * Implementation details
+:PROPERTIES:
+:CUSTOM_ID: implementation-details
+:END:
 
 Every generated file will be prefixed with the following information:
 
@@ -667,6 +698,7 @@ Every generated file will be prefixed with the following information:
 ** Pointing to the correct files
 :PROPERTIES:
 :header-args: :noweb-ref env-setup
+:CUSTOM_ID: pointing-to-the-correct-files
 :END:
 
 From the [[https://www.gnu.org/software/bash/manual/bash.html#Invoked-with-name-sh][Bash manual]],
@@ -703,7 +735,7 @@ We point it to the file at =.local/share/bash/env=, which will follow the struct
 
 #+end_src
 
-This variable is cleared as part of  [[#bash-login-setup][the setup for a Bash login shell]] so that these scripts are not called too many times. Code blocks containing the form =<<env-setup>>= will expand to include the exports in this section. The next snippet ensures that my personal shell-agnostic environment variables will also be exported, as well as some [[#utility][utility functions]].
+This variable is cleared as part of  [[#bash-login-setup][the setup for a Bash login shell]] so that these scripts are not called too many times. Code blocks containing the form =<<env-setup>>= will expand to include the exports in this section. The next snippet ensures that my personal shell-agnostic environment variables will also be exported, as well as some [[#utility-functions][utility functions]].
 
 #+begin_src sh
   <<utility-functions>>
@@ -727,7 +759,7 @@ Finally, we need to tell Zsh where to look for its own configuration files.
 
 ** Utility functions
 :PROPERTIES:
-:custom_id: utility
+:CUSTOM_ID: utility-functions
 :header-args: :noweb-ref utility-functions
 :END:
 
@@ -796,6 +828,9 @@ Each of the three functions =pathremove=, =pathprepend= and =pathappend= have th
 #+end_src
 
 ** File initialisation
+:PROPERTIES:
+:CUSTOM_ID: file-initialisation
+:END:
 
 *** POSIX Shell
 

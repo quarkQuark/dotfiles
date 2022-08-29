@@ -514,9 +514,6 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     (quark/org-font-setup)
     (setq evil-auto-indent nil))
 
-  (use-package org-make-toc
-    :hook (org-mode . (lambda () (add-hook 'before-save-hook 'org-make-toc nil 't))))
-
   (use-package org
     :commands (org-capture org-agenda)
     :hook (org-mode . quark/org-mode-setup)
@@ -532,6 +529,15 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     ;(plist-put org-format-latex-options :foreground 'auto)
     ;(plist-put org-format-latex-options :background 'auto)
     (plist-put org-format-latex-options :scale 1.2))
+
+  (use-package toc-org
+    :hook
+    (org-mode      . toc-org-mode)
+    (markdown-mode . toc-org-mode))
+    ;; Doesn't seem to be able to find markdown-mode-map unless markdown-mode is loaded
+    ;:bind
+    ;(:map markdown-mode-map
+    ;      ("C-c C-o" . toc-org-markdown-follow-thing-at-point)))
 
 #+end_src
 
