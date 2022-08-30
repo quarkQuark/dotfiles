@@ -477,6 +477,12 @@ Not all of these have the correct colours; I will set each up when I encounter i
 :CUSTOM_ID: login
 :END:
 
+** Logout
+:PROPERTIES:
+:header-args: :noweb-ref bash-logout
+:CUSTOM_ID: logout
+:END:
+
 ** Interactive
 :PROPERTIES:
 :header-args: :noweb-ref bash-interactive
@@ -555,12 +561,6 @@ The starship prompt should be at the end of =.bashrc=.
 
 #+end_src
 
-** Logout
-:PROPERTIES:
-:header-args: :noweb-ref bash-logout
-:CUSTOM_ID: logout
-:END:
-
 * Zsh
 :PROPERTIES:
 :CUSTOM_ID: zsh
@@ -576,6 +576,12 @@ The starship prompt should be at the end of =.bashrc=.
 :PROPERTIES:
 :header-args: :noweb-ref zsh-login
 :CUSTOM_ID: login
+:END:
+
+** Logout
+:PROPERTIES:
+:header-args: :noweb-ref zsh-logout
+:CUSTOM_ID: logout
 :END:
 
 ** Interactive
@@ -683,12 +689,6 @@ The starship prompt should be at the end of =.zshrc=.
       || echo "Install starship for better shell prompts"
 
 #+end_src
-
-** Logout
-:PROPERTIES:
-:header-args: :noweb-ref zsh-logout
-:CUSTOM_ID: logout
-:END:
 
 * Implementation details
 :PROPERTIES:
