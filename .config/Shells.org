@@ -671,14 +671,6 @@ The starship prompt should be at the end of =.bashrc=.
 
 #+end_src
 
-*** Prompt
-
-#+begin_src zsh
-  # Enable version control access
-  autoload -Uz vcs_info
-  precmd_vcs_info() { vcs_info }
-#+end_src
-
 The starship prompt should be at the end of =.zshrc=.
 
 #+begin_src bash
