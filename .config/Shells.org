@@ -444,6 +444,17 @@ Not all of these have the correct colours; I will set each up when I encounter i
 
 #+end_src
 
+The starship prompt should be at the end of =.bashrc=.
+
+#+begin_src bash :noweb-ref prompt-bash
+
+  export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/bash.toml"
+  command -v starship >/dev/null \
+      && eval "$(starship init bash)" \
+      || echo "Install starship for better shell prompts"
+
+#+end_src
+
 ** Zsh
 :PROPERTIES:
 :CUSTOM_ID: zsh
@@ -457,6 +468,17 @@ Not all of these have the correct colours; I will set each up when I encounter i
   right_format = """($battery )$time"""
 
   <<prompt-settings>>
+
+#+end_src
+
+The starship prompt should be at the end of =.zshrc=.
+
+#+begin_src zsh :noweb-ref prompt-zsh
+
+  export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/zsh.toml"
+  command -v starship >/dev/null \
+      && eval "$(starship init zsh)" \
+      || echo "Install starship for better shell prompts"
 
 #+end_src
 
@@ -547,17 +569,6 @@ Not all of these have the correct colours; I will set each up when I encounter i
   #    && cat $NEOFETCH_CACHE \
   #    || echo "neofetch not found"
   neofetch
-
-#+end_src
-
-The starship prompt should be at the end of =.bashrc=.
-
-#+begin_src bash
-
-  export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/bash.toml"
-  command -v starship >/dev/null \
-      && eval "$(starship init bash)" \
-      || echo "Install starship for better shell prompts"
 
 #+end_src
 
@@ -668,17 +679,6 @@ The starship prompt should be at the end of =.bashrc=.
   # Vi
   [ -n "^K" ] && bindkey -- "^K" up-line-or-beginning-search
   [ -n "^J" ] && bindkey -- "^J" down-line-or-beginning-search
-
-#+end_src
-
-The starship prompt should be at the end of =.zshrc=.
-
-#+begin_src bash
-
-  export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/zsh.toml"
-  command -v starship >/dev/null \
-      && eval "$(starship init zsh)" \
-      || echo "Install starship for better shell prompts"
 
 #+end_src
 
@@ -896,6 +896,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
 
   <<interactive>>
   <<bash-interactive>>
+  <<prompt-bash>>
   
 #+end_src
 
@@ -938,6 +939,7 @@ If =.bash_profile= is missing, then bash will source =.profile= instead.
   <<intro>>
   <<interactive>>
   <<zsh-interactive>>
+  <<prompt-zsh>>
   
 #+end_src
 
