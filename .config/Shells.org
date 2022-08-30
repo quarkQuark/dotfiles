@@ -4,42 +4,13 @@
 #+PROPERTY: header-args:zsh  :tangle-mode (identity #o444) :mkdirp yes :noweb yes :emph '(("<<" ">>"))
 #+STARTUP: overview
 
-This file provides the source for all my shell startup scripts. Running
-
-#+begin_src sh
-  emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
-#+end_src
-
-generates the following file structure:
-
-#+begin_src
-  ~
-  ├─ .local
-  │  └── share
-  │     ├── bash
-  │     │  └── env
-  │     ├── zsh
-  │     │  ├── .zlogout
-  │     │  ├── .zprofile
-  │     │  ├── .zshenv
-  │     │  └── .zshrc
-  │     └── shrc
-  ├── .bash_logout
-  ├── .bash_profile
-  ├── .bashrc
-  ├── .profile
-  └── .zshenv
-
-#+end_src
-
-Several parts of this implementation, especially the details of [[#Setup]], are heavily influenced by  https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html. I recommend reading that post for further information. In particular, I have copied some [[#utility-functions][utility functions]] which are used for setting the PATH variable.
-
-Syntax highlighting of shell source blocks in emacs is broken by noweb references, so I use https://github.com/TobiasZawada/org-src-emph/ to fix it, adding the =:emph= header option.
+This file provides the source for all my shell startup scripts.
 
 * Contents :TOC:QUOTE:
 #+BEGIN_QUOTE
+- [[#introduction][Introduction]]
 - [[#shell-agnostic][Shell-agnostic]]
-  - [[#env][Env]]
+  - [[#environment][Environment]]
   - [[#login][Login]]
   - [[#logout][Logout]]
   - [[#interactive][Interactive]]
@@ -49,27 +20,70 @@ Syntax highlighting of shell source blocks in emacs is broken by noweb reference
   - [[#bash][Bash]]
   - [[#zsh][Zsh]]
 - [[#bash-1][Bash]]
-  - [[#environment-variables][Environment variables]]
+  - [[#environment-1][Environment]]
   - [[#login-1][Login]]
-  - [[#interactive-1][Interactive]]
   - [[#logout-1][Logout]]
+  - [[#interactive-1][Interactive]]
 - [[#zsh-1][Zsh]]
-  - [[#environment-variables-1][Environment variables]]
+  - [[#environment-2][Environment]]
   - [[#login-2][Login]]
-  - [[#interactive-2][Interactive]]
   - [[#logout-2][Logout]]
+  - [[#interactive-2][Interactive]]
 - [[#implementation-details][Implementation details]]
   - [[#pointing-to-the-correct-files][Pointing to the correct files]]
   - [[#utility-functions][Utility functions]]
   - [[#file-initialisation][File initialisation]]
 #+END_QUOTE
 
+* Introduction
+
+Running
+
+#+begin_src sh
+  emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
+#+end_src
+
+will generate the following files in =HOME=:
+
+#+begin_src
+
+  .local
+  └── share
+     ├── bash
+     │  └── env
+     ├── zsh
+     │  └── .zlogout .zprofile .zshenv .zshrc
+     └── shrc
+  .bash_logout .bash_profile .bashrc .profile .zshenv
+
+#+end_src
+
+Each shell uses a different arrangement of startup files, and follows a different logic for when to execute each of them. Using org-mode, the code can follow a more consistent structure in this file, and emacs will automatically send each fragment to the correct location.
+
+This is not a new idea, and nor does it in theory require emacs or org-mode: it was heavily inspired by a 2013 [[https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html][blog post by Peter Ward]], whose implementation is all built around a clever web of lines such as =source ~/.config/shell/<file>=. In particular, I have copied a few [[#utility-functions][utility functions]] for setting PATH variables.
+
+There is a section for [[#shell-agnostic][shell-agnostic]] configuration as well as one specific to each shell. Each of these sections is then subdivided in the following way:
+
+- Environment ::
+  Primarily for setting environment variables. Code in this section will be executed first in both login and interactive shells.
+
+- Login ::
+  For code that should only run in login shells.
+  
+- Logout ::
+  For code that should run when exiting a login shell.
+  
+- Interactive ::
+  For code that should only run in an interactive shell.
+
+There is also a separate section to configure the prompt using [[https://starship.rs][starship]], since the configuration has only very minor differences between shells depending on whether they support right prompts.
+
 * Shell-agnostic
 :PROPERTIES:
 :CUSTOM_ID: shell-agnostic
 :END:
 
-** Env
+** Environment
 :PROPERTIES:
 :header-args: :noweb-ref env
 :CUSTOM_ID: env
@@ -458,7 +472,7 @@ Not all of these have the correct colours; I will set each up when I encounter i
 :CUSTOM_ID: bash
 :END:
 
-** Environment variables
+** Environment
 :PROPERTIES:
 :header-args: :noweb-ref bash-env
 :CUSTOM_ID: environment-variables
@@ -559,7 +573,7 @@ The starship prompt should be at the end of =.bashrc=.
 :CUSTOM_ID: zsh
 :END:
 
-** Environment variables
+** Environment 
 :PROPERTIES:
 :header-args: :noweb-ref zsh-env
 :CUSTOM_ID: environment-variables
