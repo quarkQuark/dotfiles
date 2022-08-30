@@ -437,7 +437,7 @@ Not all of these have the correct colours; I will set each up when I encounter i
 #+begin_src toml :tangle ~/.config/starship/bash.toml :noweb yes
 
   #add_newline = false  # Don't print an empty line before each prompt
-  format = """$time $battery \
+  format = """$time( $battery) \
   <<prompt-format>>$cmd_duration$sudo$character """
 
   <<prompt-settings>>
@@ -454,7 +454,7 @@ Not all of these have the correct colours; I will set each up when I encounter i
   #add_newline = false  # Don't print an empty line before each prompt
   format = """\
   <<prompt-format>>$cmd_duration$sudo$character """
-  right_format = """$time $battery"""
+  right_format = """($battery )$time"""
 
   <<prompt-settings>>
 
