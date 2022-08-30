@@ -270,17 +270,10 @@ Defined on a shell-by-shell basis since =right_format= is not supported by Bash.
 #+begin_src sh :noweb-ref prompt-format
 
   $username$hostname$localip$docker_context$kubernetes$singularity$openstack$container\
-  [](fg:#1C668D bg:none)\
-  [$directory](fg:white bg:#1C668D)\
-  [](fg:#1C668D bg:#0F9C65)\
-  [$git_branch$hg_branch$package](fg:white bg:#0F9C65)\
-  [](fg:#0F9C65 bg:#B09811)\
-  [$c$cmake$cobol$crystal$daml$dart$deno$dotnet$elixir$elm$erlang$golang$haskell$helm\
-   $java$julia$kotlin$lua$nim$nodejs$ocaml$perl$php$pulumi$purescript$python$raku\
-   $rlang$red$ruby$rust$scala$swift$terraform$vlang$vagrant$zig](bg:#B09811)\
-  $conda$spack$nix_shell\
-  [](fg:#B09811 bg:none)\
-  $memory_usage$jobs\
+  [](fg:#1C668D bg:none)[$directory](fg:white bg:#1C668D)\
+  [](fg:#1C668D bg:#0F9C65)[$git_branch$hg_branch$package](fg:white bg:#0F9C65)\
+  [](fg:#0F9C65 bg:#B09811)[$all](bg:#B09811)\
+  [](fg:#B09811 bg:none)$memory_usage$jobs\
 
 #+end_src
 
