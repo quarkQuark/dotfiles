@@ -93,9 +93,10 @@ There is also a separate section to configure the prompt using [[https://starshi
 
   # PATH
   # Uses the utility functions to make sure the current directory is never in PATH
-  pathprepend ~/.local/bin    PATH
-  pathprepend ~/.scripts/     PATH
-  pathprepend ~/.scripts/repo PATH
+  pathprepend ~/.local/bin           PATH
+  pathprepend ~/.scripts/            PATH
+  pathprepend ~/.scripts/repo        PATH
+  pathprepend ~/.local/share/npm/bin PATH
   pathremove  .  PATH
   pathremove  "" PATH
 
@@ -362,6 +363,9 @@ Note that suboptions such as =battery.display= must be surrounded by double squa
   ignore_branches = ["main", "master"]
   format = " $symbol$branch(:$remote_branch) "
   symbol = " "
+
+  [git_status]
+  disabled = true
 
   [package]
   format = "is $symbol$version "
