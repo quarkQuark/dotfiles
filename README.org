@@ -2,7 +2,7 @@
 
 * Notable programs
 
-Since my emacs configuration is exported from a literate org-mode file, it can be built as a webpage. Therefore the best way to view it is at https://quarkQuark.github.io/literate-config/emacs.
+Since my emacs configuration is exported from a literate org-mode file, it can be built as a webpage. Therefore the best way to view it is at https://quarkQuark.github.io/config/emacs.
 
 My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a separate repository because it is structured as a Haskell project. Similarly, there is also a separate repository containing some of my [[https://github.com/quarkQuark/scripts][shell scripts]].
 
