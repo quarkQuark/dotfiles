@@ -235,9 +235,18 @@ Liked light themes:
 
   (load-theme 'doom-one-light t)
 
+  (use-package dash)
+
+  ;; From emacs wiki
+  (defun font-candidate (&rest fonts)
+    "Return the first available font."
+    (--first (find-font (font-spec :name it)) fonts))
+
   (set-face-attribute 'default        nil :font "Fira Code Retina" :height 101)
   (set-face-attribute 'fixed-pitch    nil :font "Fira Code Retina" :height 101)
-  (set-face-attribute 'variable-pitch nil :font "ETBembo"          :height 120)
+  (set-face-attribute 'variable-pitch nil
+                      :font (font-candidate "ETBembo" "Ubuntu" "DejaVu Sans")
+                      :height 120)
 
   ;; Contrast with font-lock-comment-face, which is base4 on
   (set-face-attribute 'font-lock-doc-face nil :inherit 'font-lock-comment-face
@@ -504,7 +513,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
         (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
     ;; Set heading font sizes.
-    (set-face-attribute 'org-document-title nil :font "ETBembo" :weight 'bold :height 2.0)
+    (set-face-attribute 'org-document-title nil :inherit 'variable-pitch :weight 'bold :height 2.0)
     (dolist (face '((org-level-1 . 1.75)
                     (org-level-2 . 1.5)
                     (org-level-3 . 1.25)
@@ -513,7 +522,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
                     (org-level-6 . 1.0)
                     (org-level-7 . 1.0)
                     (org-level-8 . 1.0)))
-      (set-face-attribute (car face) nil :font "ETBembo" :weight 'medium :height (cdr face)))
+      (set-face-attribute (car face) nil :inherit 'variable-pitch :weight 'medium :height (cdr face)))
 
     ;; Display certain regions in a fixed-pitch font.
     (set-face-attribute 'org-block            nil :foreground nil :inherit 'fixed-pitch)
