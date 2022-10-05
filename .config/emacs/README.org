@@ -151,7 +151,8 @@ Update with =(straight-pull-all)= and apply changes by restarting emacs. View in
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
   (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
+  (setq straight-use-package-by-default t
+        straight-vc-git-default-protocol 'ssh)
 
 #+end_src
 
