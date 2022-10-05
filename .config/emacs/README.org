@@ -236,17 +236,39 @@ Liked light themes:
 
   (load-theme 'doom-one-light t)
 
-  (use-package dash)
+  (use-package ligature
+    :config
+    (ligature-set-ligatures '(prog-mode org-mode)
+                            '("www" "\\\\" "\\\\\\" "//" "///"
+                              "<|" "<|>" "|>" "<>" "</" "</>" "/>"
+                              "<+" "+>" "<+>" "<*" "<*>" "*>" "<$" "<$>" "$>"
+                              "**" "***" "*/" "/*" "**/" "/**"
+                              "!!" "??" "%%" "&&" "||" "||=" "|=" ";;" "::" ":::" "~@" "++" "+++"
+                              "?=" "^=" ":=" "=:=" "==" "===" "!=" "=/=" "!==" "/=" "/=="
+                              "----"
+                              "<!--"
+                              "<--" "<-" "<->" "->" "-->"
+                              "-<" "<<-" "-<<" ">>-" "->>" ">-"
+                              "<=" ">="
+                              "<<<" "<<=" "<<" ">>" ">>=" ">>>"
+                              "<=<" "<==" "<=>" "==>" ">=>"
+                              "=>" "=>>"
+                              "=<<"
+                              "<~~" "<~" "~~" "~>" "~~>"
+                              "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_(" "{-" "-}"
+                              ".-" ".=" ".." "..<" "..."))
+    (global-ligature-mode t))
+    (use-package dash)
 
-  ;; From emacs wiki
-  (defun font-candidate (&rest fonts)
-    "Return the first available font."
-    (--first (find-font (font-spec :name it)) fonts))
+    ;; From emacs wiki
+    (defun font-candidate (&rest fonts)
+      "Return the first available font."
+      (--first (find-font (font-spec :name it)) fonts))
 
   (set-face-attribute 'default        nil :font "Fira Code Retina" :height 101)
   (set-face-attribute 'fixed-pitch    nil :font "Fira Code Retina" :height 101)
   (set-face-attribute 'variable-pitch nil
-                      :font (font-candidate "ETBembo" "Ubuntu" "DejaVu Sans")
+                      :font (font-candidate "ETBembo" "Georgia" "DejaVu Sans")
                       :height 120)
 
   ;; Contrast with font-lock-comment-face, which is base4 on
