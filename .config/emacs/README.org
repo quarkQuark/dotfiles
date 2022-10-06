@@ -457,10 +457,18 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
 #+begin_src emacs-lisp
 
-  ;; Be strict about parentheses.
+  ;; Be strict about parentheses
   (add-hook 'emacs-lisp-mode-hook 'smartparens-strict-mode)
   (use-package evil-cleverparens
     :hook (emacs-lisp-mode . evil-cleverparens-mode))
+
+  ;; Make emacs regex more readable
+  (use-package easy-escape
+    :hook (emacs-lisp-mode . easy-escape-minor-mode))
+
+  ;; Highlight symbols defined by the user
+  (use-package highlight-defined
+    :hook (emacs-lisp-mode . highlight-defined-mode))
 
 #+end_src
 
