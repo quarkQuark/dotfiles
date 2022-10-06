@@ -19,6 +19,7 @@ The best place to read this file is at https://quarkQuark.github.io/literate-con
 - [[#programming][Programming]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#haskell][Haskell]]
+  - [[#css][CSS]]
 - [[#writing][Writing]]
   - [[#org-mode][Org Mode]]
   - [[#lateχ][LaTeΧ]]
@@ -204,8 +205,9 @@ Update with =(straight-pull-all)= and apply changes by restarting emacs. View in
   ;; Preview colour codes
   (use-package rainbow-mode
     :hook
-    (tex-mode . rainbow-mode)
+    (tex-mode  . rainbow-mode)
     (html-mode . rainbow-mode)
+    (css-mode  . rainbow-mode)
     :config (rainbow-mode))
 
 #+end_src
@@ -402,6 +404,8 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
 #+begin_src emacs-lisp
 
+  (setq-default indent-tabs-mode nil)
+
   (defun quark/display-line-numbers ()
     (setq-local display-line-numbers 'visual
                 display-line-numbers-current-absolute t))
@@ -425,14 +429,17 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
   (use-package lsp-ui
     :hook (lsp-mode . lsp-ui-mode)
     :custom
+    (lsp-ui-sideline-show-code-actions t)
     (lsp-ui-doc-show-with-cursor t)
     (lsp-ui-doc-show-with-mouse nil))
 
   (use-package company
-    :hook (lsp-mode . company-mode)
+    :hook
+    (lsp-mode . company-mode)
+    (css-mode . company-mode)
     :bind
     (:map company-active-map ("<tab>" . company-complete-selection))
-    (:map lsp-mode-map ("<tab>" . company-indent-or-complete-common))
+    ;(:map lsp-mode-map ("<tab>" . company-indent-or-complete-common))
     :custom
     (company-minimum-prefix-length 1)
     (company-idle-delay 0.0))
@@ -443,22 +450,6 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
   (use-package evil-nerd-commenter
     :bind ("M-/" . evilnc-comment-or-uncomment-lines))
-
-#+end_src
-
-=Origami= enables code-folding. This package is currently disabled as it throws a warning for using the deprecated =cl=.
-
-#+begin_src emacs-lisp
-
-  ;(use-package origami
-    ;:hook
-    ;(prog-mode . origami-mode)
-    ;;(css-mode  . origami-close-all-nodes)
-    ;:general
-    ;(:keymaps 'evil-normal-state-map
-              ;"TAB" 'origami-recursively-toggle-node)
-    ;:config
-    ;(add-to-list 'origami-parser-alist '(css-mode . origami-c-style-parser)))
 
 #+end_src
 
@@ -489,6 +480,45 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
     (haskell-svg-render-images t))
   (use-package lsp-haskell
     :hook (haskell-mode . lsp-deferred))
+
+#+end_src
+
+** CSS
+
+#+begin_src emacs-lisp
+
+  (use-package com-css-sort
+    :commands
+    (com-css-sort-attributes-block com-css-sort-attributes-document)
+    :bind (:map css-mode-map))
+
+  ;; Requires npm -g install js-beautify
+  (use-package web-beautify
+    :after (css-mode)
+    :bind (:map css-mode-map ("C-c b" . web-beautify-css)))
+
+  ;; Requires npm -g install colorguard
+  (use-package flycheck
+    :hook (css-mode . flycheck-mode))
+  (use-package flycheck-css-colorguard
+    :hook (flycheck-mode . flycheck-css-colorguard-setup)
+    :custom (flycheck-css-colorguard-threshold "1"))
+
+#+end_src
+
+=Origami= enables code-folding. This package is currently disabled as it throws a warning for using the deprecated =cl=.
+
+#+begin_src emacs-lisp
+
+  ;(use-package origami
+    ;:hook
+    ;(prog-mode . origami-mode)
+    ;;(css-mode  . origami-close-all-nodes)
+    ;:general
+    ;(:keymaps 'evil-normal-state-map
+              ;"TAB" 'origami-recursively-toggle-node)
+    ;:config
+    ;(add-to-list 'origami-parser-alist '(css-mode . origami-c-style-parser)))
 
 #+end_src
 
@@ -1173,6 +1203,9 @@ I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git
   ;; Manage .pacnew and .pacsave files on Arch Linux.
   (use-package pacfiles-mode
     :commands pacfiles-start)
+
+  ;; Serve local websites
+  (use-package simple-httpd)
 
 #+end_src
 
