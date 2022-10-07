@@ -574,18 +574,15 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
         (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
     ;; Set heading font sizes.
-    (set-face-attribute 'org-document-title nil :inherit 'variable-pitch :weight 'bold :height 2.0)
-    (dolist (face '((org-level-1 . 1.75)
-                    (org-level-2 . 1.5)
-                    (org-level-3 . 1.25)
-                    (org-level-4 . 1.1)
-                    (org-level-5 . 1.0)
-                    (org-level-6 . 1.0)
-                    (org-level-7 . 1.0)
-                    (org-level-8 . 1.0)))
-      (set-face-attribute (car face) nil :inherit 'variable-pitch :weight 'medium :height (cdr face)))
+    (dolist (level (number-sequence 1 8))
+      (set-face-attribute
+       (intern (format "org-level-%s" level)) nil
+       :inherit (intern (format "outline-%s" level))
+       :weight 'medium
+       :height (cl-case level (1 1.75) (2 1.5) (3 1.25) (4 1.1) (t 1))))  ;; Font size per level
 
-    ;; Display certain regions in a fixed-pitch font.
+    ;; Customise other faces
+    (set-face-attribute 'org-document-title   nil :inherit 'variable-pitch :weight 'bold :height 2.0)
     (set-face-attribute 'org-block            nil :foreground nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-block-begin-line nil :foreground "#aaaaaa" :inherit 'org-block)
     (set-face-attribute 'org-checkbox         nil :inherit 'fixed-pitch)
