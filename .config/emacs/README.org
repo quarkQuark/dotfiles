@@ -1077,6 +1077,71 @@ The package =org-src-emph= adds a =:emph= header argument which can be used to f
 
 #+RESULTS:
 | b | Bookmark | entry | (file+olp  Bookmarks Inbox) | ** %(org-cliplink-capture)%? |
+*** Org Roam
+
+#+begin_src emacs-lisp
+
+  (defun quark/org-roam-make-basic-capture-template (KEY DESCRIPTION SUBDIRECTORY)
+    "Take a KEY, DESCRIPTION and SUBDIRECTORY and return an Org Roam capture template"
+    `(,KEY ,DESCRIPTION plain "%?"
+          :if-new
+          (file+head
+           ,(format "%s/${slug}.org" SUBDIRECTORY)
+           "#+TITLE: ${title}\n#+STARTUP: inlineimages\n\n")
+          :immediate-finish t
+          :unnarrowed t))
+
+  (defun quark/mapcar* (FUNCTION SEQUENCE)
+    "Like `mapcar', but interpretes sublists as multiple arguments."
+    (mapcar (apply-partially 'apply FUNCTION) SEQUENCE))
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+  (use-package org-roam
+    :bind
+    (("C-c n l" . org-roam-buffer-toggle)
+     ("C-c n f" . org-roam-node-find)
+     ("C-c n i" . org-roam-node-insert)
+     ("C-c n c" . org-roam-capture))
+    :custom
+    (org-roam-directory
+     (if (file-directory-p "~/Work") "~/Work/roam-notes" "roam-notes"))
+    (org-roam-completion-everywhere t) ;; Use completion-at-point (C-M-i) to complete note names
+    (org-roam-node-display-template
+     (concat
+      "${type:6} ${title:*} "  ;; Node type from org-roam-node-type below
+      (propertize "${tags:10}" 'face 'org-tag)))
+    (org-roam-capture-templates
+     (quark/mapcar*
+      'quark/org-roam-make-basic-capture-template
+      '(("m" "by me"     "mine")
+        ("r" "reference" "ref")
+        ("w" "wiki"      "wiki")
+        ("i" "inbox"     "inbox"))))
+    :config
+    (org-roam-db-autosync-mode)
+    ;; Differentiate between note types based on directory
+    (cl-defmethod org-roam-node-type ((node org-roam-node))
+      "Return the TYPE of a NODE based on its subdirectory.
+  From https://jethrokuan.github.io/org-roam-guide."
+      (condition-case nil
+          (file-name-nondirectory
+           (directory-file-name
+            (file-name-directory
+             (file-relative-name
+              (org-roam-node-file node) org-roam-directory))))
+        (error ""))))
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+  (use-package org-roam-ui
+    :after org-roam)
+
+#+end_src
 
 ** LaTeΧ
 
