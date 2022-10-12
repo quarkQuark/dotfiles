@@ -44,7 +44,3 @@
 
 \theoremstyle{definition} \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark} \newtheorem*{remark}{Remark}
-
-\newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
-\newcommand{\dd}{\,\mathrm{d}}
-\DeclareDocumentCommand{\pder}{ O{} O{} m }{\frac{\partial^{#2}#1}{\partial#3^{#2}}}

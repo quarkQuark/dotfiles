@@ -1,0 +1,43 @@
+\newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
+\newcommand{\dd}{\,\mathrm{d}}
+\DeclareDocumentCommand{\pder}{ O{} O{} m }{\frac{\partial^{#2}#1}{\partial#3^{#2}}}
+
+\newenvironment{tikzcdbox}
+  {\begin{lrbox}{\tikzcdboxbox}\begin{tikzcd}}
+  {\end{tikzcd}\end{lrbox}\fbox{\usebox{\tikzcdboxbox}}}
+\newsavebox{\tikzcdboxbox}
+
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\coker}{coker}        % Cokernel
+\DeclareMathOperator{\im}{im}              % Image
+\newcommand{\id}[1]{\mathrm{Id}_{#1}}      % Identity map
+\newcommand{\simto}{\xrightarrow{\sim}}
+
+\newcommand{\demph}[1]{\textbf{#1}}        % Emphasis for terms being defined
+\newcommand{\st}{\colon}                   % Separator when defining sets
+\newcommand{\from}{{\colon}\linebreak[0]}  % Colon for f: A --> B
+\newcommand{\lt}[1]{\lim\limits_{\leftarrow #1}}     % Limit
+\newcommand{\colt}[1]{\lim\limits_{\rightarrow #1}}  % Colimit
+
+\newcommand{\cat}[1]{\mathscr{#1}}         % Arbitrary category
+\newcommand{\scat}[1]{\mathbf{#1}}         % Arbitrary small category
+\newcommand{\fcat}[1]{\mathbf{#1}}         % Fixed category
+
+\newcommand{\Set}{\fcat{Set}}              % Category of sets
+\newcommand{\Grp}{\fcat{Grp}}              % Category of groups
+\newcommand{\Ring}{\fcat{Ring}}            % Category of rings
+\newcommand{\Tp}{\fcat{Top}}               % Category of topological spaces
+\newcommand{\Vect}[1]{\fcat{Vect}_{#1}}    % Category of #1-vector spaces
+\newcommand{\kVect}{\Vect{\mathbb{K}}}     % Category of k-vector spaces
+
+\newcommand{\iso}{\cong}                   % Isomorphism
+\newcommand{\eqv}{\simeq}                  % Equivalence
+\newcommand{\of}{\mathbin{\circ}}          % Composition
+
+\newcommand{\ot}{\leftarrow}
+\newcommand{\toby}[1]{\stackrel{#1}{\longrightarrow}}
+\newcommand{\otby}[1]{\stackrel{#1}{\longleftarrow}}
+\newcommand{\toiso}{\toby{\textstyle{}_\sim}}         % Isomorphism arrow
+\newcommand{\incl}{\hookrightarrow}                   % Inclusion arrow
+
+% Some macros were inspired by Leinster's LaTeX source

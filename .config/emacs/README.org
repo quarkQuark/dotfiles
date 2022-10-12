@@ -992,6 +992,12 @@ The following source block contains a copy of the (quite long!) full definition 
             ;(latex natbib "plain" "numeric")
             (t basic))))
 
+  (setq org-latex-packages-alist
+        '(("" "tikz-cd" t)
+          ("" "bm" t)
+          ("" "mathrsfs" t)
+          ("" "quark" t)))
+
 #+end_src
 
 *** Source blocks and babel
