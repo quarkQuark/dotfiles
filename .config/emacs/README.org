@@ -11,6 +11,7 @@ The best place to read this file is at https://quarkQuark.github.io/literate-con
   - [[#early-init][Early Init]]
   - [[#package-management][Package management]]
   - [[#no-litteringel][No-littering.el]]
+  - [[#utility-functions-and-variables][Utility functions and variables]]
 - [[#user-interface][User Interface]]
   - [[#theme][Theme]]
 - [[#keybindings-and-evil-mode][Keybindings and Evil Mode]]
@@ -167,6 +168,18 @@ Update with =(straight-pull-all)= and apply changes by restarting emacs. View in
     (make-directory autosave-dir t)
     (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
           custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+#+end_src
+
+** Utility functions and variables
+
+#+begin_src emacs-lisp
+
+  (defvar quark/work-computer-p (file-directory-p "~/Work")
+    "Check if this is my work computer.")
+
+  (defvar quark/work-dir (if quark/work-computer-p "~/Work" "~")
+    "Directory containing work-related files")
 
 #+end_src
 
@@ -1106,20 +1119,20 @@ The package =org-src-emph= adds a =:emph= header argument which can be used to f
      ("C-c n i" . org-roam-node-insert)
      ("C-c n c" . org-roam-capture))
     :custom
-    (org-roam-directory
-     (if (file-directory-p "~/Work") "~/Work/roam-notes" "roam-notes"))
+    (org-roam-directory (concat quark/work-dir "/roam-notes"))
     (org-roam-completion-everywhere t) ;; Use completion-at-point (C-M-i) to complete note names
     (org-roam-node-display-template
      (concat
       "${type:6} ${title:*} "  ;; Node type from org-roam-node-type below
       (propertize "${tags:10}" 'face 'org-tag)))
     (org-roam-capture-templates
-     (quark/mapcar*
-      'quark/org-roam-make-basic-capture-template
-      '(("m" "by me"     "mine")
-        ("r" "reference" "ref")
-        ("w" "wiki"      "wiki")
-        ("i" "inbox"     "inbox"))))
+     (append
+       (quark/mapcar*
+        'quark/org-roam-make-basic-capture-template
+        '(("m" "by me"        "mine")
+          ("n" "course notes" "notes")
+          ("w" "wiki"         "wiki")
+          ("i" "inbox"        "inbox")))))
     :config
     (org-roam-db-autosync-mode)
     ;; Differentiate between note types based on directory
@@ -1140,6 +1153,52 @@ The package =org-src-emph= adds a =:emph= header argument which can be used to f
 
   (use-package org-roam-ui
     :after org-roam)
+
+#+end_src
+
+*** Org-ref
+
+#+begin_src emacs-lisp
+
+  (use-package pdf-tools)
+
+  (use-package ivy-bibtex
+    :custom
+    (bibtex-completion-bibliography (concat quark/work-dir "/bibliography.bib"))
+    (bibtex-completion-library-path '("~/Zotero/storage/" "~/Documents/"))
+    (bibtex-completion-pdf-field "file")
+    (bibtex-completion-notes-path (concat quark/work-dir "/roam-notes/bib/"))
+    (bibtex-completion-notes-template-multiple-files
+     "#+TITLE: Notes on: ${author-abbrev} (${year}): ${title}\n\nSee [[cite:&${=key=}]]\n\n")
+    (bibtex-completion-additional-search-fields '(keywords))
+    (bibtex-completion-pdf-open-function))
+
+  (use-package org-ref
+    :bind
+    (:map org-mode-map
+          ("C-c ]" . org-ref-insert-link)
+          ("C-c [" . org-ref-insert-link-hydra/body))
+    :config
+    (require 'org-ref-refproc)
+    (add-hook 'org-export-before-parsing-hook 'org-ref-refproc))
+
+  (require 'org-ref-ivy)
+  (setq
+   org-ref-insert-link-function  'org-ref-insert-link-hydra/body
+   org-ref-insert-cite-function  'org-ref-cite-insert-ivy
+   org-ref-insert-label-function 'org-ref-insert-label-ivy)
+
+  (use-package org)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+  (use-package org-roam-bibtex
+    :after '(org-roam org-ref)
+    :hook (org-mode . org-roam-bibtex-mode)
+    :custom
+    (orb-roam-ref-format 'org-ref-v3))
 
 #+end_src
 
