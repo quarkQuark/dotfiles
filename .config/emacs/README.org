@@ -431,7 +431,9 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
   ;; Automatically close parentheses.
   (use-package smartparens
-    :hook (prog-mode . smartparens-mode)
+    :hook
+    (prog-mode . smartparens-mode)
+    (text-mode . smartparens-mode)
     :config (require 'smartparens-config))
 
   (use-package lsp-mode
@@ -626,14 +628,15 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     ;(org-ellipsis " ▾")
     (org-hide-emphasis-markers t)
     (org-startup-indented t)
-    (org-startup-with-latex-preview t)
+    ;(org-startup-with-latex-preview t)
     (org-export-with-smart-quotes t)
     (user-full-name "quarkQuark")
     :config
     ;; Error =Invalid face= on 'default face.
     ;(plist-put org-format-latex-options :foreground 'auto)
     ;(plist-put org-format-latex-options :background 'auto)
-    (plist-put org-format-latex-options :scale 1.2))
+    ;(plist-put org-format-latex-options :scale 1.2)
+    )
 
   (use-package toc-org
     :hook
@@ -915,9 +918,19 @@ The following source block contains a copy of the (quite long!) full definition 
 
 #+begin_src emacs-lisp
 
+  ;; Better LaTeX previews (async)
+  (use-package xenops
+    :hook
+    (org-mode . xenops-mode)
+    (latex-mode . xenops-mode)
+    :custom
+    (xenops-reveal-on-entry t)
+    (xenops-math-image-scale-factor 1.2))
+  ;; Investigate xenops-font-family and xenops-font-height, particularly for latex
+
   ;; Automatically toggle latex preview under cursor.
-  (use-package org-fragtog
-    :hook (org-mode . org-fragtog-mode))
+  ;; (use-package org-fragtog
+  ;;   :hook (org-mode . org-fragtog-mode))
 
   (use-package cdlatex
     :hook (org-mode . org-cdlatex-mode))
@@ -936,10 +949,6 @@ The following source block contains a copy of the (quite long!) full definition 
                    :latex-compiler ("pdflatex -interaction nonstopmode -output-directory %o %f")
                    :image-converter ("gm convert -density %D -trim -antialias %f -quality 100 %O")))
     (setq org-preview-latex-default-process 'graphicsmagick))
-
-  ;; (setq org-latex-packages-alist
-  ;;       '(("" "tikz" t)
-  ;;         ("" "tikz-cd" t)))
 
   ;; (eval-after-load "preview"
   ;;   '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
@@ -999,6 +1008,7 @@ The following source block contains a copy of the (quite long!) full definition 
         '(("" "tikz-cd" t)
           ("" "bm" t)
           ("" "mathrsfs" t)
+          ("" "dsfont" t)
           ("" "quark" t)))
 
 #+end_src
