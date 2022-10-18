@@ -27,7 +27,7 @@ My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a 
      emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
    #+end_src
 
-4. To install the plugins for =neovim=, install =go= and =python-pynvim= then follow the README for [[https://github.com/junegunn/vim-plug][Vim-plug]]. My neovim configuration also needs the packages =nnn=, =fzy= and =ripgrep=.
+4. To install the plugins for =neovim=, install =go= (to build =vim-hexokinase=) and =python-pynvim= then follow the README for [[https://github.com/junegunn/vim-plug][Vim-plug]]. My neovim configuration also needs the packages =nnn=, =fzy= and =ripgrep=.
 
 5. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking. See https://github.com/quarkQuark/xmonad for installation instructions. (I have recently switched to installing =stack= and =ghc= through =ghcup=, which can also be installed from the AUR).
 
