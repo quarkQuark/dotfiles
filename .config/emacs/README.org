@@ -670,7 +670,10 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     :after org
     :hook (org-mode . org-superstar-mode)
     :custom
-    (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇")))
+    (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇"))
+    :config
+    (unless (font-candidate "ETBembo")  ;; Georgia doesn't have the right symbols
+      (set-face-attribute 'org-superstar-header-bullet nil :family "Fira Code Retina")))
 
   ;; Unhide emphasis markers under cursor.
   (use-package org-appear
