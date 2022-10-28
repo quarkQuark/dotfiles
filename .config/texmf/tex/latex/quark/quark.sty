@@ -1,3 +1,9 @@
+\RequirePackage{amsmath, amssymb, amsthm}
+\RequirePackage{xcolor}
+\RequirePackage{etoolbox}
+
+% Some macros were inspired by Leinster's LaTeX source
+
 \newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
 \newcommand{\dd}{\,\mathrm{d}}
 \DeclareDocumentCommand{\pder}{ O{} O{} m }{\frac{\partial^{#2}#1}{\partial#3^{#2}}}
@@ -7,10 +13,16 @@
   {\end{tikzcd}\end{lrbox}\fbox{\usebox{\tikzcdboxbox}}}
 \newsavebox{\tikzcdboxbox}
 
-\DeclareMathOperator{\Hom}{Hom}
+%\NiceMatrixOptions{cell-space-limits = 1pt}
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+\DeclareMathOperator{\Hom}{Hom}            % Homset
+\DeclareMathOperator{\End}{End}            % Endomorphisms
+\DeclareMathOperator{\Aut}{Aut}            % Automorphisms
 \DeclareMathOperator{\coker}{coker}        % Cokernel
 \DeclareMathOperator{\im}{im}              % Image
-\newcommand{\id}[1]{\mathrm{Id}_{#1}}      % Identity map
+\newcommand{\id}[1][]{\mathrm{Id}_{#1}}    % Identity map
+\newcommand{\unit}{\bm{1}}
 \newcommand{\simto}{\xrightarrow{\sim}}
 
 \newcommand{\demph}[1]{\textbf{#1}}        % Emphasis for terms being defined
@@ -18,26 +30,62 @@
 \newcommand{\from}{{\colon}\linebreak[0]}  % Colon for f: A --> B
 \newcommand{\lt}[1]{\lim\limits_{\leftarrow #1}}     % Limit
 \newcommand{\colt}[1]{\lim\limits_{\rightarrow #1}}  % Colimit
+\DeclareMathSymbol{\hyphen}{\mathord}{AMSa}{"39}
 
-\newcommand{\cat}[1]{\mathscr{#1}}         % Arbitrary category
+\newcommand{\cat}[1]{\mathcal{#1}}         % Arbitrary category (some letters hard to read with \mathscr)
 \newcommand{\scat}[1]{\mathbf{#1}}         % Arbitrary small category
 \newcommand{\fcat}[1]{\mathbf{#1}}         % Fixed category
 
 \newcommand{\Set}{\fcat{Set}}              % Category of sets
+\newcommand{\Ab}{\fcat{Ab}}                % Category of abelian groups
 \newcommand{\Grp}{\fcat{Grp}}              % Category of groups
 \newcommand{\Ring}{\fcat{Ring}}            % Category of rings
+\newcommand{\CRing}{\fcat{CRing}}          % Category of commutative rings
 \newcommand{\Tp}{\fcat{Top}}               % Category of topological spaces
-\newcommand{\Vect}[1]{\fcat{Vect}_{#1}}    % Category of #1-vector spaces
-\newcommand{\kVect}{\Vect{\mathbb{K}}}     % Category of k-vector spaces
+\newcommand{\Mod}[2][]{#2\hyphen\fcat{Mod}_{#1}}  % Category of #1-vector spaces
+\newcommand{\field}[1]{\mathds{#1}}
 
-\newcommand{\iso}{\cong}                   % Isomorphism
-\newcommand{\eqv}{\simeq}                  % Equivalence
-\newcommand{\of}{\mathbin{\circ}}          % Composition
+\newcommand{\Vect}[1]{#1\hyphen\fcat{Vect}}            % Cat of #1-vector spaces
+\newcommand{\GVect}[2]{#1\hyphen\fcat{Vect}_{#2}}      % Cat of #2-graded #1-vector spaces
+\newcommand{\FVect}[1]{#1\hyphen\fcat{FinVect}}        % Cat of finite-dimensional #1-vector spaces
+\newcommand{\FGVect}[2]{#1\hyphen\fcat{FinVect}_{#2}}  % Cat of finite-dimensional #2-graded #1-vector spaces
 
-\newcommand{\ot}{\leftarrow}
-\newcommand{\toby}[1]{\stackrel{#1}{\longrightarrow}}
-\newcommand{\otby}[1]{\stackrel{#1}{\longleftarrow}}
-\newcommand{\toiso}{\toby{\textstyle{}_\sim}}         % Isomorphism arrow
-\newcommand{\incl}{\hookrightarrow}                   % Inclusion arrow
+\DeclareMathOperator{\Nil}{Nil}            % Set of nilpotent elements
 
-% Some macros were inspired by Leinster's LaTeX source
+\newcommand{\iso}{\cong}                              % Isomorphism
+\newcommand{\eqv}{\simeq}                             % Equivalence
+\newcommand{\of}{\mathbin{\circ}}                     % Composition
+
+% Optionally labelled rightarrow; should be indistinguishable from default \to when no argument
+\renewcommand*{\to}[1][]{\xrightarrow{\ifblank{#1}{}{\,\,#1\,\,}}}
+\newcommand*{\ot}[1][]{\xleftarrow{\ifblank{#1}{}{\,\,#1\,\,}}} % Same but leftwards
+
+% Double-headed arrows for epimorphisms and surjections
+\newcommand*{\toepi}[1][]{%
+  \mathrel{\ooalign{\(\to[#1\mkern4mu]\)\cr%
+      \hidewidth\(\rightarrow\mkern4mu\)}}
+  }
+\newcommand*{\otepi}[1][]{%
+  \mathrel{\reflectbox{\toepi[\reflectbox{#1}]}}
+  }
+
+% Hooked arrows for monomorphisms and injections
+\newcommand*{\tomono}[1][]{\lhook\joinrel\to[#1]}
+\newcommand*{\otmono}[1][]{\ot[#1]\joinrel\rhook}
+
+\newcommand{\toiso}{\toby{\textstyle{}_\sim}} % Isomorphism arrow
+% Deprecated
+\newcommand{\toby}[1]{\to[#1]}
+\newcommand{\otby}[1]{\ot[#1]}
+\newcommand{\incl}{\tomono}                   % Inclusion arrow
+
+% Better spacing for coloured maths
+\makeatletter
+\def\mathcolor#1#{\@mathcolor{#1}}
+\def\@mathcolor#1#2#3{%
+  \protect\leavevmode
+  \begingroup
+  \color#1{#2}#3%
+  \endgroup
+}
+\makeatother
