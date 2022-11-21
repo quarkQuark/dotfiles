@@ -1,83 +1,127 @@
+\ProvidesPackage{quark}
+
 \RequirePackage{amsmath, amssymb, amsthm}
 \RequirePackage{xcolor}
-\RequirePackage{etoolbox}
+\RequirePackage{xparse}
+%\RequirePackage{etoolbox}
+\RequirePackage{tikz-cd}
+\RequirePackage{bm}
+\RequirePackage{kvoptions}
+\usetikzlibrary{external}
 
-% Some macros were inspired by Leinster's LaTeX source
+\SetupKeyvalOptions{family=quark,prefix=quark@}
+\DeclareStringOption[fig]{tikzDir}[fig]
+\ProcessKeyvalOptions*
+
+\newcommand{\inputtikz}[1]{%
+  \tikzsetnextfilename{#1}% Don't recompile if moved in document
+  \input{\expandonce{\quark@tikzDir}/#1.tikz}%
+}
 
 \newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
 \newcommand{\dd}{\,\mathrm{d}}
-\DeclareDocumentCommand{\pder}{ O{} O{} m }{\frac{\partial^{#2}#1}{\partial#3^{#2}}}
+\NewDocumentCommand {\pder} { O{} O{} m } {\frac{\partial^{#2} #1}{\partial #3^{#2}}}
 
 \newenvironment{tikzcdbox}
   {\begin{lrbox}{\tikzcdboxbox}\begin{tikzcd}}
   {\end{tikzcd}\end{lrbox}\fbox{\usebox{\tikzcdboxbox}}}
 \newsavebox{\tikzcdboxbox}
 
+
 %\NiceMatrixOptions{cell-space-limits = 1pt}
-\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\NewDocumentCommand {\mat} {m} {\begin{pmatrix}#1\end{pmatrix}}
 
-\DeclareMathOperator{\Hom}{Hom}            % Homset
-\DeclareMathOperator{\End}{End}            % Endomorphisms
-\DeclareMathOperator{\Aut}{Aut}            % Automorphisms
-\DeclareMathOperator{\coker}{coker}        % Cokernel
-\DeclareMathOperator{\im}{im}              % Image
-\newcommand{\id}[1][]{\mathrm{Id}_{#1}}    % Identity map
-\newcommand{\unit}{\bm{1}}
-\newcommand{\simto}{\xrightarrow{\sim}}
+% Correct spacing for multicharacter names of maps and morphisms
+% See https://tex.stackexchange.com/questions/16649/too-small-space-when-using-declaremathoperator
+% Adds small spacing on left, none at all on right (so no right-multiplication by scalars)
+% Zero spacing on right is necessary to stop \circ, \otimes etc from becoming unary
+\NewDocumentCommand {\mathmap} {m} {\mathop{}\mathopen{}#1}
 
-\newcommand{\demph}[1]{\textbf{#1}}        % Emphasis for terms being defined
-\newcommand{\st}{\colon}                   % Separator when defining sets
-\newcommand{\from}{{\colon}\linebreak[0]}  % Colon for f: A --> B
-\newcommand{\lt}[1]{\lim\limits_{\leftarrow #1}}     % Limit
-\newcommand{\colt}[1]{\lim\limits_{\rightarrow #1}}  % Colimit
-\DeclareMathSymbol{\hyphen}{\mathord}{AMSa}{"39}
+% Common symbols
+\NewDocumentCommand {\st}     { } {\colon}                               % Separator when defining sets
+\NewDocumentCommand {\from}   { } {{\colon}\linebreak[0]}                % Colon for f: A --> B
+\DeclareMathSymbol  {\hyphen}     {\mathord}{AMSa}{"39}                  % Hyphen (not minus)
+\NewDocumentCommand {\iso}    { } {\cong}                                % Isomorphism
+\NewDocumentCommand {\of}     { } {\mathbin{\circ}}                      % Composition
+\NewDocumentCommand {\eqv}    { } {\simeq}                               % Equivalence
+\NewDocumentCommand {\unit}   { } {\bm{1}}                               % Unit (identity object)
+\NewDocumentCommand {\id}     {o} {\mathmap{\mathrm{id}\IfValueT{#1}{_{#1}}}}  % Identity morphism
 
-\newcommand{\cat}[1]{\mathcal{#1}}         % Arbitrary category (some letters hard to read with \mathscr)
-\newcommand{\scat}[1]{\mathbf{#1}}         % Arbitrary small category
-\newcommand{\fcat}[1]{\mathbf{#1}}         % Fixed category
+% Formatting choices
+\NewDocumentCommand {\demph} {m} {\textbf{#1}} % Emphasis for terms being defined
+\NewDocumentCommand {\field} {m} {\mathds{#1}}
 
-\newcommand{\Set}{\fcat{Set}}              % Category of sets
-\newcommand{\Ab}{\fcat{Ab}}                % Category of abelian groups
-\newcommand{\Grp}{\fcat{Grp}}              % Category of groups
-\newcommand{\Ring}{\fcat{Ring}}            % Category of rings
-\newcommand{\CRing}{\fcat{CRing}}          % Category of commutative rings
-\newcommand{\Tp}{\fcat{Top}}               % Category of topological spaces
-\newcommand{\Mod}[2][]{#2\hyphen\fcat{Mod}_{#1}}  % Category of #1-vector spaces
-\newcommand{\field}[1]{\mathds{#1}}
+% Formatting of category names
+\NewDocumentCommand {\cat}  {m} {\mathcal{#1}} % Arbitrary category
+\NewDocumentCommand {\scat} {m} {\mathbf{#1}}  % Arbitrary small category
+\NewDocumentCommand {\fcat} {m} {\mathbf{#1}}  % Fixed category
 
-\newcommand{\Vect}[1]{#1\hyphen\fcat{Vect}}            % Cat of #1-vector spaces
-\newcommand{\GVect}[2]{#1\hyphen\fcat{Vect}_{#2}}      % Cat of #2-graded #1-vector spaces
-\newcommand{\FVect}[1]{#1\hyphen\fcat{FinVect}}        % Cat of finite-dimensional #1-vector spaces
-\newcommand{\FGVect}[2]{#1\hyphen\fcat{FinVect}_{#2}}  % Cat of finite-dimensional #2-graded #1-vector spaces
+% Standard sets
+\DeclareMathOperator {\Nil}  {Nil}  % Nilpotent elements
+\DeclareMathOperator {\Hom}  {Hom}  % Homset
+\DeclareMathOperator {\End}  {End}  % Endomorphisms
+\DeclareMathOperator {\Aut}  {Aut}  % Automorphisms
+\DeclareMathOperator {\Span} {Span} % Automorphisms
 
-\DeclareMathOperator{\Nil}{Nil}            % Set of nilpotent elements
+% Standard categories
+\NewDocumentCommand {\Set}    {  } {\fcat{Set}}                              % Sets
+\NewDocumentCommand {\Ab}     {  } {\fcat{Ab}}                               % Abelian groups
+\NewDocumentCommand {\Grp}    {  } {\fcat{Grp}}                              % Groups
+\NewDocumentCommand {\Ring}   {  } {\fcat{Ring}}                             % Rings
+\NewDocumentCommand {\CRing}  {  } {\fcat{CRing}}                            % Commutative rings
+\NewDocumentCommand {\Tp}     {  } {\fcat{Top}}                              % Topological spaces
+\NewDocumentCommand {\Mod}    {om} {#2\hyphen\fcat{Mod}\IfValueT{#1}{_{#1}}} % #2-modules over #1
+\NewDocumentCommand {\Chain}  {m } {\fcat{Ch}_{\bullet}(#1)}                 % Chain complexes in #1
+\NewDocumentCommand {\Vect}   {o } {\IfValueT{#1}{#1\hyphen}\fcat{Vect}}     % #1-vector spaces
+\NewDocumentCommand {\SVect}  {o } {\IfValueT{#1}{#1\hyphen}\fcat{SVect}}    % Super #1-VS
+\NewDocumentCommand {\FVect}  {o } {\IfValueT{#1}{#1\hyphen}\fcat{FinVect}}  % #2-graded #1-VS
+\NewDocumentCommand {\GVect}  {om} {\Vect[#1]_{#2}}                          % Finite-dim #1-VS
+\NewDocumentCommand {\FGVect} {om} {\FVect[#1]_{#2}}                         % Finite-dim #2-graded #1-VS
 
-\newcommand{\iso}{\cong}                              % Isomorphism
-\newcommand{\eqv}{\simeq}                             % Equivalence
-\newcommand{\of}{\mathbin{\circ}}                     % Composition
+% Category theoretic constructions
+\DeclareMathOperator {\op}         {op}                           % Opposite category
+\NewDocumentCommand  {\lt}     {m} {\lim\limits_{\leftarrow #1}}  % Limit
+\NewDocumentCommand  {\colt}   {m} {\lim\limits_{\rightarrow #1}} % Colimit
+\DeclareMathOperator {\coker}      {coker}                        % Cokernel
+\DeclareMathOperator {\im}         {im}                           % Image
+\DeclareMathOperator {\coim}       {coim}                         % Coimage
+\NewDocumentCommand  {\eval}   { } {\mathrm{ev}}                  % Evaluation morphism
+\NewDocumentCommand  {\coeval} { } {\mathrm{coev}}                % Coevaluation morphism
+\NewDocumentCommand  {\ctr}    {m} {\cat{Z}(#1)}                  % Centre construction
 
 % Optionally labelled rightarrow; should be indistinguishable from default \to when no argument
-\renewcommand*{\to}[1][]{\xrightarrow{\ifblank{#1}{}{\,\,#1\,\,}}}
-\newcommand*{\ot}[1][]{\xleftarrow{\ifblank{#1}{}{\,\,#1\,\,}}} % Same but leftwards
+\RenewDocumentCommand {\to} {o} {\xrightarrow{\IfValueTF{#1}{\,\,#1\,\,}{}}}
+\NewDocumentCommand   {\ot} {o} {\xleftarrow{\IfValueTF{#1}{\,\,#1\,\,}{}}} % Same but leftwards
+
+% Isomorphism arrows (defined without \to or \ot to avoid extra space)
+\NewDocumentCommand {\toiso} {} {\xrightarrow{\sim}}
+\NewDocumentCommand {\otiso} {} {\xleftarrow{\sim}}
 
 % Double-headed arrows for epimorphisms and surjections
-\newcommand*{\toepi}[1][]{%
-  \mathrel{\ooalign{\(\to[#1\mkern4mu]\)\cr%
-      \hidewidth\(\rightarrow\mkern4mu\)}}
-  }
-\newcommand*{\otepi}[1][]{%
-  \mathrel{\reflectbox{\toepi[\reflectbox{#1}]}}
-  }
+\NewDocumentCommand {\toepi} {O{}} {%
+  \mathrel{\ooalign{\(\to[#1\mkern4mu]\)\cr\hidewidth\(\rightarrow\mkern4mu\)}}
+}
+\NewDocumentCommand {\otepi} {O{}} {\reflectbox{\toepi[\reflectbox{#1}]}}
 
 % Hooked arrows for monomorphisms and injections
-\newcommand*{\tomono}[1][]{\lhook\joinrel\to[#1]}
-\newcommand*{\otmono}[1][]{\ot[#1]\joinrel\rhook}
+\NewDocumentCommand {\tomono} {O{}} {\lhook\joinrel\to[#1]}
+\NewDocumentCommand {\otmono} {O{}} {\ot[#1]\joinrel\rhook}
 
-\newcommand{\toiso}{\toby{\textstyle{}_\sim}} % Isomorphism arrow
 % Deprecated
 \newcommand{\toby}[1]{\to[#1]}
 \newcommand{\otby}[1]{\ot[#1]}
-\newcommand{\incl}{\tomono}                   % Inclusion arrow
+\newcommand{\incl}{\tomono}
+\newcommand{\simto}{\xrightarrow{\sim}}
+
+% Semantic arrows in tikzcd
+\NewDocumentCommand {\epi}  {O{}} {\ar[twoheadrightarrow,#1]}
+\NewDocumentCommand {\mono} {O{}} {\ar[hook,#1]}
+\NewDocumentCommand {\univ} {O{}} {\ar[dotted,#1]}
+\NewDocumentCommand {\eq}   {O{}} {\ar[equal,#1]}
+\NewDocumentCommand {\asc} {smomo}
+  {\ar[#2,"\IfValueT{#3}{#3 \otimes} \alpha_{#4}\IfBooleanT{#1}{^{-1}} \IfValueT{#5}{\otimes #5}"]}
+\NewDocumentCommand {\iasc} {smomo}
+  {\ar[#2,"\IfValueT{#3}{{\id[#3]} \otimes} \alpha_{#4}\IfBooleanT{#1}{^{-1}} \IfValueT{#5}{\otimes {\id[#5]}}"]}
 
 % Better spacing for coloured maths
 \makeatletter
@@ -89,3 +133,17 @@
   \endgroup
 }
 \makeatother
+
+% Colours for distinguishing things
+\definecolor{emph1}{HTML}{b751b6}
+\definecolor{emph2}{HTML}{4078f2}
+\definecolor{emph3}{HTML}{50a14f}
+\NewDocumentCommand {\cI}   {m} {\mathcolor{emph1}{#1}}
+\NewDocumentCommand {\cII}  {m} {\mathcolor{emph2}{#1}}
+\NewDocumentCommand {\cIII} {m} {\mathcolor{emph3}{#1}}
+%\definecolor{myRed}{HTML}{e45649}
+%\definecolor{myOrange}{HTML}{da8548}
+%\definecolor{myGreen}{HTML}{50a14f}
+%\definecolor{myBlue}{HTML}{4078f2}
+%\definecolor{myMagenta}{HTML}{a626a4}
+%\definecolor{myViolet}{HTML}{b751b6}
