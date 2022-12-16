@@ -97,6 +97,7 @@ There is also a separate section to configure the prompt using [[https://starshi
   pathprepend ~/.scripts/            PATH
   pathprepend ~/.scripts/repo        PATH
   pathprepend ~/.local/share/npm/bin PATH
+  pathprepend ~/.spicetify           PATH
   pathremove  .  PATH
   pathremove  "" PATH
 
