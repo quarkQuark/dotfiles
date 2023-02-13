@@ -1,12 +1,14 @@
 \ProvidesPackage{quark}
 
-\RequirePackage{amsmath, amssymb, amsthm}
+\RequirePackage{mathtools} % Includes amsmath
+\RequirePackage{amssymb, amsthm}
 \RequirePackage{xcolor}
 \RequirePackage{xparse}
 %\RequirePackage{etoolbox}
 \RequirePackage{tikz-cd}
 \RequirePackage{bm}
 \RequirePackage{kvoptions}
+\RequirePackage{leftindex}
 \usetikzlibrary{external}
 
 \SetupKeyvalOptions{family=quark,prefix=quark@}
@@ -27,6 +29,8 @@
   {\end{tikzcd}\end{lrbox}\fbox{\usebox{\tikzcdboxbox}}}
 \newsavebox{\tikzcdboxbox}
 
+\NewDocumentCommand {\lact} {mm} {\leftindex^{#1}{#2}} % Left action
+\DeclareMathOperator {\Ad} {Ad}                        % Adjoint action
 
 %\NiceMatrixOptions{cell-space-limits = 1pt}
 \NewDocumentCommand {\mat} {m} {\begin{pmatrix}#1\end{pmatrix}}
@@ -62,11 +66,17 @@
 \DeclareMathOperator {\End}  {End}  % Endomorphisms
 \DeclareMathOperator {\Aut}  {Aut}  % Automorphisms
 \DeclareMathOperator {\Span} {Span} % Automorphisms
+\DeclareMathOperator {\Ob}   {Ob}   % Objects
+\DeclareMathOperator {\Mor}  {Mor}  % Morphisms
 
 % Standard categories
 \NewDocumentCommand {\Set}    {  } {\fcat{Set}}                              % Sets
+\NewDocumentCommand {\Cat}    {  } {\fcat{Cat}}                              % Categories
 \NewDocumentCommand {\Ab}     {  } {\fcat{Ab}}                               % Abelian groups
-\NewDocumentCommand {\Grp}    {  } {\fcat{Grp}}                              % Groups
+\NewDocumentCommand {\Gr}     {  } {\fcat{Gr}}                               % Groups
+\NewDocumentCommand {\Grp}    {  } {\fcat{Gr}}                               % Groups (alt)
+\NewDocumentCommand {\Grpd}   {  } {\fcat{Grpd}}                             % Groupoids
+\NewDocumentCommand {\XMod}   {  } {\fcat{XMod}}                             % Crossed modules
 \NewDocumentCommand {\Ring}   {  } {\fcat{Ring}}                             % Rings
 \NewDocumentCommand {\CRing}  {  } {\fcat{CRing}}                            % Commutative rings
 \NewDocumentCommand {\Tp}     {  } {\fcat{Top}}                              % Topological spaces
@@ -88,24 +98,38 @@
 \NewDocumentCommand  {\eval}   { } {\mathrm{ev}}                  % Evaluation morphism
 \NewDocumentCommand  {\coeval} { } {\mathrm{coev}}                % Coevaluation morphism
 \NewDocumentCommand  {\ctr}    {m} {\cat{Z}(#1)}                  % Centre construction
+\NewDocumentCommand  {\pb}    {oo}                                % Pullback
+  % From https://tex.stackexchange.com/questions/305755/pullback-symbol-of-morphisms
+  {\mathbin{%
+      {}_{\IfValueTF{#1}{#1}{s}}%
+      \kern-\scriptspace{\times}%
+      _{\IfValueTF{#2}{#2}{t}}}}
 
+\NewDocumentCommand {\arrowarg} {o} {\IfValueTF{#1}{\,\,#1\,\,}{}}
+  
 % Optionally labelled rightarrow; should be indistinguishable from default \to when no argument
-\RenewDocumentCommand {\to} {o} {\xrightarrow{\IfValueTF{#1}{\,\,#1\,\,}{}}}
-\NewDocumentCommand   {\ot} {o} {\xleftarrow{\IfValueTF{#1}{\,\,#1\,\,}{}}} % Same but leftwards
+\RenewDocumentCommand {\to} {o} {\xrightarrow{\arrowarg{#1}}}
+\NewDocumentCommand   {\ot} {o} {\xleftarrow{\arrowarg{#1}}} % Same but leftwards
+
+% Double arrows for natural transformations (requires mathtools)
+\RenewDocumentCommand {\nat} {o} {\xRightarrow{\arrowarg{#1}}}
+\NewDocumentCommand   {\tan} {o} {\xLeftarrow{\arrowarg{#1}}} % Same but leftwards
 
 % Isomorphism arrows (defined without \to or \ot to avoid extra space)
-\NewDocumentCommand {\toiso} {} {\xrightarrow{\sim}}
-\NewDocumentCommand {\otiso} {} {\xleftarrow{\sim}}
+\NewDocumentCommand {\toiso}  {} {\xrightarrow{\sim}}
+\NewDocumentCommand {\otiso}  {} {\xleftarrow{\sim}}
+\NewDocumentCommand {\natiso} {} {\xRightarrow{\sim}}
+\NewDocumentCommand {\taniso} {} {\xLeftarrow{\sim}}
 
 % Double-headed arrows for epimorphisms and surjections
-\NewDocumentCommand {\toepi} {O{}} {%
+\NewDocumentCommand {\toepi}  {O{}} {%
   \mathrel{\ooalign{\(\to[#1\mkern4mu]\)\cr\hidewidth\(\rightarrow\mkern4mu\)}}
 }
-\NewDocumentCommand {\otepi} {O{}} {\reflectbox{\toepi[\reflectbox{#1}]}}
+\NewDocumentCommand {\otepi}  {O{}} {\reflectbox{\toepi[\reflectbox{#1}]}}
 
 % Hooked arrows for monomorphisms and injections
-\NewDocumentCommand {\tomono} {O{}} {\lhook\joinrel\to[#1]}
-\NewDocumentCommand {\otmono} {O{}} {\ot[#1]\joinrel\rhook}
+\NewDocumentCommand {\tomono}  {O{}} {\lhook\joinrel\to[#1]}
+\NewDocumentCommand {\otmono}  {O{}} {\ot[#1]\joinrel\rhook}
 
 % Deprecated
 \newcommand{\toby}[1]{\to[#1]}
