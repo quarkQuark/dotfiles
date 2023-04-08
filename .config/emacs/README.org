@@ -50,7 +50,7 @@ Make sure to also download the fonts [[https://github.com/tonsky/FiraCode][Fira 
 
 #+end_src
 
-When Emacs is launched for the first time, it will spend some time downloading and installing various packages.
+When Emacs is launched for the first time, it will spend some time downloading and installing various packages. To install necessary symbol fonts run =M-x all-the-icons-install-fonts=.
 
 * Set-up
 ** Early Init
