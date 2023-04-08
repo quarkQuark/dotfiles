@@ -31,8 +31,6 @@ selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
   save_to_clipboard: false  # Copy selected text to the primary clipboard
 
-alt_send_esc: true  # Send ESC (\x1b) before characters when alt is pressed
-
 mouse:
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }
