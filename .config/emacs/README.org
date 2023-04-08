@@ -581,13 +581,6 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
   (defun quark/org-font-setup ()
     "Set up my font preferences for `org-mode'."
 
-    ;; Prettify list bullets.
-    ;; Seems to work only sometimes?
-    (font-lock-add-keywords
-     'org-mode
-     '(("^ *\\([-]\\) "
-        (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
     ;; Set heading font sizes.
     (dolist (level (number-sequence 1 8))
       (set-face-attribute
@@ -673,7 +666,8 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     :after org
     :hook (org-mode . org-superstar-mode)
     :custom
-    (org-superstar-headline-bullets-list '("◉" "○" "●" "►" "◇"))
+    (org-superstar-headline-bullets-list '("◉" "⚪" "●" "►" "◇"))
+    (org-superstar-item-bullet-alist '((42 . "*") (43 . "∘") (45 . "•")))
     :config
     (unless (font-candidate "ETBembo")  ;; Georgia doesn't have the right symbols
       (set-face-attribute 'org-superstar-header-bullet nil :family "Fira Code Retina")))
