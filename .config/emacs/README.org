@@ -515,10 +515,18 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
 
 #+begin_src emacs-lisp
 
-  ; Needs pip install "python-lsp-server[all]"
+  ; Needs pip install python-lsp-server pylsp-rope ruff-lsp python-lsp-black
+  ; Install pylsp-mypy with pip, or with pipenv if in a virtualenv
   (use-package python
     :straight nil ; python-mode is built-in
-    :hook (python-mode . lsp-deferred))
+    :hook (python-mode . lsp-deferred)
+    :custom
+    (lsp-pylsp-plugins-black-enabled t)
+    (lsp-ruff-lsp-ruff-args ["--select=ALL" "--ignore=ARG,ANN,D,ERA001,T20"])
+    ;; Disabled to prevent duplicate messages
+    (lsp-pylsp-plugins-mccabe-enabled nil)
+    (lsp-pylsp-plugins-pydocstyle-enabled nil))
+
   (use-package kivy-mode)
 
 #+end_src
