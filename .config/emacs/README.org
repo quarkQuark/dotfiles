@@ -42,7 +42,7 @@ Emacs expects to find user configuration in =.config/emacs/init.el=.  This *lite
 
 #+end_src
 
-Make sure to also download the fonts [[https://github.com/tonsky/FiraCode][Fira Code]], [[https://edwardtufte.github.io/et-book/][ET Book]] and Symbola (known to emacs as =ETBembo=):
+Make sure to also download the fonts [[https://github.com/tonsky/FiraCode][Fira Code]], [[https://edwardtufte.github.io/et-book/][ET Book]] and Symbola (known to Emacs as =ETBembo=):
 
 #+begin_src shell
 
@@ -76,11 +76,11 @@ Set XDG directory locations
   ;; From http://technical-hobbyist.blogspot.com/2014/01/xdg-directories-for-emacs.html
 
   (defvar user-emacs-config-directory nil
-    "Directory containing emacs user configuration files.")
+    "Directory containing Emacs user configuration files.")
   (defvar user-emacs-data-directory nil
-    "Directory containing emacs user data and lisp files. This also sets \\[user-emacs-directory].")
+    "Directory containing Emacs user data and Lisp files. This also sets \\[user-emacs-directory].")
   (defvar user-emacs-cache-directory nil
-    "Directory containing emacs cache files which can be deleted without loss of information.")
+    "Directory containing Emacs cache files which can be deleted without loss of information.")
 
   (require 'cl-lib)
   (cl-macrolet ((setq-if-null (variable value)
@@ -137,7 +137,7 @@ Do not use package.el, because I use straight.el instead
   (setq package-enable-at-startup nil)
 #+end_src
 
-Update with =(straight-pull-all)= and apply changes by restarting emacs. View installed with =M-x straight-pull-package= and available recipes with =M-x straight-use-package=. Delete unused packages with =(straight-remove-unused-repos)=.
+Update with =(straight-pull-all)= and apply changes by restarting Emacs. View installed with =M-x straight-pull-package= and available recipes with =M-x straight-use-package=. Delete unused packages with =(straight-remove-unused-repos)=.
 
 #+begin_src emacs-lisp
 
@@ -180,7 +180,7 @@ Update with =(straight-pull-all)= and apply changes by restarting emacs. View in
     "Check if this is my work computer.")
 
   (defvar quark/work-dir (if quark/work-computer-p "~/Work" "~")
-    "Directory containing work-related files")
+    "Directory containing work-related files.")
 
 #+end_src
 
@@ -276,7 +276,7 @@ Liked light themes:
     (global-ligature-mode t))
     (use-package dash)
 
-    ;; From emacs wiki
+    ;; From Emacs wiki
     (defun font-candidate (&rest fonts)
       "Return the first available font."
       (--first (find-font (font-spec :name it)) fonts))
@@ -312,7 +312,7 @@ Liked light themes:
       "ff" 'find-file))
 
   (defun quark/load-dotfile ()
-    "Reload emacs configuration."
+    "Reload Emacs configuration."
     (interactive)
     (load-file (expand-file-name "~/.config/emacs/init.el")))
 
@@ -423,6 +423,7 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
   (setq-default indent-tabs-mode nil)
 
   (defun quark/display-line-numbers ()
+    "Set up line numbers locally according to my preference."
     (setq-local display-line-numbers 'visual
                 display-line-numbers-current-absolute t))
 
@@ -738,32 +739,32 @@ We want to add the following rules for fontifying special blocks:
        (:background "#ebf1fd" :extend t))
       (((class color) (background dark))
        (:background "#28303a" :extend t)))
-    "Face for definition blocks in org-mode.")
+    "Face for definition blocks in `org-mode'.")
 
   (defface org-custom-special-block-lemma
     '((default (:slant italic)))
-    "Face for lemma blocks in org-mode.")
+    "Face for lemma blocks in `org-mode'.")
 
   (defface org-custom-special-block-theorem
     '((((class color) (background light))
        (:background "#fffde8" :extend t))
       (((class color) (background dark))
        (:background "#282815" :extend t)))
-    "Face for theorem blocks in org-mode.")
+    "Face for theorem blocks in `org-mode'.")
 
   (defface org-custom-special-block-proof
     '((((class color) (background light))
        (:foreground "#50a14f" :extend t :inherit 'fixed-pitch))
       (((class color) (background dark))
        (:foreground "#7bc275" :extend t :inherit 'fixed-pitch)))
-    "Face for proof blocks in org-mode.")
+    "Face for proof blocks in `org-mode'.")
 
   (defface org-custom-special-block-eg
     '((((class color) (background light))
        (:foreground "#4078f2" :extend t))
       (((class color) (background dark))
        (:foreground "#51afef" :extend t)))
-    "Face for proof blocks in org-mode.")
+    "Face for proof blocks in `org-mode'.")
 
   (setq quark/org-fontify-custom-special-block-alist
         '(("definition" . 'org-custom-special-block-definition)
@@ -774,6 +775,7 @@ We want to add the following rules for fontifying special blocks:
           ("eg"      . 'org-custom-special-block-eg)))
 
   (defun quark/org-fontify-custom-special-block-face (block-type)
+    "Fontify `org-mode' custom special blocks."
     (cdr (assoc block-type quark/org-fontify-custom-special-block-alist)))
 
 #+end_src
@@ -936,7 +938,7 @@ The following source block contains a copy of the (quite long!) full definition 
     (xenops-mode . quark/xenops-apply-settings))
 
   (defun quark/xenops-apply-settings ()
-    "Configure xenops. For some reason I can't set them the usual way with use-package."
+    "Configure xenops. For some reason I can't set them the usual way with `use-package'."
     (setq xenops-reveal-on-entry t)
     (setq xenops-math-image-scale-factor 1.2)
     ;; Workaround for https://github.com/dandavison/xenops/issues/59
@@ -985,17 +987,17 @@ The following source block contains a copy of the (quite long!) full definition 
         '("my-notes"
           "uonmathreport-colour"
           "uonmathreport22")
-        "List of custom LaTeX classes")
+        "List of custom LaTeX classes.")
 
   ;; Further subheadings become lists.
   (defvar quark/org-latex-classes-sectioning
         '(("\\section{%s}" . "\\section*{%s}")
           ("\\subsection{%s}" . "\\subsection*{%s}")
           ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-        "Commands for exporting org-mode headings to LaTeX.")
+        "Commands for exporting `org-mode' headings to LaTeX.")
 
   (defun quark/org-latex-classes-add-to-list ()
-    "Enable custom LaTeX classes for org-mode LaTeX export"
+    "Enable custom LaTeX classes for `org-mode' LaTeX export."
     (dolist (class quark/org-latex-classes-list)
       (let ((documentclass (format "\\documentclass{%s}" class)))
         (add-to-list 'org-latex-classes
@@ -1134,7 +1136,7 @@ The package =org-src-emph= adds a =:emph= header argument which can be used to f
 #+begin_src emacs-lisp
 
   (defun quark/org-roam-make-basic-capture-template (KEY DESCRIPTION SUBDIRECTORY)
-    "Take a KEY, DESCRIPTION and SUBDIRECTORY and return an Org Roam capture template"
+    "Take a KEY, DESCRIPTION and SUBDIRECTORY and return an Org Roam capture template."
     `(,KEY ,DESCRIPTION plain "%?"
           :if-new
           (file+head
@@ -1144,7 +1146,7 @@ The package =org-src-emph= adds a =:emph= header argument which can be used to f
           :unnarrowed t))
 
   (defun quark/mapcar* (FUNCTION SEQUENCE)
-    "Like `mapcar', but interpretes sublists as multiple arguments."
+    "Apply FUNCTION to each element of SEQUENCE, where each element is a list of arguments to pass."
     (mapcar (apply-partially 'apply FUNCTION) SEQUENCE))
 
 #+end_src
@@ -1380,6 +1382,7 @@ I backup all my [[https://github.com/quarkQuark/dotfiles][dotfiles]] using a git
 #+begin_src emacs-lisp
 
   (defun quark/display-startup-time ()
+    "Print the time Emacs took to start."
     (message "Emacs loaded in %s with %d garbage collections."
              (format "%.2f seconds"
                      (float-time
