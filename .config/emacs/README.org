@@ -931,16 +931,26 @@ The following source block contains a copy of the (quite long!) full definition 
   ;; Better LaTeX previews (async)
   (use-package xenops
     :hook
-    (org-mode . xenops-mode)
-    (latex-mode . xenops-mode)
-    :custom
-    (xenops-reveal-on-entry t)
-    (xenops-math-image-scale-factor 1.2))
-  ;; Investigate xenops-font-family and xenops-font-height, particularly for latex
+    (org-mode    . xenops-mode)
+    (latex-mode  . xenops-mode)
+    (xenops-mode . quark/xenops-apply-settings))
 
-  ;; Automatically toggle latex preview under cursor.
-  ;; (use-package org-fragtog
-  ;;   :hook (org-mode . org-fragtog-mode))
+  (defun quark/xenops-apply-settings ()
+    "Configure xenops. For some reason I can't set them the usual way with use-package."
+    (setq xenops-reveal-on-entry t)
+    (setq xenops-math-image-scale-factor 1.2)
+    ;; Workaround for https://github.com/dandavison/xenops/issues/59
+    (defun xenops-math-reveal (element)
+      "Remove image overlay for ELEMENT.
+    If a prefix argument is in effect, also delete its cache file."
+      (xenops-element-overlays-delete element)
+      (if current-prefix-arg
+          (delete-file (xenops-math-get-cache-file element)))
+      (let ((element-type (plist-get element :type))
+            (begin-content (plist-get element :begin-content)))
+        )
+      (xenops-math-render-below-maybe element)))
+  ;; Investigate xenops-font-family and xenops-font-height, particularly for latex
 
   (use-package cdlatex
     :hook (org-mode . org-cdlatex-mode))
