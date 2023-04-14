@@ -20,6 +20,7 @@ The best place to read this file is at https://quarkQuark.github.io/literate-con
 - [[#programming][Programming]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#haskell][Haskell]]
+  - [[#python][Python]]
   - [[#css][CSS]]
 - [[#writing][Writing]]
   - [[#org-mode][Org Mode]]
@@ -506,6 +507,18 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
     (haskell-svg-render-images t))
   (use-package lsp-haskell
     :hook (haskell-mode . lsp-deferred))
+
+#+end_src
+
+** Python
+
+#+begin_src emacs-lisp
+
+  ; Needs pip install "python-lsp-server[all]"
+  (use-package python
+    :straight nil ; python-mode is built-in
+    :hook (python-mode . lsp-deferred))
+  (use-package kivy-mode)
 
 #+end_src
 
