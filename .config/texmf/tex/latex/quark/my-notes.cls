@@ -13,6 +13,7 @@
 \RequirePackage[all]{my-colours}
 
 % Requires LuaTeX or XeTeX.
+\RequirePackage{unicode-math}  % Fix incorrect rendering of =>
 \RequirePackage{fontspec}
 \setmainfont{ETbb}
 
