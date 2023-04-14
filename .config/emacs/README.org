@@ -41,12 +41,12 @@ Emacs expects to find user configuration in =.config/emacs/init.el=.  This *lite
 
 #+end_src
 
-Make sure to also download the fonts [[https://github.com/tonsky/FiraCode][Fira Code]] and [[https://edwardtufte.github.io/et-book/][ET Book]] (known to emacs as =ETBembo=):
+Make sure to also download the fonts [[https://github.com/tonsky/FiraCode][Fira Code]], [[https://edwardtufte.github.io/et-book/][ET Book]] and Symbola (known to emacs as =ETBembo=):
 
 #+begin_src shell
 
   sudo pacman -S ttf-fira-code
-  yay -S ttf-et-book
+  yay -S ttf-et-book ttf-symbola
 
 #+end_src
 
@@ -285,6 +285,8 @@ Liked light themes:
   (set-face-attribute 'variable-pitch nil
                       :font (font-candidate "ETBembo" "Georgia" "DejaVu Sans")
                       :height 120)
+  (when (member "Symbola" (font-family-list))
+    (set-fontset-font t 'symbol (font-spec :family "Symbola") nil 'prepend))
 
   ;; Contrast with font-lock-comment-face, which is base4 on
   (set-face-attribute 'font-lock-doc-face nil :inherit 'font-lock-comment-face
