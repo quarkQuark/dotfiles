@@ -22,14 +22,33 @@
   \input{\expandonce{\quark@tikzDir}/#1.tikz}%
 }
 
-\newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
-\newcommand{\dd}{\,\mathrm{d}}
-\NewDocumentCommand {\pder} { O{} O{} m } {\frac{\partial^{#2} #1}{\partial #3^{#2}}}
-
 \newenvironment{tikzcdbox}
   {\begin{lrbox}{\tikzcdboxbox}\begin{tikzcd}}
   {\end{tikzcd}\end{lrbox}\fbox{\usebox{\tikzcdboxbox}}}
 \newsavebox{\tikzcdboxbox}
+
+% Apply #1 to only the capital letters in #2
+% From https://tex.stackexchange.com/a/173261
+\ExplSyntaxOn
+\NewDocumentCommand {\oncaps} {mm} {\quark_oncaps:nn{#1}{#2}}
+\tl_new:N \l__quark_oncaps_input_tl
+\cs_new_protected:Npn \quark_oncaps:nn #1 #2
+ {
+  % store the string in a variable
+  \tl_set:Nn \l__quark_oncaps_input_tl { #2 }
+  \regex_replace_all:nnN
+    % search a capital letter (or more)
+    { ([A-Z]+|\cC.\{?[A-Z]+\}?) }
+    % replace the match with \textcolor{#1}{<match>}
+    { \c{#1}\cB\{\1\cE\} }
+    \l__quark_oncaps_input_tl
+  \tl_use:N \l__quark_oncaps_input_tl
+ }
+\ExplSyntaxOff
+
+%\newcommand{\eqtag}[1]{\stepcounter{equation}\tag{\theequation}\label{#1}}
+%\newcommand{\dd}{\,\mathrm{d}}
+%\DeclareDocumentCommand{\pder}{ O{} O{} m }{\frac{\partial^{#2}#1}{\partial#3^{#2}}}
 
 \NewDocumentCommand {\lact} {mm} {\leftindex^{#1}{#2}} % Left action
 \DeclareMathOperator {\Ad} {Ad}                        % Adjoint action
@@ -44,51 +63,67 @@
 \NewDocumentCommand {\mathmap} {m} {\mathop{}\mathopen{}#1}
 
 % Common symbols
-\NewDocumentCommand {\st}     { } {\colon}                               % Separator when defining sets
-\NewDocumentCommand {\from}   { } {{\colon}\linebreak[0]}                % Colon for f: A --> B
-\DeclareMathSymbol  {\hyphen}     {\mathord}{AMSa}{"39}                  % Hyphen (not minus)
-\NewDocumentCommand {\iso}    { } {\cong}                                % Isomorphism
-\NewDocumentCommand {\of}     { } {\mathbin{\circ}}                      % Composition
-\NewDocumentCommand {\eqv}    { } {\simeq}                               % Equivalence
-\NewDocumentCommand {\unit}   { } {\bm{1}}                               % Unit (identity object)
-\NewDocumentCommand {\id}     {o} {\mathmap{\mathrm{id}\IfValueT{#1}{_{#1}}}}  % Identity morphism
+\NewDocumentCommand {\st}        { } {\colon}                               % Separator when defining sets
+\NewDocumentCommand {\from}      { } {{\colon}\linebreak[0]}                % Colon for f: A --> B
+\DeclareMathSymbol  {\hyphen}        {\mathord}{AMSa}{"39}                  % Hyphen (not minus)
+\NewDocumentCommand {\iso}       { } {\cong}                                % Isomorphism
+\NewDocumentCommand {\of}        { } {\mathbin{\circ}}                      % Composition
+\NewDocumentCommand {\eqv}       { } {\simeq}                               % Equivalence
+\NewDocumentCommand {\unit}      { } {\bm{1}}                               % Unit (identity object)
+\NewDocumentCommand {\id}        {o} {\mathmap{\mathrm{id}\IfValueT{#1}{_{#1}}}}  % Identity morphism
+\NewDocumentCommand {\mapsot}    { } {\mathrel{\reflectbox{\ensuremath{\mapsto}}}}
+\NewDocumentCommand {\subnormal} { } {\triangleleft}                     % Normal subgroup
 
 % Formatting choices
-\NewDocumentCommand {\demph} {m} {\textbf{#1}} % Emphasis for terms being defined
-\NewDocumentCommand {\field} {m} {\mathds{#1}}
+\NewDocumentCommand {\demph} {m}    {\textbf{#1}} % Emphasis for terms being defined
+\NewDocumentCommand {\field} {O{k}} {\mathds{#1}}
 
 % Formatting of category names
-\NewDocumentCommand {\cat}  {m} {\mathcal{#1}} % Arbitrary category
-\NewDocumentCommand {\scat} {m} {\mathbf{#1}}  % Arbitrary small category
-\NewDocumentCommand {\fcat} {m} {\mathbf{#1}}  % Fixed category
+\NewDocumentCommand {\cat}   {m} {\mathcal{#1}}                  % Arbitrary category
+\NewDocumentCommand {\ccat}  {m} {\mathbb{#1}}                   % Arbitrary 2-category
+\NewDocumentCommand {\fcat}  {m} {\mathrm{#1}}                   % Fixed category
+\NewDocumentCommand {\fccat} {m} {\mathrm{\oncaps{mathbb}{#1}}}  % Fixed category
 
 % Standard sets
 \DeclareMathOperator {\Nil}  {Nil}  % Nilpotent elements
 \DeclareMathOperator {\Hom}  {Hom}  % Homset
+\DeclareMathOperator {\Nat}  {Nat}  % Natural transformations
 \DeclareMathOperator {\End}  {End}  % Endomorphisms
 \DeclareMathOperator {\Aut}  {Aut}  % Automorphisms
 \DeclareMathOperator {\Span} {Span} % Automorphisms
 \DeclareMathOperator {\Ob}   {Ob}   % Objects
 \DeclareMathOperator {\Mor}  {Mor}  % Morphisms
 
-% Standard categories
-\NewDocumentCommand {\Set}    {  } {\fcat{Set}}                              % Sets
-\NewDocumentCommand {\Cat}    {  } {\fcat{Cat}}                              % Categories
-\NewDocumentCommand {\Ab}     {  } {\fcat{Ab}}                               % Abelian groups
-\NewDocumentCommand {\Gr}     {  } {\fcat{Gr}}                               % Groups
-\NewDocumentCommand {\Grp}    {  } {\fcat{Gr}}                               % Groups (alt)
-\NewDocumentCommand {\Grpd}   {  } {\fcat{Grpd}}                             % Groupoids
-\NewDocumentCommand {\XMod}   {  } {\fcat{XMod}}                             % Crossed modules
-\NewDocumentCommand {\Ring}   {  } {\fcat{Ring}}                             % Rings
-\NewDocumentCommand {\CRing}  {  } {\fcat{CRing}}                            % Commutative rings
-\NewDocumentCommand {\Tp}     {  } {\fcat{Top}}                              % Topological spaces
-\NewDocumentCommand {\Mod}    {om} {#2\hyphen\fcat{Mod}\IfValueT{#1}{_{#1}}} % #2-modules over #1
-\NewDocumentCommand {\Chain}  {m } {\fcat{Ch}_{\bullet}(#1)}                 % Chain complexes in #1
-\NewDocumentCommand {\Vect}   {o } {\IfValueT{#1}{#1\hyphen}\fcat{Vect}}     % #1-vector spaces
-\NewDocumentCommand {\SVect}  {o } {\IfValueT{#1}{#1\hyphen}\fcat{SVect}}    % Super #1-VS
-\NewDocumentCommand {\FVect}  {o } {\IfValueT{#1}{#1\hyphen}\fcat{FinVect}}  % #2-graded #1-VS
-\NewDocumentCommand {\GVect}  {om} {\Vect[#1]_{#2}}                          % Finite-dim #1-VS
-\NewDocumentCommand {\FGVect} {om} {\FVect[#1]_{#2}}                         % Finite-dim #2-graded #1-VS
+% Fixed categories
+\NewDocumentCommand {\Set}     {  }  {\fcat{Set}}                              % Sets
+\NewDocumentCommand {\Ab}      {  }  {\fcat{Ab}}                               % Abelian groups
+\NewDocumentCommand {\Gr}      {  }  {\fcat{Gr}}                               % Groups
+\NewDocumentCommand {\Grp}     {  }  {\fcat{Gr}}                               % Groups (alt)
+\NewDocumentCommand {\Grpd}    {  }  {\fcat{Grpd}}                             % Groupoids
+\NewDocumentCommand {\XMod}    {  }  {\fcat{XMod}}                             % Crossed modules
+\NewDocumentCommand {\Ring}    {  }  {\fcat{Ring}}                             % Rings
+\NewDocumentCommand {\CRing}   {  }  {\fcat{CRing}}                            % Commutative rings
+\NewDocumentCommand {\Tp}      {  }  {\fcat{Top}}                              % Topological spaces
+\NewDocumentCommand {\Mod}     {om}  {#2\hyphen\fcat{Mod}\IfValueT{#1}{_{#1}}} % #2-modules over #1
+\NewDocumentCommand {\Chain}   {m }  {\fcat{Ch}_{\bullet}(#1)}                 % Chain complexes in #1
+\NewDocumentCommand {\Cochain} {m }  {\fcat{Ch}^{\bullet}(#1)}                 % Chain complexes in #1
+\NewDocumentCommand {\Vect}    {o }  {\IfValueT{#1}{#1\hyphen}\fcat{Vect}}     % Vector spaces over #1
+
+% Fixed categories based on Vect
+\NewDocumentCommand {\VVect}   {o  } {\IfValueT{#1}{#1\hyphen}\fcat{2Vect}}    % 2-Vector spaces over #1
+\NewDocumentCommand {\SVect}   {o  } {\IfValueT{#1}{#1\hyphen}\fcat{SVect}}    % Super #1-VS
+\NewDocumentCommand {\FVect}   {o  } {\IfValueT{#1}{#1\hyphen}\fcat{FinVect}}  % Finite-dim #1-VS
+\NewDocumentCommand {\GVect}   {om } {\Vect[#1]_{#2}}                          % #2-graded #1-VS
+\NewDocumentCommand {\GVectco} {omm} {\Vect[#1]_{#2}^{#3}}                     % #2-graded #1-VS with cocycle
+\NewDocumentCommand {\FGVect}  {om } {\FVect[#1]_{#2}}                         % Finite-dim #2-graded #1-VS
+\NewDocumentCommand {\lGVect}  {om } {\Vect[#1]_{#2}^{\ell}}                   % Left-Hom-graded #1-VS
+\NewDocumentCommand {\rGVect}  {om } {\Vect[#1]_{#2}^r}                        % Right-Hom-graded #1-VS
+
+% Fixed 2-categories
+\NewDocumentCommand {\Cat}          { } {\fccat{Cat}}                          % Categories
+\NewDocumentCommand {\ModCat}       {m} {#1\hyphen\fccat{ModCat}}              % Categories with #1-actions
+\NewDocumentCommand {\HomGradedCat} {m} {\fccat{Cat}^{#1}}                     % #1-Hom-graded categories
+\NewDocumentCommand {\GradedCat}    {m} {\fccat{Cat}_{#1}}                     % #1-graded categories
 
 % Category theoretic constructions
 \DeclareMathOperator {\op}         {op}                           % Opposite category
@@ -100,22 +135,23 @@
 \NewDocumentCommand  {\eval}   { } {\mathrm{ev}}                  % Evaluation morphism
 \NewDocumentCommand  {\coeval} { } {\mathrm{coev}}                % Coevaluation morphism
 \NewDocumentCommand  {\ctr}    {m} {\cat{Z}(#1)}                  % Centre construction
+\NewDocumentCommand  {\enrich} {m} {#1\hyphen\Cat}                % #1-enriched categories
+
 \NewDocumentCommand  {\pb}    {oo}                                % Pullback
   % From https://tex.stackexchange.com/questions/305755/pullback-symbol-of-morphisms
   {\mathbin{%
       {}_{\IfValueTF{#1}{#1}{s}}%
       \kern-\scriptspace{\times}%
       _{\IfValueTF{#2}{#2}{t}}}}
-
-\NewDocumentCommand {\arrowarg} {o} {\IfValueTF{#1}{\,\,#1\,\,}{}}
   
 % Optionally labelled rightarrow; should be indistinguishable from default \to when no argument
-\RenewDocumentCommand {\to} {o} {\xrightarrow{\arrowarg{#1}}}
-\NewDocumentCommand   {\ot} {o} {\xleftarrow{\arrowarg{#1}}} % Same but leftwards
+\RenewDocumentCommand {\to} {!o} {\IfValueTF{#1}{\xlongrightarrow{#1}}{\rightarrow}}
+\NewDocumentCommand   {\ot} {!o} {\IfValueTF{#1}{\xlongleftarrow{#1}}{\leftarrow}}
 
 % Double arrows for natural transformations (requires mathtools)
-\RenewDocumentCommand {\nat} {o} {\xRightarrow{\arrowarg{#1}}}
-\NewDocumentCommand   {\tan} {o} {\xLeftarrow{\arrowarg{#1}}} % Same but leftwards
+\NewDocumentCommand {\arrowarg} {o} {\IfValueTF{#1}{\,\,#1\,\,}{}}
+\NewDocumentCommand {\tonat} {O{}} {\xRightarrow{\arrowarg{#1}}}
+\NewDocumentCommand {\otnat} {O{}} {\xLeftarrow{\arrowarg{#1}}}
 
 % Isomorphism arrows (defined without \to or \ot to avoid extra space)
 \NewDocumentCommand {\toiso}  {} {\xrightarrow{\sim}}
@@ -127,11 +163,11 @@
 \NewDocumentCommand {\toepi}  {O{}} {%
   \mathrel{\ooalign{\(\to[#1\mkern4mu]\)\cr\hidewidth\(\rightarrow\mkern4mu\)}}
 }
-\NewDocumentCommand {\otepi}  {O{}} {\reflectbox{\toepi[\reflectbox{#1}]}}
+\NewDocumentCommand {\otepi}  {O{}} {\mathrel{\reflectbox{\ensuremath{\toepi[\reflectbox{#1}]}}}}
 
 % Hooked arrows for monomorphisms and injections
-\NewDocumentCommand {\tomono}  {O{}} {\lhook\joinrel\to[#1]}
-\NewDocumentCommand {\otmono}  {O{}} {\ot[#1]\joinrel\rhook}
+\NewDocumentCommand {\tomono}  {O{}} {\xhookrightarrow{#1}}
+\NewDocumentCommand {\otmono}  {O{}} {\xhookleftarrow{#1}}
 
 % Deprecated
 \newcommand{\toby}[1]{\to[#1]}
@@ -144,6 +180,7 @@
 \NewDocumentCommand {\mono} {O{}} {\ar[hook,#1]}
 \NewDocumentCommand {\univ} {O{}} {\ar[dotted,#1]}
 \NewDocumentCommand {\eq}   {O{}} {\ar[equal,#1]}
+\NewDocumentCommand {\nat}  {O{}} {\ar[Rightarrow,#1]}
 \NewDocumentCommand {\asc} {smomo}
   {\ar[#2,"\IfValueT{#3}{#3 \otimes} \alpha_{#4}\IfBooleanT{#1}{^{-1}} \IfValueT{#5}{\otimes #5}"]}
 \NewDocumentCommand {\iasc} {smomo}
@@ -164,16 +201,9 @@
 \definecolor{emph1}{HTML}{b751b6}
 \definecolor{emph2}{HTML}{4078f2}
 \definecolor{emph3}{HTML}{50a14f}
-\NewDocumentCommand {\cI}   {m} {\mathcolor{emph1}{#1}}
-\NewDocumentCommand {\cII}  {m} {\mathcolor{emph2}{#1}}
-\NewDocumentCommand {\cIII} {m} {\mathcolor{emph3}{#1}}
-%\definecolor{myRed}{HTML}{e45649}
-%\definecolor{myOrange}{HTML}{da8548}
-%\definecolor{myGreen}{HTML}{50a14f}
-%\definecolor{myBlue}{HTML}{4078f2}
-%\definecolor{myMagenta}{HTML}{a626a4}
-%\definecolor{myViolet}{HTML}{b751b6}
-
 \colorlet{bgB}{cyan!5}
 \colorlet{bgY}{yellow!15}
 \colorlet{bgG}{green!5}
+\NewDocumentCommand {\cI}   {m} {\mathcolor{emph1}{#1}}
+\NewDocumentCommand {\cII}  {m} {\mathcolor{emph2}{#1}}
+\NewDocumentCommand {\cIII} {m} {\mathcolor{emph3}{#1}}
