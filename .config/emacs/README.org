@@ -992,7 +992,7 @@ The following source block contains a copy of the (quite long!) full definition 
 #+begin_src emacs-lisp
 
   (defvar quark/org-latex-classes-list
-        '("my-notes"
+        '("quark-notes"
           "uonmathreport-colour"
           "uonmathreport22")
         "List of custom LaTeX classes.")
@@ -1025,7 +1025,7 @@ The following source block contains a copy of the (quite long!) full definition 
     (setq org-latex-compiler "lualatex")
     (setq org-latex-pdf-process '("latexmk -%latex -pvc -view=none %f"))
     (quark/org-latex-classes-add-to-list)
-    (setq org-latex-default-class "my-notes")
+    (setq org-latex-default-class "quark-notes")
     (add-to-list 'org-export-filter-headline-functions 'quark/org-latex-filter-ignoreheading)
     (require 'oc-natbib)
     (require 'oc-biblatex)
@@ -1039,7 +1039,7 @@ The following source block contains a copy of the (quite long!) full definition 
           ("" "bm" t)
           ("" "mathrsfs" t)
           ("" "dsfont" t)
-          ("" "quark" t)))
+          ("" "quark-macros" t)))
 
 #+end_src
 

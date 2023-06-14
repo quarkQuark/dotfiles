@@ -1,11 +1,9 @@
+\ProvidesPackage{quark-colours}
+
+\RequirePackage{etoolbox}
 \RequirePackage{amsmath, amssymb, amsthm}
 \RequirePackage{xcolor}
 \RequirePackage[most]{tcolorbox}
-
-% Allow font size to change.
-\newif\ifall
-\DeclareOption{all}{\alltrue}
-\ProcessOptions\relax
 
 % Doom-one-light theme.
 \definecolor{myRed}{HTML}{e45649}
@@ -16,14 +14,6 @@
 \definecolor{myViolet}{HTML}{b751b6}
 \definecolor{myDarkCyan}{HTML}{005478}
 
-% Match doom-themes org-mode heading colours.
-\addtokomafont{title}{\color{myMagenta}}
-\addtokomafont{section}{\color{myRed}}
-\addtokomafont{subsection}{\color{myOrange}}
-\addtokomafont{subsubsection}{\color{myViolet}}
-
-% Colours for elements without org-mode parallels.
-%\DeclareTextFontCommand{\textbf}{\bfseries\color{myDarkCyan}}
 \colorlet{colProof}{myGreen!85!black}
 \colorlet{colExampleTitle}{myBlue}
 \colorlet{colExampleText}{myBlue}
@@ -111,7 +101,6 @@
     overlay last={\draw[colExampleTitle,line width=.5pt]
         ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west);
     },
-    fontupper=\ifall \small \else \normalsize \fi
 }
 
 % Pre-org-mode compatibility

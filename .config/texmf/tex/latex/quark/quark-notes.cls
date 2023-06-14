@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{my-notes}
+\ProvidesClass{quark-notes}
 
 \LoadClass[reqno]{scrartcl}
 \RequirePackage[margin=1in]{geometry}
@@ -8,9 +8,7 @@
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{xcolor}
 \RequirePackage{xparse}
-
-% My custom colours for headings and environments.
-\RequirePackage[all]{my-colours}
+\RequirePackage{quark-colours}
 
 % Requires LuaTeX or XeTeX.
 \RequirePackage{unicode-math}  % Fix incorrect rendering of =>
