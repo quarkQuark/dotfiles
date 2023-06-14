@@ -64,11 +64,13 @@
     arc = 0.3mm
 }
 \tcolorboxenvironment{remark}{
-    %breakable,
-    before skip=-10pt,
+    blanker,
+    %before skip=-5pt,
+    left=3mm,
+    borderline west={.5pt}{0pt}{colRemarkFG},
     coltext=colRemarkFG,
-    colback=colRemarkBG,
-    boxrule = 0pt
+    %colback=colRemarkBG,
+    %boxrule = 0pt
 }
 
 % Indent proofs behind a coloured vertical bar.
