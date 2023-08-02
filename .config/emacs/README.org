@@ -195,6 +195,11 @@ Update with =(straight-pull-all)= and apply changes by restarting Emacs. View in
   (set-fringe-mode 10)    ; Add breathing room.
   (column-number-mode)    ; Show column number in modeline.
   (size-indication-mode)  ; Show file size in modeline.
+  (when (>= emacs-major-version 29)
+      ; Smooth scrolling.
+      (pixel-scroll-precision-mode)
+      ; Or 'child-frame. Not certain of the difference.
+      (setq show-paren-context-when-offscreen 'overlay))
 
   ;; Scrolls way too fast by default.
   (setq mouse-wheel-scroll-amount '(1 ((control) . 'text-scale))
