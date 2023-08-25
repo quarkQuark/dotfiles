@@ -654,6 +654,7 @@ https://zzamboni.org/post/beautifying-org-mode-in-emacs/
     ;(org-startup-with-latex-preview t)
     (org-export-with-smart-quotes t)
     (user-full-name "quarkQuark")
+    (org-export-default-language "en-gb")
     :config
     ;; Error =Invalid face= on 'default face.
     ;(plist-put org-format-latex-options :foreground 'auto)
