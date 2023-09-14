@@ -972,7 +972,7 @@ The following source block contains a copy of the (quite long!) full definition 
     :hook (org-mode . org-cdlatex-mode))
 
   ;; Default dvipng doesn't support tikz, but imagemagick is broken
-  ;; Solution from github.com/enseishugi/org-mode-tikz-preview
+  ;; Solution from github.com/enseishugi/org-mode-tikz-preview (modified for luatex)
   (with-eval-after-load 'org
     (add-to-list 'org-preview-latex-process-alist
                  '(graphicsmagick
@@ -982,13 +982,9 @@ The following source block contains a copy of the (quite long!) full definition 
                    :image-input-type "pdf"
                    :image-output-type "png"
                    :image-size-adjust (1.0 . 1.0)
-                   :latex-compiler ("pdflatex -interaction nonstopmode -output-directory %o %f")
+                   :latex-compiler ("lualatex -interaction nonstopmode -output-directory %o %f")
                    :image-converter ("gm convert -density %D -trim -antialias %f -quality 100 %O")))
     (setq org-preview-latex-default-process 'graphicsmagick))
-
-  ;; (eval-after-load "preview"
-  ;;   '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
-
 #+end_src
 
 *** Export
