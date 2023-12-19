@@ -29,7 +29,7 @@ My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a 
 
 4. To install the plugins for =neovim=, install =go= (to build =vim-hexokinase=) and =python-pynvim= then follow the README for [[https://github.com/junegunn/vim-plug][Vim-plug]]. My neovim configuration also needs the packages =nnn=, =fzy= and =ripgrep=.
 
-5. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking. See https://github.com/quarkQuark/xmonad for installation instructions. (I have recently switched to installing =stack= and =ghc= through =ghcup=, which can also be installed from the AUR).
+5. Xmonad is built via =stack-static= from the AUR. Arch has packages available from the standard repositories, but these are prone to breakage due to dynamic linking. See https://github.com/quarkQuark/xmonad-quark for installation instructions. (I have recently switched to installing =stack= and =ghc= through =ghcup=, which can also be installed from the AUR).
 
 6. Spotify can be themed and extended using [[https://github.com/spicetify/spicetify-cli][Spicetify]]. I use the [[https://github.com/RandomRuskiy/Themes/tree/master/Tree-Green][Tree-Green]] theme, and extensions can be downloaded from [[https://github.com/3raxton/spicetify-custom-apps-and-extensions][here]]. The Spicetify configuration file doesn't lend itself well to source control as it hardcodes the version number, but it can be set up quite quickly.
 
