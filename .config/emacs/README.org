@@ -512,7 +512,15 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
     (haskell-process-log t)
     (haskell-svg-render-images t))
   (use-package lsp-haskell
-    :hook (haskell-mode . lsp-deferred))
+    :hook
+    (haskell-mode . lsp-deferred)
+    (lsp-mode
+     . (lambda ()
+         (lsp-register-custom-settings
+          ;; Allows use of fourmolu.yaml
+          '(("haskell.plugin.fourmolu.config.external" t t)))))
+    :custom
+    (lsp-haskell-formatting-provider "fourmolu"))
 
 #+end_src
 
