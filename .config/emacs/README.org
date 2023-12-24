@@ -1143,14 +1143,14 @@ The package =org-src-emph= adds a =:emph= header argument which can be used to f
 
 #+end_src
 
-*** Capture templates
+*** COMMENT Capture templates
 
 #+begin_src emacs-lisp
+
   (use-package org-cliplink)
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
 
-  (setq quark/properties-date-string
-        ":PROPERTIES:\n:CAPTURED: %U\n:END:")
+  (setq quark/properties-date-string ":PROPERTIES:\n:CAPTURED: %U\n:END:")
 
   (setq quark/org-capture-bookmark
         `("b" "Bookmark"
@@ -1171,13 +1171,11 @@ The package =org-src-emph= adds a =:emph= header argument which can be used to f
           :unnarrowed t))
 
   (setq org-capture-templates
-        `(,quark/org-capture-bookmark
-          ,quark/org-capture-musician
-          ,quark/org-capture-general))
+        (list quark/org-capture-bookmark
+              quark/org-capture-musician
+              quark/org-capture-general))
 #+end_src
 
-#+RESULTS:
-| b | Bookmark | entry | (file+olp  Bookmarks Inbox) | ** %(org-cliplink-capture)%? |
 *** Org Roam
 
 #+begin_src emacs-lisp
