@@ -971,8 +971,7 @@ The following source block contains a copy of the (quite long!) full definition 
       (if current-prefix-arg
           (delete-file (xenops-math-get-cache-file element)))
       (let ((element-type (plist-get element :type))
-            (begin-content (plist-get element :begin-content)))
-        )
+            (begin-content (plist-get element :begin-content))))
       (xenops-math-render-below-maybe element)))
   ;; Investigate xenops-font-family and xenops-font-height, particularly for latex
 
@@ -1062,7 +1061,8 @@ The following source block contains a copy of the (quite long!) full definition 
           ("" "bm" t)
           ("" "mathrsfs" t)
           ("" "dsfont" t)
-          ("" "quark-macros" t)))
+          ("" "quark-macros" t)
+          ("" "quark-colours" t)))
 
 #+end_src
 

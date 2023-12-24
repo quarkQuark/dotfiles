@@ -5,26 +5,59 @@
 \RequirePackage{xcolor}
 \RequirePackage{xparse}
 %\RequirePackage{etoolbox}
-\RequirePackage{tikz-cd}
-\RequirePackage{bm}
+\RequirePackage{bm}  % Incompatible with unicode-math
 \RequirePackage{kvoptions}
 \RequirePackage{leftindex}
 \RequirePackage{graphicx}
 \RequirePackage{dsfont}
-\usetikzlibrary{external}
+\RequirePackage{environ}
+\usetikzlibrary{cd}
 
 \SetupKeyvalOptions{family=quark,prefix=quark@}
 \DeclareStringOption[fig]{tikzDir}[fig]
 \ProcessKeyvalOptions*
+
+% \bm doesn't work with unicode-math, and \symbfup doesn't work without!
+% unicode-math is great, but requires lualatex or xelatex.
+\NewDocumentCommand {\mybold} {m} {\@ifpackageloaded{unicode-math}{\symbfup{#1}}{\bm{#1}}}
+
+% Tell unicode-math to revert to the standard font for \mathcal
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 
 \newcommand{\inputtikz}[1]{%
   \tikzsetnextfilename{#1}% Don't recompile if moved in document
   \input{\expandonce{\quark@tikzDir}/#1.tikz}%
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make tikz-cd work with externalisation
+% From https://tex.stackexchange.com/a/362104
+
+\def\temp{&} \catcode`&=\active \let&=\temp
+
+\newcommand{\mytikzcdcontext}[2]{
+  \begin{tikzpicture}[baseline=(maintikzcdnode.base)]
+    \node (maintikzcdnode) [inner sep=0, outer sep=0] {\begin{tikzcd}[#2]
+        #1
+    \end{tikzcd}};
+  \end{tikzpicture}}
+
+\NewEnviron{cd}[1][]{%
+% In the following, we need \BODY to expanded before \mytikzcdcontext
+% such that the md5 function gets the tikzcd content with \BODY expanded.
+% Howerver, expand it only once, because the \tikz-macros aren't
+% defined at this point yet. The same thing holds for the arguments to
+% the tikzcd-environment.
+\def\myargs{#1}%
+\edef\mydiagram{\noexpand\mytikzcdcontext{\expandonce\BODY}{\expandonce\myargs}}%
+\mydiagram%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newenvironment{tikzcdbox}
-  {\begin{lrbox}{\tikzcdboxbox}\begin{tikzcd}}
-  {\end{tikzcd}\end{lrbox}\fbox{\usebox{\tikzcdboxbox}}}
+  {\begin{lrbox}{\tikzcdboxbox}\begin{cd}}
+  {\end{cd}\end{lrbox}\fbox{\usebox{\tikzcdboxbox}}}
 \newsavebox{\tikzcdboxbox}
 
 % Apply #1 to only the capital letters in #2
@@ -55,6 +88,7 @@
 
 %\NiceMatrixOptions{cell-space-limits = 1pt}
 \NewDocumentCommand {\mat} {m} {\begin{pmatrix}#1\end{pmatrix}}
+\DeclareMathOperator {\Mat} {Mat}
 
 % Correct spacing for multicharacter names of maps and morphisms
 % See https://tex.stackexchange.com/questions/16649/too-small-space-when-using-declaremathoperator
@@ -62,68 +96,82 @@
 % Zero spacing on right is necessary to stop \circ, \otimes etc from becoming unary
 \NewDocumentCommand {\mathmap} {m} {\mathop{}\mathopen{}#1}
 
+% Formatting choices
+\NewDocumentCommand {\demph}  {m}    {\textbf{#1}}    % Emphasis for terms being defined
+\NewDocumentCommand {\field}  {O{k}} {\mathds{#1}}
+\NewDocumentCommand {\two}    {m}    {\mybold{{#1}}}  % 2-functor or 2-natural transformation (unicode-math)
+
+% Formatting of category names
+\NewDocumentCommand {\cat}   {m} {\mathcal{#1}}                  % Arbitrary category
+\NewDocumentCommand {\scat}  {m} {\mybold{#1}}                  % Arbitrary small category (unicode-math)
+\NewDocumentCommand {\ccat}  {m} {\mathbb{#1}}                   % Arbitrary 2-category
+\NewDocumentCommand {\fcat}  {m} {\mathrm{#1}}                   % Fixed category
+\NewDocumentCommand {\fccat} {m} {\mathrm{\oncaps{mathbb}{#1}}}  % Fixed category
+
 % Common symbols
-\NewDocumentCommand {\st}        { } {\colon}                               % Separator when defining sets
+\NewDocumentCommand {\st}        { } {:}                                    % Separator when defining sets
 \NewDocumentCommand {\from}      { } {{\colon}\linebreak[0]}                % Colon for f: A --> B
 \DeclareMathSymbol  {\hyphen}        {\mathord}{AMSa}{"39}                  % Hyphen (not minus)
 \NewDocumentCommand {\iso}       { } {\cong}                                % Isomorphism
 \NewDocumentCommand {\of}        { } {\mathbin{\circ}}                      % Composition
 \NewDocumentCommand {\eqv}       { } {\simeq}                               % Equivalence
-\NewDocumentCommand {\unit}      { } {\bm{1}}                               % Unit (identity object)
-\NewDocumentCommand {\id}        {o} {\mathmap{\mathrm{id}\IfValueT{#1}{_{#1}}}}  % Identity morphism
+\NewDocumentCommand {\unit}      { } {\mathds{1}}                           % Unit (identity object)
+\NewDocumentCommand {\uunit}     { } {\cat{I}}                              % Unit in a 2-cat
+\NewDocumentCommand {\id}        {o} {\mathmap{\mathrm{id}\IfValueT{#1}{_{#1}}}}  % Identity morphism or nat
+\NewDocumentCommand {\iid}       {o} {\mathmap{\two{id}\IfValueT{#1}{_{#1}}}}  % Identity 2-nat
 \NewDocumentCommand {\mapsot}    { } {\mathrel{\reflectbox{\ensuremath{\mapsto}}}}
 \NewDocumentCommand {\subnormal} { } {\triangleleft}                     % Normal subgroup
 
-% Formatting choices
-\NewDocumentCommand {\demph} {m}    {\textbf{#1}} % Emphasis for terms being defined
-\NewDocumentCommand {\field} {O{k}} {\mathds{#1}}
-
-% Formatting of category names
-\NewDocumentCommand {\cat}   {m} {\mathcal{#1}}                  % Arbitrary category
-\NewDocumentCommand {\ccat}  {m} {\mathbb{#1}}                   % Arbitrary 2-category
-\NewDocumentCommand {\fcat}  {m} {\mathrm{#1}}                   % Fixed category
-\NewDocumentCommand {\fccat} {m} {\mathrm{\oncaps{mathbb}{#1}}}  % Fixed category
-
 % Standard sets
-\DeclareMathOperator {\Nil}  {Nil}  % Nilpotent elements
-\DeclareMathOperator {\Hom}  {Hom}  % Homset
-\DeclareMathOperator {\Nat}  {Nat}  % Natural transformations
-\DeclareMathOperator {\End}  {End}  % Endomorphisms
-\DeclareMathOperator {\Aut}  {Aut}  % Automorphisms
-\DeclareMathOperator {\Span} {Span} % Automorphisms
-\DeclareMathOperator {\Ob}   {Ob}   % Objects
-\DeclareMathOperator {\Mor}  {Mor}  % Morphisms
+\DeclareMathOperator {\Nil}    {Nil}    % Nilpotent elements
+\DeclareMathOperator {\Hom}    {Hom}    % Homset
+\DeclareMathOperator {\Lin}    {Lin}    % Space of linear maps
+\DeclareMathOperator {\Nat}    {Nat}    % Natural transformations
+\DeclareMathOperator {\End}    {End}    % Endomorphisms
+\DeclareMathOperator {\Aut}    {Aut}    % Automorphisms
+\DeclareMathOperator {\Span}   {Span}   % Automorphisms
+\DeclareMathOperator {\Ob}     {Ob}     % Objects
+\DeclareMathOperator {\Mor}    {Mor}    % Morphisms
+\DeclareMathOperator {\Fun}    {Fun}    % Functors
+\DeclareMathOperator {\MonFun} {MonFun} % Monoidal functors
+\DeclareMathOperator {\FFun}   {2Fun}   % 2-functors
 
 % Fixed categories
 \NewDocumentCommand {\Set}     {  }  {\fcat{Set}}                              % Sets
 \NewDocumentCommand {\Ab}      {  }  {\fcat{Ab}}                               % Abelian groups
-\NewDocumentCommand {\Gr}      {  }  {\fcat{Gr}}                               % Groups
-\NewDocumentCommand {\Grp}     {  }  {\fcat{Gr}}                               % Groups (alt)
+\NewDocumentCommand {\Grp}     {  }  {\fcat{Grp}}                              % Groups
+\NewDocumentCommand {\GGrp}    {  }  {\fcat{2Grp}}                             % 2-Groups
 \NewDocumentCommand {\Grpd}    {  }  {\fcat{Grpd}}                             % Groupoids
 \NewDocumentCommand {\XMod}    {  }  {\fcat{XMod}}                             % Crossed modules
 \NewDocumentCommand {\Ring}    {  }  {\fcat{Ring}}                             % Rings
 \NewDocumentCommand {\CRing}   {  }  {\fcat{CRing}}                            % Commutative rings
 \NewDocumentCommand {\Tp}      {  }  {\fcat{Top}}                              % Topological spaces
 \NewDocumentCommand {\Mod}     {om}  {#2\hyphen\fcat{Mod}\IfValueT{#1}{_{#1}}} % #2-modules over #1
+\NewDocumentCommand {\FMod}    {om}  {#2\hyphen\fcat{Mod}\IfValueT{#1}{_{#1}}^f} % #2-modules over #1
+\NewDocumentCommand {\Comod}   {om}  {#2\hyphen\fcat{Comod}\IfValueT{#1}{_{#1}}} % #2-comodules over #1
+\NewDocumentCommand {\FComod}  {om}  {#2\hyphen\fcat{Comod}\IfValueT{#1}{_{#1}}^f} % #2-comodules over #1
+\NewDocumentCommand {\Rep}     {m }  {\fcat{Rep}\left(#1\right)}               % Representations of #1
 \NewDocumentCommand {\Chain}   {m }  {\fcat{Ch}_{\bullet}(#1)}                 % Chain complexes in #1
 \NewDocumentCommand {\Cochain} {m }  {\fcat{Ch}^{\bullet}(#1)}                 % Chain complexes in #1
 \NewDocumentCommand {\Vect}    {o }  {\IfValueT{#1}{#1\hyphen}\fcat{Vect}}     % Vector spaces over #1
 
 % Fixed categories based on Vect
-\NewDocumentCommand {\VVect}   {o  } {\IfValueT{#1}{#1\hyphen}\fcat{2Vect}}    % 2-Vector spaces over #1
 \NewDocumentCommand {\SVect}   {o  } {\IfValueT{#1}{#1\hyphen}\fcat{SVect}}    % Super #1-VS
-\NewDocumentCommand {\FVect}   {o  } {\IfValueT{#1}{#1\hyphen}\fcat{FinVect}}  % Finite-dim #1-VS
+\NewDocumentCommand {\FVect}   {o  } {\Vect[#1]^{fd}}                          % Finite-dim #1-VS
 \NewDocumentCommand {\GVect}   {om } {\Vect[#1]_{#2}}                          % #2-graded #1-VS
 \NewDocumentCommand {\GVectco} {omm} {\Vect[#1]_{#2}^{#3}}                     % #2-graded #1-VS with cocycle
 \NewDocumentCommand {\FGVect}  {om } {\FVect[#1]_{#2}}                         % Finite-dim #2-graded #1-VS
 \NewDocumentCommand {\lGVect}  {om } {\Vect[#1]_{#2}^{\ell}}                   % Left-Hom-graded #1-VS
 \NewDocumentCommand {\rGVect}  {om } {\Vect[#1]_{#2}^r}                        % Right-Hom-graded #1-VS
+\NewDocumentCommand {\Vectskel}{o  } {\Vect[#1]^{sk}}                          % Skeleton of Vect
+\NewDocumentCommand {\FVectskel}{o } {\Vect[#1]^{sk,fd}}                       % Skeleton of FVect
 
 % Fixed 2-categories
 \NewDocumentCommand {\Cat}          { } {\fccat{Cat}}                          % Categories
 \NewDocumentCommand {\ModCat}       {m} {#1\hyphen\fccat{ModCat}}              % Categories with #1-actions
-\NewDocumentCommand {\HomGradedCat} {m} {\fccat{Cat}^{#1}}                     % #1-Hom-graded categories
-\NewDocumentCommand {\GradedCat}    {m} {\fccat{Cat}_{#1}}                     % #1-graded categories
+\NewDocumentCommand {\HomGraded}    {m} {\fccat{Cat}^{#1}}                     % #1-Hom-graded categories
+\NewDocumentCommand {\Graded}       {m} {\fccat{Cat}_{#1}}                     % #1-graded categories
+\NewDocumentCommand {\VVect}        {o} {\IfValueT{#1}{#1\hyphen}\fccat{2Vect}}% 2-Vector spaces over #1
 
 % Category theoretic constructions
 \DeclareMathOperator {\op}         {op}                           % Opposite category
@@ -145,6 +193,7 @@
       _{\IfValueTF{#2}{#2}{t}}}}
   
 % Optionally labelled rightarrow; should be indistinguishable from default \to when no argument
+% Bug: \to works as it should, but \to[] is slightly longer.
 \RenewDocumentCommand {\to} {!o} {\IfValueTF{#1}{\xlongrightarrow{#1}}{\rightarrow}}
 \NewDocumentCommand   {\ot} {!o} {\IfValueTF{#1}{\xlongleftarrow{#1}}{\leftarrow}}
 
@@ -170,20 +219,21 @@
 \NewDocumentCommand {\otmono}  {O{}} {\xhookleftarrow{#1}}
 
 % Deprecated
+\NewDocumentCommand {\Gr} {} {\fcat{Grp}}
 \newcommand{\toby}[1]{\to[#1]}
 \newcommand{\otby}[1]{\ot[#1]}
 \newcommand{\incl}{\tomono}
 \newcommand{\simto}{\xrightarrow{\sim}}
 
 % Semantic arrows in tikzcd
-\NewDocumentCommand {\epi}  {O{}} {\ar[twoheadrightarrow,#1]}
-\NewDocumentCommand {\mono} {O{}} {\ar[hook,#1]}
-\NewDocumentCommand {\univ} {O{}} {\ar[dotted,#1]}
-\NewDocumentCommand {\eq}   {O{}} {\ar[equal,#1]}
-\NewDocumentCommand {\nat}  {O{}} {\ar[Rightarrow,#1]}
-\NewDocumentCommand {\asc} {smomo}
+\NewDocumentCommand {\epi}   {O{}} {\ar[twoheadrightarrow,#1]}
+\NewDocumentCommand {\mono}  {O{}} {\ar[hook,#1]}
+\NewDocumentCommand {\univ}  {O{}} {\ar[dotted,#1]}
+\NewDocumentCommand {\eq}    {O{}} {\ar[equal,#1]}
+\NewDocumentCommand {\nat}   {O{}} {\ar[Rightarrow,#1]}
+\NewDocumentCommand {\asc}   {smomo}
   {\ar[#2,"\IfValueT{#3}{#3 \otimes} \alpha_{#4}\IfBooleanT{#1}{^{-1}} \IfValueT{#5}{\otimes #5}"]}
-\NewDocumentCommand {\iasc} {smomo}
+\NewDocumentCommand {\iasc}  {smomo}
   {\ar[#2,"\IfValueT{#3}{{\id[#3]} \otimes} \alpha_{#4}\IfBooleanT{#1}{^{-1}} \IfValueT{#5}{\otimes {\id[#5]}}"]}
 
 % Better spacing for coloured maths

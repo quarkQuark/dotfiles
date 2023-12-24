@@ -15,8 +15,7 @@
 \definecolor{myDarkCyan}{HTML}{005478}
 
 \colorlet{colProof}{myGreen!85!black}
-\colorlet{colExampleTitle}{myBlue}
-\colorlet{colExampleText}{myBlue}
+\colorlet{colExampleFG}{myBlue!85!black}
 \colorlet{colRemarkFG}{black!80!white}
 
 % Doom-one-light colours don't really work for backgrounds.
@@ -36,7 +35,7 @@
     arc = 0.3mm
 }
 \tcolorboxenvironment{definition}{
-    %breakable,
+    breakable,  % perhaps make this a package option
     %top=1mm,bottom=1mm,left=0.5mm,right=0.5mm,
     before skip=10pt,
     after skip=10pt,
@@ -44,15 +43,15 @@
     boxrule = 0pt,
     arc = 0.3mm
 }
-\tcolorboxenvironment{proposition}{
-    %breakable,
-    %top=4pt,bottom=4pt,
-    before skip=10pt,
-    after skip=10pt,
-    colback=colProp,
-    boxrule = 0pt,
-    arc = 0.3mm
-}
+% \tcolorboxenvironment{proposition}{
+%     %breakable,
+%     %top=4pt,bottom=4pt,
+%     before skip=10pt,
+%     after skip=10pt,
+%     colback=colProp,
+%     boxrule = 0pt,
+%     arc = 0.3mm
+% }
 \tcolorboxenvironment{remark}{
     blanker,
     %before skip=-5pt,
@@ -76,30 +75,46 @@
 % Indent examples behind a coloured vertical bar, with a title line.
 \newtcolorbox{eg}[1][]{
     empty, % Empty default parameters
-	title=Example: #1,
-	attach boxed title to top left,
+    title=Example: #1,
+    attach boxed title to top left,
     minipage boxed title, % Ensure proper line breaking in longer titles
+    coltitle=colExampleFG,
+    fonttitle=\bfseries,
+    coltext=colExampleFG,
     % (boxed title style requires an overlay)
-    boxed title style={empty,size=minimal,toprule=0pt,top=4pt,left=3mm,overlay={}},
-    coltitle=colExampleTitle, fonttitle=\bfseries,
-    coltext=colExampleText,
+    boxed title style={
+      empty,
+      size=minimal,
+      toprule=0pt,
+      top=2pt,
+      left=3mm,
+      overlay={}
+    },
     %
-    before=\par\medskip\noindent,parbox=false,boxsep=0pt,
-    left=3mm,right=0mm,breakable,pad at break=0mm,
+    before=\par\medskip\noindent,
+    before skip=0pt,
+    parbox=false,
+    boxsep=0pt,
+    bottom=0pt,
+    left=3mm,
+    right=0mm,
+    breakable,
+    pad at break=0mm,
     % Use instead of parbox=true. This ensures parskip is inherited by box.
     before upper=\csname @totalleftmargin\endcsname0pt,
     %
-    overlay unbroken={\draw[colExampleTitle,line width=.5pt]
-        ([xshift=-0pt]title.north west) -- ([xshift=-0pt]frame.south west);
+    % Overlay is necessary because borderline doesn't reach the title.
+    overlay unbroken={\draw[colExampleFG,line width=.5pt]
+        (title.north west) -- (frame.south west);
     },
-    overlay first={\draw[colExampleTitle,line width=.5pt]
-        ([xshift=-0pt]title.north west) -- ([xshift=-0pt]frame.south west);
+    overlay first={\draw[colExampleFG,line width=.5pt]
+        (title.north west) -- (frame.south west);
     },
-    overlay middle={\draw[colExampleTitle,line width=.5pt]
-        ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west);
+    overlay middle={\draw[colExampleFG,line width=.5pt]
+        (frame.north west) -- (frame.south west);
     },
-    overlay last={\draw[colExampleTitle,line width=.5pt]
-        ([xshift=-0pt]frame.north west) -- ([xshift=-0pt]frame.south west);
+    overlay last={\draw[colExampleFG,line width=.5pt]
+        (frame.north west) -- (frame.south west);
     },
 }
 
