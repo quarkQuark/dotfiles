@@ -21,6 +21,7 @@ The best place to read this file is at https://quarkQuark.github.io/literate-con
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#haskell][Haskell]]
   - [[#python][Python]]
+  - [[#typescript][TypeScript]]
   - [[#css][CSS]]
 - [[#writing][Writing]]
   - [[#org-mode][Org Mode]]
@@ -557,6 +558,24 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
     (require 'dap-python))
 
   (use-package kivy-mode)
+
+#+end_src
+
+** TypeScript
+
+#+begin_src emacs-lisp
+
+  (defun quark/setup-dap-node ()
+    "Load dap-node and run `dap-node-setup' if necessary"
+    (require 'dap-node)
+    (unless (file-exists-p dap-node-debug-path) (dap-node-setup)))
+
+  (use-package typescript-mode
+    :hook
+    (typescript-mode . lsp-deferred)
+    (typescript-mode . quark/setup-dap-node)
+    (javascript-mode . lsp-deferred)
+    (javascript-mode . quark/setup-dap-node))
 
 #+end_src
 
