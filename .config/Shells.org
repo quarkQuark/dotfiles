@@ -169,6 +169,19 @@ Colours used by exa (ls replacement)
 
 #+end_src
 
+Android development
+
+#+begin_src sh
+
+  export ANDROID_SDK_ROOT=/opt/android-sdk
+  export ANDROID_HOME=$ANDROID_SDK_ROOT
+  pathprepend $ANDROID_SDK_ROOT/tools/bin                PATH
+  #pathprepend $ANDROID_SDK_ROOT/cmdline-tools/latest/bin PATH
+  pathprepend $ANDROID_SDK_ROOT/emulator                 PATH
+  pathprepend $ANDROID_SDK_ROOT/platform-tools           PATH
+
+#+end_src
+
 ** Login
 :PROPERTIES:
 :header-args: :noweb-ref login
