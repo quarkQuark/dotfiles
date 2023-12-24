@@ -442,7 +442,7 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
   (use-package smartparens
     :hook
     (prog-mode . smartparens-mode)
-    (text-mode . smartparens-mode)
+    ;(text-mode . smartparens-mode)
     :config (require 'smartparens-config))
 
   (use-package lsp-mode
@@ -454,17 +454,22 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
   (use-package lsp-ui
     :hook (lsp-mode . lsp-ui-mode)
     :custom
-    (lsp-ui-sideline-show-code-actions t)
+    (lsp-ui-sideline-show-code-actions nil)
+    (lsp-ui-sideline-show-symbol nil)
     (lsp-ui-doc-show-with-cursor t)
-    (lsp-ui-doc-show-with-mouse nil))
+    (lsp-ui-doc-show-with-mouse nil)
+    :config
+    (defun lsp-ui-sideline--compute-height nil '(height unspecified)))
 
   (use-package company
     :hook
     (lsp-mode . company-mode)
     (css-mode . company-mode)
     :bind
-    (:map company-active-map ("<tab>" . company-complete-selection))
+    (:map company-active-map ("TAB" . company-complete-selection))
     ;(:map lsp-mode-map ("<tab>" . company-indent-or-complete-common))
+    (:map company-active-map ("RET" . nil))
+    (:map company-active-map ("<return>" . nil))
     :custom
     (company-minimum-prefix-length 1)
     (company-idle-delay 0.0))
@@ -475,6 +480,14 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
 
   (use-package evil-nerd-commenter
     :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+
+  (use-package tree-sitter
+    :config (global-tree-sitter-mode)
+    :hook (tree-sitter-after-on . tree-sitter-hl-mode))
+  (use-package tree-sitter-langs
+    :after tree-sitter)
+
+  (use-package dap-mode)
 
 #+end_src
 
@@ -528,7 +541,7 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
 
 #+begin_src emacs-lisp
 
-  ; Needs pip install python-lsp-server pylsp-rope ruff-lsp python-lsp-black
+  ; Needs pip install python-lsp-server pylsp-rope ruff-lsp python-lsp-black debugpy
   ; Install pylsp-mypy with pip, or with pipenv if in a virtualenv
   (use-package python
     :straight nil ; python-mode is built-in
@@ -536,9 +549,12 @@ Lsp-mode requires =haskell-language-server=. If running Arch Linux, make sure to
     :custom
     (lsp-pylsp-plugins-black-enabled t)
     (lsp-ruff-lsp-ruff-args ["--select=ALL" "--ignore=ARG,ANN,D,ERA001,T20"])
+    (dap-python-debugger 'debugpy)
     ;; Disabled to prevent duplicate messages
     (lsp-pylsp-plugins-mccabe-enabled nil)
-    (lsp-pylsp-plugins-pydocstyle-enabled nil))
+    (lsp-pylsp-plugins-pydocstyle-enabled nil)
+    :config
+    (require 'dap-python))
 
   (use-package kivy-mode)
 
