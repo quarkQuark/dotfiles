@@ -358,6 +358,8 @@ Liked light themes:
                       :timeout 0.25
                       "k" 'evil-normal-state))
 
+  (use-package evil-numbers)
+
 #+end_src
 
 * Ivy (completion)
@@ -506,8 +508,8 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
     :hook (emacs-lisp-mode . easy-escape-minor-mode))
 
   ;; Highlight symbols defined by the user
-  (use-package highlight-defined
-    :hook (emacs-lisp-mode . highlight-defined-mode))
+  ;; (use-package highlight-defined
+  ;;   :hook (emacs-lisp-mode . highlight-defined-mode))
 
 #+end_src
 
