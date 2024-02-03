@@ -792,6 +792,7 @@ Org-mode does not expose an option for font-locking of individual special blocks
 We want to add the following rules for fontifying special blocks:
 
 #+begin_src emacs-lisp
+  ;; To identify a colour from xcolor in latex, add \begin{testcolors}\testcolor{myCol}\end{testcolors}
 
   (defface org-custom-special-block-definition
     '((((class color) (background light))
@@ -804,9 +805,17 @@ We want to add the following rules for fontifying special blocks:
     '((default (:slant italic)))
     "Face for lemma blocks in `org-mode'.")
 
+  (defface org-custom-special-block-proposition
+    '((((class color) (background light))
+       (:background "#fff2e5" :extend t))
+      ;; (((class color) (background dark))
+      ;;  (:background "#282815" :extend t))
+      )
+    "Face for proposition blocks in `org-mode'.")
+
   (defface org-custom-special-block-theorem
     '((((class color) (background light))
-       (:background "#fffde8" :extend t))
+       (:background "#ffffe5" :extend t))
       (((class color) (background dark))
        (:background "#282815" :extend t)))
     "Face for theorem blocks in `org-mode'.")
@@ -826,12 +835,13 @@ We want to add the following rules for fontifying special blocks:
     "Face for proof blocks in `org-mode'.")
 
   (setq quark/org-fontify-custom-special-block-alist
-        '(("definition" . 'org-custom-special-block-definition)
-          ("lemma"      . 'org-custom-special-block-lemma)
-          ("theorem"    . 'org-custom-special-block-theorem)
-          ("corollary"  . 'org-custom-special-block-lemma)
-          ("proof"      . 'org-custom-special-block-proof)
-          ("eg"      . 'org-custom-special-block-eg)))
+        '(("definition"  . 'org-custom-special-block-definition)
+          ("lemma"       . 'org-custom-special-block-lemma)
+          ("proposition" . 'org-custom-special-block-proposition)
+          ("theorem"     . 'org-custom-special-block-theorem)
+          ("corollary"   . 'org-custom-special-block-lemma)
+          ("proof"       . 'org-custom-special-block-proof)
+          ("eg"          . 'org-custom-special-block-eg)))
 
   (defun quark/org-fontify-custom-special-block-face (block-type)
     "Fontify `org-mode' custom special blocks."
