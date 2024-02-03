@@ -412,7 +412,7 @@ This command (bound to =SPC f d=) allows me to search for and open dotfiles.
         '(("Dotfiles README" . "~/README.org")
           ("Shells"          . "~/.config/Shells.org")
           ("Emacs"           . "~/.config/emacs/README.org")
-          ("XMonad"          . "~/.config/xmonad/README.md")))
+          ("XMonad"          . "~/Projects/xmonad-quark/README.org")))
 
   (defun quark/ivy-open-dotfile ()
     "Open configuration file for PROGRAM."
