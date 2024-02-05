@@ -208,6 +208,8 @@ Android development
   export HISTSIZE=100000      # Commands to hold in memory
   export HISTFILESIZE=100000  # Commands to store in Bash HISTFILE
   export SAVEHIST=100000      # Commands to store in Zsh HISTFILE
+
+  fastfetch
   
 #+end_src
 
@@ -554,17 +556,6 @@ Not all of these have the correct colours; I will set each up when I encounter i
   # Make less more friendly for non-plain text files
   #[ -x /usr/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe)"
   LESSOPEN="|lesspipe.sh %s"; export LESSOPEN
-
-  ## Check and update neofetch cache
-  #NEOFETCH_CACHE=$XDG_CACHE_HOME/neofetch.txt
-  #command -v neofetch >/dev/null \
-  #    && [[ ! `find $NEOFETCH_CACHE -mtime -1 >/dev/null` ]] \
-  #    && neofetch > $NEOFETCH_CACHE
-  ## Print out neofetch cache
-  #[ -f $NEOFETCH_CACHE ] \
-  #    && cat $NEOFETCH_CACHE \
-  #    || echo "neofetch not found"
-  neofetch
 
 #+end_src
 
