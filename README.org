@@ -2,9 +2,13 @@
 
 * Notable programs
 
-Since my emacs configuration is exported from a literate org-mode file, it can be built as a webpage. Therefore the best way to view it is at https://quarkQuark.github.io/config/emacs.
+Most of my user configuration files are stored in this repository. However, two of the programs with the most interesting configurations are hosted in their own repositories. These are:
 
-My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a separate repository because it is structured as a Haskell project. Similarly, there is also a separate repository containing some of my [[https://github.com/quarkQuark/scripts][shell scripts]].
+- Emacs, my text editor, with an extensive literate elisp configuration hosted at https://github.com/quarkQuark/emacs-config. The best way to read it, however, is at https://quarkQuark.github.io/config/emacs, where it is built into its own webpage.
+
+- My configuration for the XMonad tiling window manager is in [[https://github.com/quarkQuark/xmonad-quark][a separate repository]] because it is structured as a Haskell project.
+
+There is also a separate repository containing my disorganised collection of [[https://github.com/quarkQuark/scripts][useful shell scripts]].
 
 * Setup with XMonad on a fresh Arch Linux install
 
@@ -13,15 +17,15 @@ My [[https://github.com/quarkQuark/xmonad-quark][XMonad configuration]] is in a 
 2. Clone this repository as well as my [[https://github.com/quarkQuark/scripts][shell script repository]].
 
    #+begin_src shell
-     alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+     alias dotfiles='git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
      echo .dotfiles-git >> .gitignore
-     git clone --bare git@github.com:quarkQuark/dotfiles $HOME/.dotfiles-git
+     git clone --bare --recurse-submodules git@github.com:quarkQuark/dotfiles $HOME/.dotfiles-git
      dotfiles checkout
      dotfiles config --local status.showUntrackedFiles no
      git clone git@github.com:quarkQuark/scripts $HOME/.scripts/repo
    #+end_src
 
-3. Install =emacs= and generate the shell configuration files from [[./.config/Shells.org]] by running 
+3. Install Emacs and generate the shell configuration files from [[./.config/Shells.org]] by running 
 
    #+begin_src shell
      emacs --batch -l org --eval '(org-babel-tangle-file "~/.config/Shells.org")'
