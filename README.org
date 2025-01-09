@@ -12,7 +12,9 @@ There is also a separate repository containing my disorganised collection of [[h
 
 * Setup with XMonad on a fresh Arch Linux install
 
-1. Install optional CLI dependencies: =exa neofetch neovim starship=
+0. I am in the process of migrating some of this repo to [[https://github.com/nix-community/home-manager][home-manager]]. See [[https://github.com/quarkQuark/home-manager][quarkQuark/home-manager]]. This automatically installs the optional dependencies =eza= and =fastfetch=.
+
+1. Install =neovim= and =starship=.
 
 2. Clone this repository as well as my [[https://github.com/quarkQuark/scripts][shell script repository]].
 
