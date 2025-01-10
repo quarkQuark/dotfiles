@@ -1,9 +1,0 @@
-set default-bg "rgba(0,0,0,0)"
-set page-padding 4
-set recolor-keephue true
-set recolor-lightcolor "rgba(34,34,34,0.9)"
-set scroll-page-aware true
-set index-bg = "rgba(0,0,0,0.3)"
-
-map    D  set "first-page-column 1:1"
-map <C-d> set "first-page-column 1:2"
