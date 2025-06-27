@@ -114,6 +114,7 @@ There is also a separate section to configure the prompt using [[https://starshi
   export XDG_STATE_HOME="$HOME/.local/state"
 
   # Config locations
+  export DOOMDIR="$XDG_CONFIG_HOME/doom"
   export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
   export GOPATH="$XDG_CONFIG_HOME/go"
   export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
@@ -121,15 +122,16 @@ There is also a separate section to configure the prompt using [[https://starshi
   export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
   export STACK_ROOT="$XDG_CONFIG_HOME/stack"
 
-  # Create gnupg directory if not found (errors otherwise)
-  [ ! -d $GNUPGHOME ] && mkdir -m700 $GNUPGHOME
-
   # Data locations
-  export GEM_HOME="$XDG_DATA_HOME/gem"
+  export DOOMLOCALDIR="$XDG_DATA_HOME/doom"
   export CRAWL_DIR="$XDG_DATA_HOME/crawl/" # DCSS (trailing slash required)
+  export GEM_HOME="$XDG_DATA_HOME/gem"
   export GNUPGHOME="$XDG_DATA_HOME/gnupg"
   export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
   export SSB_HOME="$XDG_DATA_HOME/zoom"
+
+  # Create gnupg directory if not found (errors otherwise)
+  [ ! -d $GNUPGHOME ] && mkdir -m700 $GNUPGHOME
 
   # Cache locations
   export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
@@ -152,7 +154,13 @@ There is also a separate section to configure the prompt using [[https://starshi
   export LESS='-R --use-color -Dd+r$Du+b'
   export MANPAGER='less -R --use-color -Dd+r -Du+b'
 
+  # This line should be here only if home-manager does not (yet) manage my shell configs
+  hm_session_vars="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+  [ -f $hm_session_vars ] && source $hm_session_vars
+
 #+end_src
+
+#+RESULTS:
 
 Colours used by exa (ls replacement)
 
@@ -205,9 +213,9 @@ Android development
   # Warn before overwriting with > operator
   set -o noclobber
 
-  export HISTSIZE=100000      # Commands to hold in memory
-  export HISTFILESIZE=100000  # Commands to store in Bash HISTFILE
-  export SAVEHIST=100000      # Commands to store in Zsh HISTFILE
+  export HISTSIZE=100000      # commands to hold in memory
+  export HISTFILESIZE=100000  # commands to store in bash histfile
+  export SAVEHIST=100000      # commands to store in zsh histfile
 
   fastfetch
   
@@ -256,7 +264,7 @@ Android development
   alias ip='ip     --color=auto'
 
   # Set up dotfiles syncing
-  alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
+  alias dotfiles='git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME'
 
   # Check battery
   alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"'
@@ -608,8 +616,8 @@ The starship prompt should be at the end of =.bashrc=.
   setopt AUTO_CD      # Automatically cd when command is a directory name
   setopt CDABLE_VARS  # If cd can't find a directory, check in HOME
   setopt CD_SILENT    # Never pwd after cd (default does this for cd -)
-  setopt CORRECT      # Suggest corrections for mistyped commands
-  setopt CORRECT_ALL  # Suggest corrections for mistyped arguments
+  #setopt CORRECT      # Suggest corrections for mistyped commands
+  #setopt CORRECT_ALL  # Suggest corrections for mistyped arguments
   setopt INTERACTIVE_COMMENTS  # Allow comments in interactive shells
 
   # History
@@ -755,14 +763,16 @@ Finally, we need to tell Zsh where to look for its own configuration files.
 1. If started through another login shell
 
    #+begin_src sh
-     export ZDOTDIR="$XDG_DATA_HOME/zsh"
+   [ -z $XDG_DATA_HOME ] && export XDG_DATA_HOME="$HOME/.local/share"
+   export ZDOTDIR="$XDG_DATA_HOME/zsh"
    #+end_src
 
 2. If started through Zsh as a login shell
 
    #+begin_src zsh :shebang "#!/bin/env sh" :tangle ~/.zshenv :noweb-ref
-     export ZDOTDIR="$XDG_DATA_HOME/zsh"
-     . $ZDOTDIR/.zshenv
+   [ -z $XDG_DATA_HOME ] && export XDG_DATA_HOME="$HOME/.local/share"
+   export ZDOTDIR="$XDG_DATA_HOME/zsh"
+   . $ZDOTDIR/.zshenv
    #+end_src
 
 ** Utility functions
