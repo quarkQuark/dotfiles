@@ -15,7 +15,7 @@
 \definecolor{myDarkCyan}{HTML}{005478}
 
 \colorlet{colProof}{myGreen!85!black}
-\colorlet{colExampleFG}{myBlue!85!black}
+\colorlet{colExampleFG}{myBlue!75!black}
 \colorlet{colRemarkFG}{black!80!white}
 
 % Doom-one-light colours don't really work for backgrounds.
@@ -28,6 +28,7 @@
 \tcolorboxenvironment{theorem}{
     %breakable,
     %top=4pt,bottom=4pt,
+    %title=#1,
     before skip=10pt,
     after skip=10pt,
     colback=colThm,
@@ -53,8 +54,9 @@
     arc = 0.3mm
 }
 \tcolorboxenvironment{remark}{
-    blanker,
+    blanker,breakable,
     %before skip=-5pt,
+    after skip=10pt,
     left=3mm,
     borderline west={.5pt}{0pt}{colRemarkFG},
     coltext=colRemarkFG,
@@ -73,49 +75,14 @@
 }
 
 % Indent examples behind a coloured vertical bar, with a title line.
-\newtcolorbox{eg}[1][]{
-    empty, % Empty default parameters
-    title=Example: #1,
-    attach boxed title to top left,
-    minipage boxed title, % Ensure proper line breaking in longer titles
-    coltitle=colExampleFG,
-    fonttitle=\bfseries,
-    coltext=colExampleFG,
-    % (boxed title style requires an overlay)
-    boxed title style={
-      empty,
-      size=minimal,
-      toprule=0pt,
-      top=2pt,
-      left=3mm,
-      overlay={}
-    },
-    %
-    before=\par\medskip\noindent,
-    before skip=0pt,
-    parbox=false,
-    boxsep=0pt,
-    bottom=0pt,
+\tcolorboxenvironment{eg}{
+%\newtcolorbox{eg}[1][]{
+    blanker,breakable,
+    before skip=10pt,
+    after skip=10pt,
     left=3mm,
-    right=0mm,
-    breakable,
-    pad at break=0mm,
-    % Use instead of parbox=true. This ensures parskip is inherited by box.
-    before upper=\csname @totalleftmargin\endcsname0pt,
-    %
-    % Overlay is necessary because borderline doesn't reach the title.
-    overlay unbroken={\draw[colExampleFG,line width=.5pt]
-        (title.north west) -- (frame.south west);
-    },
-    overlay first={\draw[colExampleFG,line width=.5pt]
-        (title.north west) -- (frame.south west);
-    },
-    overlay middle={\draw[colExampleFG,line width=.5pt]
-        (frame.north west) -- (frame.south west);
-    },
-    overlay last={\draw[colExampleFG,line width=.5pt]
-        (frame.north west) -- (frame.south west);
-    },
+    borderline west={.5pt}{0pt}{colExampleFG},
+    coltext=colExampleFG,
 }
 
 % Pre-org-mode compatibility
