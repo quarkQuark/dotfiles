@@ -1,5 +1,9 @@
 #+TITLE: Dotfiles
 
+I am in the process of porting my configurations over to [[https://github.com/nix-community/home-manager][Home Manager]]. This branch will feature no further updates and will be archived once done.
+
+-----
+
 * Notable programs
 
 Most of my user configuration files are stored in this repository. However, two of the programs with the most interesting configurations are hosted in their own repositories. These are:
